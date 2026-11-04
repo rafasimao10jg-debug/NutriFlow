@@ -31,36 +31,36 @@ Adultos que querem planejar refeições e criar uma rotina alimentar mais organi
 
 ### Apresentação
 
-**Título:** Sua rotina alimentar, com mais clareza.  
-**Texto:** Planeje refeições, registre o que faz sentido para você e acompanhe sua constância em um só lugar. Sem cobrança por perfeição.  
-**Ação principal:** Começar minha rotina  
+**Título:** Sua rotina alimentar, com mais clareza.<br>
+**Texto:** Planeje refeições, registre o que faz sentido para você e acompanhe sua constância em um só lugar. Sem cobrança por perfeição.<br>
+**Ação principal:** Começar minha rotina<br>
 **Ação secundária:** Já tenho uma conta
 
 ### Cadastro
 
-**Título:** Crie seu espaço no NutriFlow  
-**Texto:** Salve suas preferências e continue de onde parou.  
-**Campos:** Nome de exibição, e-mail, senha, confirmar senha.  
-**Ação:** Criar conta  
-**Link:** Já tem conta? Entrar  
-**Ajuda de senha:** Use pelo menos 8 caracteres. Não reutilize uma senha importante de outro serviço.  
+**Título:** Crie seu espaço no NutriFlow<br>
+**Texto:** Salve suas preferências e continue de onde parou.<br>
+**Campos:** Nome de exibição, e-mail, senha, confirmar senha.<br>
+**Ação:** Criar conta<br>
+**Link:** Já tem conta? Entrar<br>
+**Ajuda de senha:** Use pelo menos 8 caracteres. Não reutilize uma senha importante de outro serviço.<br>
 **Consentimento:** Ao continuar, você concorda com os Termos de Uso e a Política de Privacidade. Os links precisam existir antes de ativar o cadastro público.
 
 ### Login e recuperação
 
-**Login — título:** Que bom ter você de volta.  
-**Texto:** Entre para continuar sua rotina.  
-**Campos:** E-mail, senha.  
-**Ação:** Entrar  
-**Link:** Esqueci minha senha  
-**Recuperação — título:** Vamos ajudar você a entrar.  
-**Texto:** Informe o e-mail da sua conta. Se ela existir, enviaremos instruções para redefinir a senha.  
-**Ação:** Enviar instruções  
+**Login — título:** Que bom ter você de volta.<br>
+**Texto:** Entre para continuar sua rotina.<br>
+**Campos:** E-mail, senha.<br>
+**Ação:** Entrar<br>
+**Link:** Esqueci minha senha<br>
+**Recuperação — título:** Vamos ajudar você a entrar.<br>
+**Texto:** Informe o e-mail da sua conta. Se ela existir, enviaremos instruções para redefinir a senha.<br>
+**Ação:** Enviar instruções<br>
 **Confirmação:** Se houver uma conta associada a esse e-mail, você receberá uma mensagem em instantes.
 
 ### Primeiros passos
 
-**Título:** Vamos deixar o NutriFlow com a sua cara.  
+**Título:** Vamos deixar o NutriFlow com a sua cara.<br>
 **Texto:** Estas respostas ajudam a organizar sua experiência. Você pode pular esta etapa e mudar suas escolhas depois.
 
 1. **O que você quer organizar primeiro?** Planejar minhas refeições; registrar o que comi; criar mais constância; explorar sugestões.
@@ -68,49 +68,49 @@ Adultos que querem planejar refeições e criar uma rotina alimentar mais organi
 3. **Como prefere começar?** Com ideias simples; planejando alguns dias; registrando uma refeição por vez.
 4. **Preferências alimentares (opcional):** Sem preferência; vegetariana; vegana; outra preferência (campo livre opcional).
 
-**Ações:** Continuar · Fazer isso depois  
+**Ações:** Continuar · Fazer isso depois<br>
 **Privacidade:** Use apenas informações que você deseja salvar. Não inclua dados médicos ou informações de outras pessoas no campo livre.
 
 ### Início
 
-**Saudação:** Oi, {nome}. Vamos no seu ritmo.  
-**Resumo:** Aqui está o que você escolheu acompanhar hoje.  
-**Ações:** Planejar refeições · Registrar refeição · Ver meu progresso  
-**Cartão sem registros:** Seu dia começa quando você quiser. Registre uma refeição ou monte um plano simples.  
+**Saudação:** Oi, {nome}. Vamos no seu ritmo.<br>
+**Resumo:** Aqui está o que você escolheu acompanhar hoje.<br>
+**Ações:** Planejar refeições · Registrar refeição · Ver meu progresso<br>
+**Cartão sem registros:** Seu dia começa quando você quiser. Registre uma refeição ou monte um plano simples.<br>
 **Cartão com registros:** Você já registrou {quantidade} {refeição/refeições} hoje. Cada registro ajuda a deixar seu histórico mais útil.
 
 ### Planejamento e registro de refeições
 
-**Planejamento — título:** O que você quer deixar encaminhado?  
-**Texto:** Monte um plano flexível. Você pode trocar ou remover qualquer item depois.  
-**Campos:** Dia; refeição; nome da refeição ou ideia; observação opcional.  
-**Ações:** Salvar no plano · Adicionar outra refeição · Limpar dia  
+**Planejamento — título:** O que você quer deixar encaminhado?<br>
+**Texto:** Monte um plano flexível. Você pode trocar ou remover qualquer item depois.<br>
+**Campos:** Dia; refeição; nome da refeição ou ideia; observação opcional.<br>
+**Ações:** Salvar no plano · Adicionar outra refeição · Limpar dia<br>
 **Confirmação:** Plano atualizado. Você pode mudar isso a qualquer momento.
 
-**Registro — título:** Registrar refeição  
-**Texto:** Anote o que quiser guardar no seu histórico. Não precisa ser perfeito nem completo.  
-**Campos:** Refeição; data e horário; descrição; observação opcional.  
-**Ações:** Salvar registro · Cancelar  
-**Confirmação:** Registro salvo.  
-**Edição:** Registro atualizado.  
+**Registro — título:** Registrar refeição<br>
+**Texto:** Anote o que quiser guardar no seu histórico. Não precisa ser perfeito nem completo.<br>
+**Campos:** Refeição; data e horário; descrição; observação opcional.<br>
+**Ações:** Salvar registro · Cancelar<br>
+**Confirmação:** Registro salvo.<br>
+**Edição:** Registro atualizado.<br>
 **Exclusão:** Registro removido do seu histórico.
 
 O primeiro MVP pode guardar descrições livres e horários. Não estime calorias ou nutrientes sem uma fonte identificada, método validado e revisão do escopo.
 
 ### Progresso
 
-**Título:** Seu progresso, do seu jeito.  
-**Texto:** Acompanhe os registros e planos que você escolheu guardar. Um dia diferente não apaga o que você já construiu.  
-**Indicadores propostos:** refeições registradas; dias em que você usou o app; planos criados e concluídos.  
-**Vazio:** Seu histórico começa com o primeiro registro.  
+**Título:** Seu progresso, do seu jeito.<br>
+**Texto:** Acompanhe os registros e planos que você escolheu guardar. Um dia diferente não apaga o que você já construiu.<br>
+**Indicadores propostos:** refeições registradas; dias em que você usou o app; planos criados e concluídos.<br>
+**Vazio:** Seu histórico começa com o primeiro registro.<br>
 **Privacidade:** Somente você pode ver este histórico na sua conta.
 
 Evite rankings, sequências punitivas, metas automáticas de peso ou alertas que pressionem a pessoa a compensar uma refeição.
 
 ### Assistente NutriFlow (quando houver integração de IA)
 
-**Apresentação:** Posso ajudar com ideias gerais para organizar refeições e explorar opções. Você decide o que combina com sua rotina.  
-**Sugestões de pergunta:** Me ajude a organizar refeições para amanhã; sugira opções com os ingredientes que tenho; adapte uma ideia à minha preferência alimentar.  
+**Apresentação:** Posso ajudar com ideias gerais para organizar refeições e explorar opções. Você decide o que combina com sua rotina.<br>
+**Sugestões de pergunta:** Me ajude a organizar refeições para amanhã; sugira opções com os ingredientes que tenho; adapte uma ideia à minha preferência alimentar.<br>
 **Aviso contextual:** As respostas são sugestões gerais e podem conter erros. Para orientação individual ou uma condição de saúde, converse com um nutricionista ou profissional de saúde.
 
 O assistente deve pedir contexto quando necessário, indicar incerteza e não fornecer diagnóstico, tratamento, prescrição clínica ou aconselhamento em urgências. Não deve inventar nutrientes, fontes ou credenciais profissionais. Se não puder responder com segurança, explique o limite e sugira procurar um profissional qualificado.
