@@ -8,21 +8,23 @@ O app já tem uma página pública de apresentação e uma demonstração naveg�
 
 **Posicionamento que o produto atual sustenta:** NutriFlow ajuda adultos a organizar ideias e registros de refeições no próprio ritmo. O Flow é uma companhia visual liberada após cinco dias seguidos de registro.
 
-**Não anunciar como disponível:** planejamento semanal completo, recomendações de IA, cálculo de calorias/nutrientes, resultados de peso ou benefício clínico.
+**Não anunciar como disponível ainda:** recomendações de IA, planejamento semanal completo, cálculo de calorias/nutrientes, resultados de peso ou benefício clínico. A IA real é requisito para o lançamento pago; o assistente atual é apenas uma demonstração guiada.
 
-## Oferta provisória para beta
+## Oferta paga — definição pendente
 
-**Promessa:** Mais clareza para organizar refeições e ideias do dia a dia.
+O primeiro lançamento será uma oferta paga. O preço, condições, cobrança, período de acesso e itens incluídos ainda serão informados pelo responsável pelo produto; não publicar anúncio de venda nem ativar checkout antes dessa definição.
 
-**O que a pessoa recebe hoje:** registro por data, histórico simples, tema claro/escuro, guia dentro do app e sequência para liberar o Flow. A demonstração salva os dados no navegador. A conta Supabase precisa passar por teste real antes de prometer sincronização em anúncio.
+**Promessa provisória, sujeita à validação do produto:** Mais clareza para organizar refeições e ideias do dia a dia, com apoio de um assistente de IA. Só usar essa promessa depois que o modelo real estiver integrado e testado, com limites e aviso claros de que não substitui nutricionista ou profissional de saúde.
 
-**Preço e modelo comercial:** ainda não definidos. Não criar anúncio de venda, teste grátis, desconto ou assinatura até decidir preço, cobrança e o que será gratuito.
+**Preço e condições:** aguardando definição do responsável. Não inventar valores, descontos, garantia, renovação ou período de teste.
 
-### Texto de anúncio — rascunho de beta
+**O que existe hoje:** registro por data, histórico simples, tema claro/escuro, guia dentro do app e sequência para liberar o Flow. A demonstração salva os dados no navegador. Cadastro e sincronização Supabase precisam de validação real antes de prometer esses recursos como confiáveis em uma oferta paga.
+
+### Texto de anúncio — rascunho para oferta paga
 
 **Texto principal:**
 
-Organize suas ideias de refeições em um só lugar. Registre o que quer guardar, consulte seu histórico e acompanhe sua sequência no seu ritmo. Conheça o NutriFlow.
+Rascunho para usar somente depois da integração e validação da IA e da definição da oferta: Organize suas ideias de refeições, registre o que quer guardar e conte com um assistente de IA para apoiar sua rotina. Conheça o NutriFlow.
 
 **Título:** Mais clareza para organizar refeições
 
@@ -35,7 +37,7 @@ Organize suas ideias de refeições em um só lugar. Registre o que quer guardar
 3. Mostrar o progresso do Flow: “Cinco dias seguidos liberam o Flow.”
 4. Encerrar com: “NutriFlow. Organize no seu ritmo.”
 
-Mostrar a interface real do app. Não simular uma resposta de IA, um plano alimentar ou uma sincronização que ainda não tenha sido validada.
+Mostrar apenas recursos reais e testados. Não simular resposta de IA, plano alimentar, cobrança ou sincronização. Até a IA funcionar, este roteiro não está liberado para publicação como anúncio do produto pago.
 
 ## Primeira rodada de campanha
 
@@ -56,13 +58,14 @@ Na criação do anúncio, evitar texto que afirme ou sugira que a pessoa tem uma
 | P0 | Integrar a branch `codex/flow-name-assistant` ao projeto que alimenta o Replit e confirmar um endereço público estável | Pendente; a página pública está só na branch |
 | P0 | Executar/confirmar a migration no Supabase; testar cadastro, confirmação, login, recuperação e sincronização com contas de teste | Não verificado |
 | P0 | Publicar Termos e Política de Privacidade com responsável, dados coletados, retenção, contato e exclusão de conta | Não existe no app |
-| P0 | Decidir se o beta será sem IA real ou aguardar o backend e a chave privada configurados nos Secrets do Replit | Pendente; nenhuma chave foi criada |
+| P0 | Integrar uma IA real no servidor, guardar a chave somente em Secrets do ambiente publicado, definir limites de uso e testar respostas, erros e custo | Bloqueador; assistente atual é guiado e nenhuma chave foi criada |
 | P1 | Decidir se o beta inclui somente registros ou também um planejador semanal; a tela atual não separa planos de registros | Funcionalidade parcial |
 | P1 | Revisar navegação por teclado, leitores de tela, contraste, erros de rede e telas pequenas | Revisão incompleta |
 | P1 | Criar roteiro de suporte e resposta a falhas de login/sincronização | Pendente |
-| P2 | Definir preço, forma de cobrança, limites do plano e meta de custo de aquisição | Decisão do negócio pendente |
+| P0 | Definir preço, condições, o que está incluído e como cobrar; implementar e validar checkout/assinatura antes de vender | Aguardando informações do responsável; não há cobrança implementada |
+| P1 | Definir limites de uso da IA e estimar custo por pessoa pagante para calcular margem e CAC máximo | Pendente da integração e do preço |
 | P2 | Revisar no Events Manager se a Meta permite qualquer evento não sensível para este domínio; manter dados de refeições fora da medição | Pendente |
 
 ## Critério para escalar
 
-Não escalar com base apenas em clique ou cadastro. Primeiro definir o que significa uma pessoa ativada — proposta inicial: concluir cadastro e salvar o primeiro registro — e acompanhar se ela volta a usar o produto. O limite de CAC precisa ser calculado depois que preço, custo de atendimento e modelo comercial forem definidos. Se o beta ainda não cobrar, priorizar aprendizado de ativação e retenção, sem tratar cadastro como receita.
+Não escalar com base apenas em clique ou cadastro. Como a primeira oferta será paga, definir o evento de ativação e medir compra concluída, primeiro uso e retorno, respeitando privacidade. Calcular CAC máximo somente depois de definir preço, taxas, custos de IA, suporte, reembolso e margem. Não aumentar orçamento até checkout, IA, autenticação e experiência de ponta a ponta estarem validados.
