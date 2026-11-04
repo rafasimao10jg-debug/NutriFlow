@@ -1,6 +1,6 @@
-// Copie para supabase-config.js e preencha com a URL e a publishable key
-// do seu projeto Supabase. Esta chave é pública; nunca use a secret/service_role.
+// A publishable key pode ser usada no cliente quando todas as tabelas expostas
+// têm RLS e políticas restritivas. Nunca use a secret/service_role no navegador.
 window.NUTRIFLOW_SUPABASE = {
-  url: 'https://SEU-PROJETO.supabase.co',
-  publishableKey: 'sb_publishable_SUA_CHAVE_PUBLICA'
+  url: 'https://zjrfzcmcwbgnpbrtkqjw.supabase.co',
+  publishableKey: 'sb_publishable_-tjB1lvx9yFERbhPNG8twA_-xkdwkoV'
 };
