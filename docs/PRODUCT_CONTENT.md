@@ -117,6 +117,10 @@ O assistente deve pedir contexto quando necessário, indicar incerteza e não fo
 
 ## Mensagens de estado
 
+### Companheiro de jornada
+
+O app pode oferecer um pet como companhia visual desbloqueada por sementes. Cada dia com ao menos um plano ou registro escolhido pela pessoa rende uma semente, com limite de uma por dia. Cinco sementes em quaisquer dias liberam o primeiro pet. Não há prazo, sequência obrigatória, perda por pausa ou relação com calorias, peso ou qualidade da alimentação. O pet não avalia escolhas nem substitui apoio profissional.
+
 | Situação | Texto |
 | --- | --- |
 | Salvando | Salvando suas alterações… |

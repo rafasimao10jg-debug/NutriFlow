@@ -696,6 +696,16 @@ input,select{font-family:inherit}
 .dialog-head h2{font-family:'Syne',sans-serif;font-size:20px}
 .dialog-close{width:36px;height:36px;border-radius:50%;background:var(--bg-subtle);color:var(--ink);font-size:20px}
 .demo-empty{background:var(--bg-card);border:1px dashed var(--border-mid);border-radius:var(--r-lg);padding:22px;text-align:center;color:var(--ink-mid);font-size:13px}
+.pet-card{display:grid;grid-template-columns:84px 1fr;gap:16px;align-items:center;background:linear-gradient(135deg,var(--pri-light),var(--teal-light));border:1px solid var(--border);border-radius:var(--r-lg);padding:18px;margin:18px 0}
+.pet-avatar{width:76px;height:76px;border-radius:24px;display:grid;place-items:center;background:var(--bg-card);font-size:42px;box-shadow:var(--sh-sm)}
+.pet-title{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--ink);margin-bottom:4px}
+.pet-copy{font-size:13px;line-height:1.5;color:var(--ink-mid)}
+.seed-row{display:flex;gap:6px;align-items:center;margin:12px 0 7px}
+.seed{font-size:21px;filter:grayscale(1);opacity:.35}
+.seed.collected{filter:none;opacity:1}
+.pet-progress{height:7px;border-radius:99px;background:var(--bg-card);overflow:hidden;margin:8px 0}
+.pet-progress span{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--pri),var(--teal));transition:width .25s}
+.pet-note{font-size:11px;color:var(--ink-soft);line-height:1.45;margin-top:7px}
 .demo-empty strong{display:block;color:var(--ink);margin-bottom:5px}
 </style>
 </head>
@@ -823,6 +833,11 @@ input,select{font-family:inherit}
       <div id="today-meals" class="demo-empty"><strong>Seu histórico começa quando você quiser.</strong>Use somente informações fictícias nesta demonstração.</div>
       <div class="meal-actions"><button class="btn-pri" style="max-width:240px" onclick="openMealDialog()">+ Registrar refeição</button></div>
 
+      <div class="pet-card" onclick="navTo('ai')" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();navTo('ai')}">
+        <div class="pet-avatar" id="pet-avatar-home">🌱</div>
+        <div><div class="pet-title" id="pet-title-home">Seu companheiro está a caminho</div><div class="pet-copy" id="pet-copy-home">Registre refeições em dias diferentes para coletar sementes e liberar um pet.</div><div class="section-link">Ver companheiro →</div></div>
+      </div>
+
       <div class="insight-card">
         <div class="insight-ai">✨ NutriFlow AI</div>
         <div class="i-text">As sugestões de inteligência artificial ainda não estão conectadas. O produto não fornece diagnóstico nem recomendações clínicas.</div>
@@ -851,7 +866,13 @@ input,select{font-family:inherit}
 
     <!-- AI TOOLS -->
     <div class="sub" id="sub-ai">
-      <div class="coming-soon"><div class="cs-icon">✨</div><div class="cs-title">Assistente NutriFlow</div><div class="cs-sub">As sugestões de IA ainda estão em desenvolvimento. O protótipo não analisa hábitos nem cria planos personalizados.</div><div class="cs-pill">Em preparação</div><p class="demo-note">Quando disponível, a IA deverá oferecer ideias gerais e explicar seus limites. Ela não substituirá orientação profissional.</p></div>
+      <div class="section-head"><div class="section-title">Seu companheiro de jornada</div></div>
+      <div class="pet-card" style="grid-template-columns:110px 1fr;margin-top:0">
+        <div class="pet-avatar" id="pet-avatar">🌱</div>
+        <div><div class="pet-title" id="pet-title">Uma companhia no seu ritmo</div><div class="pet-copy" id="pet-copy">Cada dia em que você registra uma refeição rende uma semente. Junte cinco, sem precisar ser em dias seguidos, para liberar seu primeiro pet.</div><div class="seed-row" id="seed-row" aria-label="Sementes coletadas"></div><div class="pet-progress" role="progressbar" aria-label="Progresso para liberar o pet" aria-valuemin="0" aria-valuemax="5" aria-valuenow="0"><span id="pet-progress-bar" style="width:0%"></span></div><div class="pet-copy" id="seed-count">0 de 5 sementes</div><div class="pet-note">Uma semente por dia com registro. Sem sequência obrigatória, prazo ou perda de progresso por pausa.</div></div>
+      </div>
+      <div class="section-head"><div class="section-title">Como funciona</div></div>
+      <div class="goal-list"><div class="goal-row"><div class="gr-name">🌱 Registre algo que você queira guardar</div><div class="gr-detail">Pode ser um plano ou uma refeição.</div></div><div class="goal-row"><div class="gr-name">✨ Colete uma semente no dia</div><div class="gr-detail">Outros registros no mesmo dia não aumentam a contagem.</div></div><div class="goal-row"><div class="gr-name">🐾 Libere seu pet ao juntar cinco</div><div class="gr-detail">O pet é uma companhia visual, sem avaliar suas escolhas alimentares.</div></div></div>
     </div>
 
     <!-- PROFILE -->
@@ -883,8 +904,8 @@ input,select{font-family:inherit}
       <div class="botnav-label">Progresso</div>
     </div>
     <div class="botnav-item" id="bn-ai" onclick="navTo('ai')">
-      <div class="botnav-icon">✨</div>
-      <div class="botnav-label">IA</div>
+      <div class="botnav-icon">🐾</div>
+      <div class="botnav-label">Pet</div>
     </div>
     <div class="botnav-item" id="bn-profile" onclick="navTo('profile')">
       <div class="botnav-icon">👤</div>
@@ -927,7 +948,8 @@ function closeMealDialog(){document.getElementById('meal-dialog').close()}
 function renderDayPills(){const wrap=document.getElementById('day-pills');if(!wrap)return;wrap.replaceChildren();const monday=new Date(selectedDate);const day=(monday.getDay()+6)%7;monday.setDate(monday.getDate()-day);const last=new Date(monday);last.setDate(monday.getDate()+6);document.getElementById('week-label').textContent=monday.toLocaleDateString('pt-BR',{day:'numeric',month:'short'})+' — '+last.toLocaleDateString('pt-BR',{day:'numeric',month:'short',year:'numeric'});const short=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];for(let i=0;i<7;i++){const d=new Date(monday);d.setDate(monday.getDate()+i);const b=document.createElement('button');b.type='button';b.className='day-pill'+(dateKey(d)===dateKey(selectedDate)?' active':'');b.setAttribute('aria-pressed',dateKey(d)===dateKey(selectedDate)?'true':'false');b.innerHTML='<div class="dp-name">'+short[d.getDay()]+'</div><div class="dp-num">'+d.getDate()+'</div>';b.addEventListener('click',()=>{selectedDate=d;renderDayPills();renderMeals()});wrap.append(b)}}
 function shiftWeek(amount){selectedDate.setDate(selectedDate.getDate()+amount*7);renderDayPills();renderMeals()}
 function mealCard(meal,onDelete){const card=document.createElement('div');card.className='meal-card';const emoji=document.createElement('div');emoji.className='meal-emoji';emoji.textContent=meal.kind==='Almoço'?'🥗':meal.kind==='Jantar'?'🌙':meal.kind==='Café da manhã'?'☀️':'🍎';const info=document.createElement('div');info.className='meal-info';const name=document.createElement('div');name.className='meal-name';name.textContent=meal.name;const meta=document.createElement('div');meta.className='meal-time';meta.textContent=meal.kind+' · '+new Date(meal.date+'T12:00:00').toLocaleDateString('pt-BR');info.append(name,meta);const remove=document.createElement('button');remove.type='button';remove.className='section-link';remove.textContent='Remover';remove.setAttribute('aria-label','Remover '+meal.name);remove.addEventListener('click',onDelete);card.append(emoji,info,remove);return card}
-function renderMeals(){const all=readMeals();const dayItems=all.filter(m=>m.date===dateKey(selectedDate));const list=document.getElementById('meal-list');if(list){list.replaceChildren();if(dayItems.length)dayItems.forEach(item=>list.append(mealCard(item,()=>deleteMeal(item.id))));else{const empty=document.createElement('div');empty.className='demo-empty';empty.innerHTML='<strong>Nenhuma refeição nesta data.</strong>Adicione uma ideia fictícia para ver como o planejamento funciona.';list.append(empty)}}const today=document.getElementById('today-meals');if(today){const todayItems=all.filter(m=>m.date===dateKey(new Date()));today.replaceChildren();if(todayItems.length)todayItems.forEach(item=>today.append(mealCard(item,()=>deleteMeal(item.id))));else{today.className='demo-empty';today.innerHTML='<strong>Seu histórico começa quando você quiser.</strong>Use somente informações fictícias nesta demonstração.'}}const days=new Set(all.map(m=>m.date)).size;const set=(id,value)=>{const e=document.getElementById(id);if(e)e.textContent=String(value)};set('meal-count',all.length);set('plan-count',all.length);set('active-day-count',days);set('progress-meals',all.length);set('progress-days',days);set('progress-plans',all.length);const nav=document.getElementById('nav-meal-count');if(nav)nav.textContent=String(all.length)}
+function renderMeals(){const all=readMeals();const dayItems=all.filter(m=>m.date===dateKey(selectedDate));const list=document.getElementById('meal-list');if(list){list.replaceChildren();if(dayItems.length)dayItems.forEach(item=>list.append(mealCard(item,()=>deleteMeal(item.id))));else{const empty=document.createElement('div');empty.className='demo-empty';empty.innerHTML='<strong>Nenhuma refeição nesta data.</strong>Adicione uma ideia fictícia para ver como o planejamento funciona.';list.append(empty)}}const today=document.getElementById('today-meals');if(today){const todayItems=all.filter(m=>m.date===dateKey(new Date()));today.replaceChildren();if(todayItems.length)todayItems.forEach(item=>today.append(mealCard(item,()=>deleteMeal(item.id))));else{today.className='demo-empty';today.innerHTML='<strong>Seu histórico começa quando você quiser.</strong>Use somente informações fictícias nesta demonstração.'}}const days=new Set(all.map(m=>m.date)).size;const set=(id,value)=>{const e=document.getElementById(id);if(e)e.textContent=String(value)};set('meal-count',all.length);set('plan-count',all.length);set('active-day-count',days);set('progress-meals',all.length);set('progress-days',days);set('progress-plans',all.length);const nav=document.getElementById('nav-meal-count');if(nav)nav.textContent=String(all.length);renderPet(all)}
+function renderPet(entries=readMeals()){const days=new Set(entries.map(item=>item.date)).size;const seeds=Math.min(days,5);const unlocked=days>=5;const set=(id,value)=>{const el=document.getElementById(id);if(el)el.textContent=value};set('pet-avatar',unlocked?'🐱':'🌱');set('pet-avatar-home',unlocked?'🐱':'🌱');set('pet-title',unlocked?'Mimo está com você!':'Seu companheiro está a caminho');set('pet-title-home',unlocked?'Mimo está com você!':'Seu companheiro está a caminho');set('pet-copy',unlocked?'Mimo vai acompanhar sua rotina no seu ritmo. Você pode pausar e voltar quando quiser.':'Cada dia com um registro rende uma semente. Junte cinco, sem precisar de dias seguidos, para liberar Mimo.');set('pet-copy-home',unlocked?'Seu pet acompanha sua jornada sem cobrar constância.':'Registre em dias diferentes para coletar sementes e liberar Mimo.');set('seed-count',`${seeds} de 5 sementes${unlocked?' · Mimo liberado!':''}`);const row=document.getElementById('seed-row');if(row){row.replaceChildren();for(let i=0;i<5;i++){const seed=document.createElement('span');seed.className='seed'+(i<seeds?' collected':'');seed.textContent='🌱';seed.setAttribute('aria-hidden','true');row.append(seed)}}const bar=document.getElementById('pet-progress-bar');if(bar)bar.style.width=(seeds*20)+'%';const progress=document.querySelector('[aria-label="Progresso para liberar o pet"]');if(progress)progress.setAttribute('aria-valuenow',String(seeds))}
 function deleteMeal(id){const next=readMeals().filter(m=>m.id!==id);if(saveMeals(next)){renderMeals();showToast('Registro removido deste navegador.')}}
 function clearDemoData(){if(!confirm('Apagar todos os registros desta demonstração neste navegador?'))return;try{localStorage.removeItem(STORAGE_KEY)}catch{}renderMeals();showToast('Registros locais apagados.')}
 function toggleToggle(id){const el=document.getElementById(id);if(el)el.classList.toggle('on')}
