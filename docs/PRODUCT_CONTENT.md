@@ -107,19 +107,19 @@ O primeiro MVP pode guardar descrições livres e horários. Não estime caloria
 
 Não use rankings, culpa, metas automáticas de peso ou alertas para compensar refeições. Explique a regra da sequência do pet com clareza e sem julgamento.
 
-### Assistente NutriFlow (quando houver integração de IA)
+### Assistente NutriFlow (modo de demonstração)
 
 **Apresentação:** Posso ajudar com ideias gerais para organizar refeições e explorar opções. Você decide o que combina com sua rotina.<br>
 **Sugestões de pergunta:** Me ajude a organizar refeições para amanhã; sugira opções com os ingredientes que tenho; adapte uma ideia à minha preferência alimentar.<br>
 **Aviso contextual:** As respostas são sugestões gerais e podem conter erros. Para orientação individual ou uma condição de saúde, converse com um nutricionista ou profissional de saúde.
 
-O assistente deve pedir contexto quando necessário, indicar incerteza e não fornecer diagnóstico, tratamento, prescrição clínica ou aconselhamento em urgências. Não deve inventar nutrientes, fontes ou credenciais profissionais. Se não puder responder com segurança, explique o limite e sugira procurar um profissional qualificado.
+Na demonstração, as respostas são guiadas e não usam um modelo de IA conectado. A integração real depende de um fornecedor, chave privada no servidor, definição dos dados enviados, retenção e controles de privacidade. O assistente deve pedir contexto quando necessário, indicar incerteza e não fornecer diagnóstico, tratamento, prescrição clínica ou aconselhamento em urgências. Não deve inventar nutrientes, fontes ou credenciais profissionais. Se não puder responder com segurança, explique o limite e sugira procurar um profissional qualificado.
 
 ## Mensagens de estado
 
 ### Companheiro de jornada
 
-O app oferece o Mimo como companhia visual. Um dia conta quando há pelo menos um registro com a data de hoje; vários registros no mesmo dia contam como um. Datas futuras não contam. Cinco dias seguidos liberam o pet. Se passar um dia sem registro antes de liberar, a sequência volta ao zero. Depois de liberado, o Mimo permanece com a pessoa, mesmo que a sequência pare. A sequência não se relaciona a calorias, peso ou qualidade da alimentação. O pet não avalia escolhas nem substitui apoio profissional.
+O app oferece o Flow como companhia visual. Um dia conta quando há pelo menos um registro com a data de hoje; vários registros no mesmo dia contam como um. Datas futuras não contam. Cinco dias seguidos liberam o pet. Se passar um dia sem registro antes de liberar, a sequência volta ao zero. Depois de liberado, o Flow permanece com a pessoa, mesmo que a sequência pare. A sequência não se relaciona a calorias, peso ou qualidade da alimentação. O pet não avalia escolhas nem substitui apoio profissional.
 
 ### Guia rápido dentro do app
 

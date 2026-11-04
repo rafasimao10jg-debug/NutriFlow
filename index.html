@@ -453,6 +453,17 @@ input,select{font-family:inherit}
   font-size:11px;font-weight:700;padding:4px 10px;
   border-radius:var(--r-pill);margin-bottom:10px;
 }
+.assistant-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-lg);padding:18px;margin:14px 0}
+.assistant-intro{font-size:14px;line-height:1.55;color:var(--ink-mid);margin:8px 0 14px}
+.assistant-demo{font-size:12px;line-height:1.5;color:var(--ink-mid);background:var(--amber-light);border-radius:12px;padding:10px 12px;margin:12px 0}
+.assistant-chips{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.assistant-chip{border:1px solid var(--border);border-radius:999px;background:var(--bg-subtle);color:var(--ink);padding:9px 12px;font:inherit;font-size:12px;cursor:pointer}
+.assistant-chat{display:grid;gap:10px;max-height:260px;overflow:auto;margin:14px 0}
+.assistant-message{max-width:92%;padding:12px 14px;border-radius:16px;background:var(--bg-subtle);color:var(--ink);font-size:13px;line-height:1.55;white-space:pre-line}
+.assistant-message.user{justify-self:end;background:var(--pri);color:#fff}
+.assistant-form{display:flex;gap:8px}
+.assistant-form input{min-width:0;flex:1;border:1px solid var(--border);border-radius:12px;background:var(--bg);color:var(--ink);padding:12px;font:inherit;font-size:14px}
+.assistant-form button{width:auto;padding:0 16px}
 .insight-item{display:flex;gap:10px;margin-bottom:10px}
 .insight-item:last-child{margin-bottom:0}
 .i-dot{
@@ -847,12 +858,13 @@ input,select{font-family:inherit}
 
       <div class="pet-card" onclick="navTo('ai')" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();navTo('ai')}">
         <div class="pet-avatar" id="pet-avatar-home">🌱</div>
-        <div><div class="pet-title" id="pet-title-home">Seu pet está a caminho</div><div class="pet-copy" id="pet-copy-home">Registre algo por 5 dias seguidos para liberar o Mimo.</div><div class="section-link">Ver progresso do pet →</div></div>
+        <div><div class="pet-title" id="pet-title-home">Seu pet está a caminho</div><div class="pet-copy" id="pet-copy-home">Registre algo por 5 dias seguidos para liberar o Flow.</div><div class="section-link">Ver progresso do Flow →</div></div>
       </div>
 
       <div class="insight-card">
         <div class="insight-ai">✨ NutriFlow AI</div>
-        <div class="i-text">As sugestões de inteligência artificial ainda não estão conectadas. O produto não fornece diagnóstico nem recomendações clínicas.</div>
+        <div class="i-text">Quer ideias simples para organizar suas refeições? Abra o assistente e conte o que você precisa.</div>
+        <button class="btn-pri" style="margin-top:12px;max-width:230px" type="button" onclick="navTo('ai')">Abrir assistente IA →</button>
       </div>
     </div>
 
@@ -878,13 +890,28 @@ input,select{font-family:inherit}
 
     <!-- AI TOOLS -->
     <div class="sub" id="sub-ai">
-      <div class="section-head"><div class="section-title">Seu pet: Mimo</div></div>
+      <div class="section-head"><div class="section-title">✨ Assistente NutriFlow</div></div>
+      <div class="assistant-card">
+        <div class="pet-title">Ideias para sua rotina</div>
+        <p class="assistant-intro">Peça ideias gerais para organizar refeições. Você escolhe o que combina com você.</p>
+        <div class="assistant-demo">Modo de demonstração: as respostas são guiadas e não usam uma IA conectada. Não envie dados pessoais ou de saúde.</div>
+        <div class="assistant-chips" aria-label="Sugestões de perguntas">
+          <button class="assistant-chip" type="button" onclick="askAssistant('Me ajude a organizar refeições para amanhã')">Organizar amanhã</button>
+          <button class="assistant-chip" type="button" onclick="askAssistant('Quero ideias simples para minhas refeições')">Ideias simples</button>
+          <button class="assistant-chip" type="button" onclick="askAssistant('Como planejar usando o que já tenho em casa?')">Usar o que tenho em casa</button>
+        </div>
+        <div class="assistant-chat" id="assistant-chat" aria-live="polite" aria-label="Conversa com o assistente">
+          <div class="assistant-message">Olá! Posso ajudar com ideias gerais e com a organização das refeições. Escolha uma sugestão ou escreva sua pergunta.</div>
+        </div>
+        <form class="assistant-form" id="assistant-form"><input id="assistant-input" type="text" maxlength="300" placeholder="Escreva sua pergunta…" aria-label="Sua pergunta" required><button class="btn-pri" type="submit" aria-label="Enviar pergunta">Enviar</button></form>
+      </div>
+      <div class="section-head"><div class="section-title">Seu pet: Flow</div></div>
       <div class="pet-card" style="grid-template-columns:110px 1fr;margin-top:0">
         <div class="pet-avatar" id="pet-avatar">🌱</div>
-        <div><div class="pet-title" id="pet-title">Libere o Mimo</div><div class="pet-copy" id="pet-copy">Anote uma refeição ou ideia por dia, durante 5 dias seguidos.</div><div class="seed-row" id="seed-row" aria-label="Dias seguidos registrados"></div><div class="pet-progress" role="progressbar" aria-label="Progresso para liberar o Mimo" aria-valuemin="0" aria-valuemax="5" aria-valuenow="0"><span id="pet-progress-bar" style="width:0%"></span></div><div class="pet-copy" id="seed-count">0 de 5 dias seguidos</div><div class="pet-note" id="pet-note">Se passar um dia sem anotar nada, a sequência volta ao zero. Depois de liberar, o Mimo continua com você.</div></div>
+        <div><div class="pet-title" id="pet-title">Libere o Flow</div><div class="pet-copy" id="pet-copy">Anote uma refeição ou ideia por dia, durante 5 dias seguidos.</div><div class="seed-row" id="seed-row" aria-label="Dias seguidos registrados"></div><div class="pet-progress" role="progressbar" aria-label="Progresso para liberar o Flow" aria-valuemin="0" aria-valuemax="5" aria-valuenow="0"><span id="pet-progress-bar" style="width:0%"></span></div><div class="pet-copy" id="seed-count">0 de 5 dias seguidos</div><div class="pet-note" id="pet-note">Se passar um dia sem anotar nada, a sequência volta ao zero. Depois de liberar, o Flow continua com você.</div></div>
       </div>
       <div class="section-head"><div class="section-title">Como funciona</div></div>
-      <div class="goal-list"><div class="goal-row"><div class="gr-name">1. Anote algo em cada dia</div><div class="gr-detail">Uma refeição ou ideia já conta. Mais anotações no mesmo dia não aumentam a sequência.</div></div><div class="goal-row"><div class="gr-name">2. Complete 5 dias seguidos</div><div class="gr-detail">Se um dia passar sem registro, a contagem volta ao zero.</div></div><div class="goal-row"><div class="gr-name">3. Conheça o Mimo</div><div class="gr-detail">Depois de liberado, ele fica com você. O pet é só uma companhia visual; não avalia sua alimentação.</div></div></div>
+      <div class="goal-list"><div class="goal-row"><div class="gr-name">1. Anote algo em cada dia</div><div class="gr-detail">Uma refeição ou ideia já conta. Mais anotações no mesmo dia não aumentam a sequência.</div></div><div class="goal-row"><div class="gr-name">2. Complete 5 dias seguidos</div><div class="gr-detail">Se um dia passar sem registro, a contagem volta ao zero.</div></div><div class="goal-row"><div class="gr-name">3. Conheça o Flow</div><div class="gr-detail">Depois de liberado, ele fica com você. O pet é só uma companhia visual; não avalia sua alimentação.</div></div></div>
     </div>
 
     <!-- PROFILE -->
@@ -916,8 +943,8 @@ input,select{font-family:inherit}
       <div class="botnav-label">Progresso</div>
     </div>
     <div class="botnav-item" id="bn-ai" onclick="navTo('ai')">
-      <div class="botnav-icon">🐾</div>
-      <div class="botnav-label">Pet</div>
+      <div class="botnav-icon">✨</div>
+      <div class="botnav-label">Assistente IA</div>
     </div>
     <div class="botnav-item" id="bn-profile" onclick="navTo('profile')">
       <div class="botnav-icon">👤</div>
@@ -940,11 +967,11 @@ input,select{font-family:inherit}
 </dialog>
 <dialog class="guide-dialog" id="tutorial-dialog" aria-labelledby="tutorial-title" aria-describedby="tutorial-intro">
   <div class="dialog-head"><h2 id="tutorial-title">Guia rápido do NutriFlow</h2><button class="dialog-close" type="button" onclick="closeTutorial()" aria-label="Fechar guia">×</button></div>
-  <p class="guide-intro" id="tutorial-intro">Veja como anotar refeições, acompanhar seu progresso e liberar o Mimo.</p>
+  <p class="guide-intro" id="tutorial-intro">Veja como anotar refeições, acompanhar seu progresso e liberar o Flow.</p>
   <div class="guide-steps">
     <section class="guide-step"><h3>1. Anote uma refeição</h3><p>Abra “Refeições”, escolha uma data, escreva o nome e toque em “Salvar registro”. Você pode anotar uma refeição ou uma ideia.</p></section>
     <section class="guide-step"><h3>2. Acompanhe sua sequência</h3><p>Um dia conta quando você salva ao menos um registro com a data de hoje. Mais registros no mesmo dia contam como um dia só. Planejamentos para datas futuras não contam.</p></section>
-    <section class="guide-step"><h3>3. Libere o Mimo</h3><p>Anote algo por 5 dias seguidos. Se passar um dia sem registro, a sequência volta ao zero. Depois de liberado, o Mimo continua com você.</p></section>
+    <section class="guide-step"><h3>3. Libere o Flow</h3><p>Anote algo por 5 dias seguidos. Se passar um dia sem registro, a sequência volta ao zero. Depois de liberado, o Flow continua com você.</p></section>
     <section class="guide-step"><h3>4. Seus dados</h3><p>Na demonstração, os registros ficam neste navegador. Ao entrar na sua conta, eles são sincronizados. Use apenas informações que deseja salvar.</p></section>
   </div>
   <div class="guide-actions"><button class="btn-social" type="button" onclick="closeTutorial()">Fechar guia</button><button class="btn-pri" type="button" onclick="tutorialGoToMeals()">Abrir Refeições</button></div>
@@ -977,7 +1004,10 @@ function mealCard(meal,onDelete){const card=document.createElement('div');card.c
 function renderMeals(){const all=readMeals();const dayItems=all.filter(m=>m.date===dateKey(selectedDate));const list=document.getElementById('meal-list');if(list){list.replaceChildren();if(dayItems.length)dayItems.forEach(item=>list.append(mealCard(item,()=>deleteMeal(item.id))));else{const empty=document.createElement('div');empty.className='demo-empty';empty.innerHTML='<strong>Nenhuma refeição anotada nesta data.</strong>Anote uma refeição ou ideia para esse dia.';list.append(empty)}}const today=document.getElementById('today-meals');if(today){const todayItems=all.filter(m=>m.date===dateKey(new Date()));today.replaceChildren();if(todayItems.length)todayItems.forEach(item=>today.append(mealCard(item,()=>deleteMeal(item.id))));else{today.className='demo-empty';today.innerHTML='<strong>Ainda não há refeições anotadas hoje.</strong>Anote uma refeição ou ideia quando quiser.'}}const days=new Set(all.map(m=>m.date)).size;const set=(id,value)=>{const e=document.getElementById(id);if(e)e.textContent=String(value)};set('meal-count',all.length);set('plan-count',all.length);set('active-day-count',days);set('progress-meals',all.length);set('progress-days',days);set('progress-plans',all.length);const nav=document.getElementById('nav-meal-count');if(nav)nav.textContent=String(all.length);renderPet(all)}
 function petUnlockStorageKey(){return 'nutriflow.pet.unlocked.'+(window.getNutriFlowUserId?.()||'demo')}
 function calculatePetProgress(entries){const today=dateKey(new Date());const dayNumber=value=>Math.floor(Date.parse(value+'T00:00:00Z')/86400000);const days=[...new Set(entries.map(item=>item.date).filter(value=>/^\d{4}-\d{2}-\d{2}$/.test(value)&&value<=today))].sort();let longest=0,run=0,previous=null;for(const value of days){const number=dayNumber(value);run=previous!==null&&number===previous+1?run+1:1;longest=Math.max(longest,run);previous=number}let current=0;if(days.length&&dayNumber(days[days.length-1])>=dayNumber(today)-1){current=1;for(let i=days.length-2;i>=0;i--){if(dayNumber(days[i])===dayNumber(days[i+1])-1)current++;else break}}let savedUnlock=false;try{savedUnlock=localStorage.getItem(petUnlockStorageKey())==='1';if(longest>=5&&!savedUnlock){localStorage.setItem(petUnlockStorageKey(),'1');savedUnlock=true}}catch{}return{today,days,longest,current,unlocked:savedUnlock||longest>=5,lastDay:days[days.length-1]||null}}
-function renderPet(entries=readMeals()){const state=calculatePetProgress(entries);const seeds=state.unlocked?5:state.current;const set=(id,value)=>{const el=document.getElementById(id);if(el)el.textContent=value};const status=state.unlocked?'Mimo está liberado!':state.current?`${state.current} de 5 dias seguidos`:state.days.length?'Sua sequência voltou ao zero':'0 de 5 dias seguidos';const copy=state.unlocked?'Você completou 5 dias seguidos e liberou o Mimo. Ele continua com você mesmo se sua sequência parar.':state.current?(state.lastDay===state.today?`${state.current} de 5 dias seguidos. Anote amanhã para continuar.`:`${state.current} de 5 dias seguidos. Anote hoje para continuar.`):state.days.length?'Sua sequência voltou ao zero. Anote hoje para começar de novo.':'Anote uma refeição ou ideia hoje para começar.';const homeCopy=state.unlocked?'Mimo já é seu! Você pode manter sua sequência ou recomeçar quando quiser.':state.current?(state.lastDay===state.today?`${state.current} de 5 dias. Anote amanhã para continuar.`:`${state.current} de 5 dias. Anote hoje para continuar.`):state.days.length?'Sua sequência voltou ao zero. Anote hoje para começar de novo.':'Anote algo por 5 dias seguidos para liberar o Mimo.';set('pet-avatar',state.unlocked?'🐱':'🌱');set('pet-avatar-home',state.unlocked?'🐱':'🌱');set('pet-title',state.unlocked?'Mimo está com você!':'Libere o Mimo');set('pet-title-home',state.unlocked?'Mimo está com você!':'Seu pet está a caminho');set('pet-copy',copy);set('pet-copy-home',homeCopy);set('seed-count',status);set('pet-note',state.unlocked?'Se passar um dia sem registro, só a sequência atual volta ao zero. O Mimo continua com você.':'Se passar um dia sem registro, a sequência volta ao zero. Depois de liberar, o Mimo continua com você.');const row=document.getElementById('seed-row');if(row){row.replaceChildren();for(let i=0;i<5;i++){const seed=document.createElement('span');seed.className='seed'+(i<seeds?' collected':'');seed.textContent='🌱';seed.setAttribute('aria-hidden','true');row.append(seed)}}const bar=document.getElementById('pet-progress-bar');if(bar)bar.style.width=(seeds*20)+'%';const progress=document.querySelector('[aria-label="Progresso para liberar o Mimo"]');if(progress){progress.setAttribute('aria-valuenow',String(seeds));progress.setAttribute('aria-valuetext',status)}}
+function renderPet(entries=readMeals()){const state=calculatePetProgress(entries);const seeds=state.unlocked?5:state.current;const set=(id,value)=>{const el=document.getElementById(id);if(el)el.textContent=value};const status=state.unlocked?'Flow está liberado!':state.current?`${state.current} de 5 dias seguidos`:state.days.length?'Sua sequência voltou ao zero':'0 de 5 dias seguidos';const copy=state.unlocked?'Você completou 5 dias seguidos e liberou o Flow. Ele continua com você mesmo se sua sequência parar.':state.current?(state.lastDay===state.today?`${state.current} de 5 dias seguidos. Anote amanhã para continuar.`:`${state.current} de 5 dias seguidos. Anote hoje para continuar.`):state.days.length?'Sua sequência voltou ao zero. Anote hoje para começar de novo.':'Anote uma refeição ou ideia hoje para começar.';const homeCopy=state.unlocked?'Flow já é seu! Você pode manter sua sequência ou recomeçar quando quiser.':state.current?(state.lastDay===state.today?`${state.current} de 5 dias. Anote amanhã para continuar.`:`${state.current} de 5 dias. Anote hoje para continuar.`):state.days.length?'Sua sequência voltou ao zero. Anote hoje para começar de novo.':'Anote algo por 5 dias seguidos para liberar o Flow.';set('pet-avatar',state.unlocked?'🐱':'🌱');set('pet-avatar-home',state.unlocked?'🐱':'🌱');set('pet-title',state.unlocked?'Flow está com você!':'Libere o Flow');set('pet-title-home',state.unlocked?'Flow está com você!':'Seu pet está a caminho');set('pet-copy',copy);set('pet-copy-home',homeCopy);set('seed-count',status);set('pet-note',state.unlocked?'Se passar um dia sem registro, só a sequência atual volta ao zero. O Flow continua com você.':'Se passar um dia sem registro, a sequência volta ao zero. Depois de liberar, o Flow continua com você.');const row=document.getElementById('seed-row');if(row){row.replaceChildren();for(let i=0;i<5;i++){const seed=document.createElement('span');seed.className='seed'+(i<seeds?' collected':'');seed.textContent='🌱';seed.setAttribute('aria-hidden','true');row.append(seed)}}const bar=document.getElementById('pet-progress-bar');if(bar)bar.style.width=(seeds*20)+'%';const progress=document.querySelector('[aria-label="Progresso para liberar o Flow"]');if(progress){progress.setAttribute('aria-valuenow',String(seeds));progress.setAttribute('aria-valuetext',status)}}
+function addAssistantMessage(text,kind='assistant'){const chat=document.getElementById('assistant-chat');if(!chat)return;const message=document.createElement('div');message.className='assistant-message'+(kind==='user'?' user':'');message.textContent=text;chat.append(message);chat.scrollTop=chat.scrollHeight}
+function askAssistant(question){const normalized=String(question||'').trim();if(!normalized)return;addAssistantMessage(normalized,'user');const q=normalized.toLocaleLowerCase('pt-BR');let answer;if(/(diabet|doen[cç]a|alerg|gesta|gravidez|rem[eé]dio|tratamento|diagn[oó]stico|emagrec|perder peso|caloria|macros|press[aã]o)/i.test(q)){answer='Não consigo orientar sobre saúde, doenças, peso ou necessidades clínicas. Para esse tipo de decisão, converse com um nutricionista ou profissional de saúde. Posso ajudar com organização geral de refeições.'}else if(/amanh|organizar.*refei|planejar/i.test(q)){answer='Uma forma simples de se organizar para amanhã:\n\n• Escolha uma ideia para cada refeição que costuma fazer.\n• Confira o que já tem em casa antes de anotar algo novo.\n• Deixe uma opção prática para os horários mais corridos.\n\nQuer guardar uma ideia? Abra “Refeições” e toque em “Anotar refeição”.'}else if(/ingrediente|casa|tenho/i.test(q)){answer='Comece anotando até 3 ingredientes que já tem. Depois, pense em uma combinação simples: uma base (como arroz, pão ou batata), algo que dê sustento (como feijão, ovo ou outra opção que você goste) e um acompanhamento. Adapte ao que faz parte da sua rotina. Posso ajudar a organizar suas ideias, sem avaliar sua alimentação.'}else{answer='Posso ajudar a organizar ideias gerais: escolha uma refeição, veja o que já tem disponível e anote uma opção simples que combine com sua rotina. Para eu direcionar melhor, diga se você quer planejar um dia, aproveitar ingredientes ou registrar uma ideia.'}addAssistantMessage(answer)}
+document.getElementById('assistant-form')?.addEventListener('submit',event=>{event.preventDefault();const input=document.getElementById('assistant-input');const question=input.value.trim();if(question){input.value='';askAssistant(question)}});
 function deleteMeal(id){const next=readMeals().filter(m=>m.id!==id);if(saveMeals(next)){renderMeals();showToast('Registro removido deste navegador.')}}
 function clearDemoData(){if(!confirm('Apagar todos os registros desta demonstração neste navegador?'))return;try{localStorage.removeItem(STORAGE_KEY);localStorage.removeItem(petUnlockStorageKey())}catch{}renderMeals();showToast('Registros apagados.')}
 function toggleToggle(id){const el=document.getElementById(id);if(el)el.classList.toggle('on')}
