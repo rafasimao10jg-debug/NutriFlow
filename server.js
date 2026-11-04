@@ -81,6 +81,10 @@ async function askOpenAI(question) {
     if (!result.ok) {
       const error = new Error('OPENAI_REQUEST_FAILED');
       error.status = result.status;
+      const errorCode = payload?.error?.code;
+      error.code = typeof errorCode === 'string' && /^[a-z0-9_-]{1,60}$/i.test(errorCode)
+        ? errorCode
+        : 'unknown';
       throw error;
     }
     const answer = Array.isArray(payload.output)
@@ -145,9 +149,23 @@ const server = createServer(async (request, response) => {
         sendJson(response, 413, { error: 'A mensagem ficou grande demais. Envie uma pergunta mais curta.' });
       } else if (error.name === 'AbortError') {
         sendJson(response, 504, { error: 'O assistente demorou para responder. Tente novamente.' });
+      } else if (error.status === 401) {
+        console.error('OpenAI request rejected: status=401 code=' + (error.code || 'unknown'));
+        sendJson(response, 503, { error: 'A chave da OpenAI configurada no servidor não foi aceita. Confira o valor de OPENAI_API_KEY nos Secrets do Render.' });
+      } else if (error.status === 403) {
+        console.error('OpenAI request rejected: status=403 code=' + (error.code || 'unknown'));
+        sendJson(response, 503, { error: 'A conta da OpenAI não autorizou esta solicitação. Confira o acesso à API e o modelo configurado.' });
+      } else if (error.status === 404) {
+        console.error('OpenAI request rejected: status=404 code=' + (error.code || 'unknown'));
+        sendJson(response, 503, { error: 'O modelo configurado não está disponível para esta conta. Confira OPENAI_MODEL nos Secrets do Render.' });
       } else if (error.status === 429) {
-        sendJson(response, 503, { error: 'O assistente está ocupado agora. Aguarde um pouco e tente novamente.' });
+        console.error('OpenAI request limited: status=429 code=' + (error.code || 'unknown'));
+        const quotaMessage = error.code === 'insufficient_quota'
+          ? 'A conta da API OpenAI está sem saldo disponível ou atingiu seu limite. Confira Billing e Limits na OpenAI Platform.'
+          : 'O limite de solicitações da API foi atingido. Aguarde um pouco e tente novamente.';
+        sendJson(response, 503, { error: quotaMessage });
       } else {
+        console.error('OpenAI request failed: status=' + (error.status || 'network') + ' code=' + (error.code || 'unknown'));
         sendJson(response, 502, { error: 'Não consegui gerar uma resposta agora. Tente novamente em instantes.' });
       }
     }
