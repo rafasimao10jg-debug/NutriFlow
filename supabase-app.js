@@ -4,6 +4,7 @@
   const client = window.supabase.createClient(cfg.url, cfg.publishableKey, { auth: { autoRefreshToken: true, persistSession: true, detectSessionInUrl: true } });
   let activeUser = null;
   const key = () => `nutriflow.meals.${activeUser?.id || 'demo'}`;
+  window.getNutriFlowUserId = () => activeUser?.id || null;
   window.isNutriFlowAccountActive = () => Boolean(activeUser);
   window.loginWithSupabase = async () => {
     const email = document.getElementById('login-email').value.trim();
@@ -66,6 +67,7 @@
     document.querySelectorAll('.profile-name').forEach(e => e.textContent = profile.data?.display_name || user.user_metadata?.display_name || 'Seu espaço');
     const accountState = document.getElementById('account-state'); if (accountState) accountState.textContent = pendingSyncFailed ? 'Sincronização pendente' : 'Conta sincronizada';
     const notice = document.getElementById('storage-notice'); if (notice) notice.textContent = 'Seus registros estão associados à sua conta e protegidos por políticas de acesso. Use somente as informações que deseja salvar.';
+    const profileNotice = document.getElementById('profile-storage-notice'); if (profileNotice) profileNotice.textContent = 'Seus registros ficam salvos na sua conta e você pode acessá-los ao entrar novamente.';
     const deleteLabel = document.querySelector('.settings-group .sg-label[style*="--rose"]'); if (deleteLabel) deleteLabel.textContent = 'Apagar meus registros';
     renderMeals(); goTo('dash'); showToast('Você entrou na sua conta.');
     if (pendingSyncFailed) showToast('Alguns registros ficaram neste dispositivo e ainda não sincronizaram.');
@@ -77,7 +79,7 @@
       const { error } = await client.from('meal_entries').delete().eq('user_id', activeUser.id);
       if (error) return showToast('Não foi possível apagar os registros.');
     }
-    try { localStorage.removeItem(key()); localStorage.removeItem('nutriflow.demo.meals'); } catch {}
+    try { localStorage.removeItem(key()); localStorage.removeItem(`nutriflow.pet.unlocked.${activeUser?.id || 'demo'}`); localStorage.removeItem('nutriflow.demo.meals'); localStorage.removeItem('nutriflow.pet.unlocked.demo'); } catch {}
     renderMeals(); showToast('Registros apagados.');
   };
   client.auth.onAuthStateChange((_event, session) => { if (session?.user) setTimeout(() => load(session.user), 0); else activeUser = null; });

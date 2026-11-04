@@ -100,12 +100,12 @@ O primeiro MVP pode guardar descrições livres e horários. Não estime caloria
 ### Progresso
 
 **Título:** Seu progresso, do seu jeito.<br>
-**Texto:** Acompanhe os registros e planos que você escolheu guardar. Um dia diferente não apaga o que você já construiu.<br>
+**Texto:** Seus registros ficam no histórico. A sequência do pet recomeça se passar um dia sem registro.<br>
 **Indicadores propostos:** refeições registradas; dias em que você usou o app; planos criados e concluídos.<br>
 **Vazio:** Seu histórico começa com o primeiro registro.<br>
 **Privacidade:** Somente você pode ver este histórico na sua conta.
 
-Evite rankings, sequências punitivas, metas automáticas de peso ou alertas que pressionem a pessoa a compensar uma refeição.
+Não use rankings, culpa, metas automáticas de peso ou alertas para compensar refeições. Explique a regra da sequência do pet com clareza e sem julgamento.
 
 ### Assistente NutriFlow (quando houver integração de IA)
 
@@ -119,7 +119,11 @@ O assistente deve pedir contexto quando necessário, indicar incerteza e não fo
 
 ### Companheiro de jornada
 
-O app pode oferecer um pet como companhia visual desbloqueada por sementes. Cada dia com ao menos um plano ou registro escolhido pela pessoa rende uma semente, com limite de uma por dia. Cinco sementes em quaisquer dias liberam o primeiro pet. Não há prazo, sequência obrigatória, perda por pausa ou relação com calorias, peso ou qualidade da alimentação. O pet não avalia escolhas nem substitui apoio profissional.
+O app oferece o Mimo como companhia visual. Um dia conta quando há pelo menos um registro com a data de hoje; vários registros no mesmo dia contam como um. Datas futuras não contam. Cinco dias seguidos liberam o pet. Se passar um dia sem registro antes de liberar, a sequência volta ao zero. Depois de liberado, o Mimo permanece com a pessoa, mesmo que a sequência pare. A sequência não se relaciona a calorias, peso ou qualidade da alimentação. O pet não avalia escolhas nem substitui apoio profissional.
+
+### Guia rápido dentro do app
+
+O botão “Como usar o app” na tela inicial e o botão “?” no topo abrem o guia. Ele explica como anotar uma refeição, como funciona a sequência do pet e onde os dados ficam salvos. O botão “Abrir Refeições” do guia leva direto à lista de refeições.
 
 | Situação | Texto |
 | --- | --- |
