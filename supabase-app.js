@@ -3,6 +3,7 @@
   if (!cfg?.url || !cfg?.publishableKey || !window.supabase?.createClient) return;
   const client = window.supabase.createClient(cfg.url, cfg.publishableKey, { auth: { autoRefreshToken: true, persistSession: true, detectSessionInUrl: true } });
   let activeUser = null;
+  const setSyncStatus = value => { const status = document.getElementById('sync-status-home'); if (status) status.textContent = value; };
   const key = () => `nutriflow.meals.${activeUser?.id || 'demo'}`;
   window.getNutriFlowUserId = () => activeUser?.id || null;
   window.isNutriFlowAccountActive = () => Boolean(activeUser);
@@ -32,23 +33,24 @@
   window.saveMeals = (items) => {
     try { localStorage.setItem(key(), JSON.stringify(items)); } catch { showToast('Não foi possível salvar neste navegador.'); return false; }
     if (activeUser && items.length) {
+      setSyncStatus('Sincronizando');
       const rows = items.map(m => ({ id: m.id, user_id: activeUser.id, entry_type: m.entry_type || 'log', meal_kind: m.kind, name: m.name, entry_date: m.date, notes: m.notes || '' }));
       client.from('meal_entries').upsert(rows, { onConflict: 'id' }).then(({ error }) => {
-        if (error) showToast('Salvo neste dispositivo. A sincronização falhou; tente novamente mais tarde.');
-        else showToast('Registro salvo e sincronizado.');
-      }).catch(() => showToast('Salvo neste dispositivo. A sincronização falhou; tente novamente mais tarde.'));
+        if (error) { setSyncStatus('Pendente'); showToast('Salvo neste dispositivo. A sincronização falhou; tente novamente mais tarde.'); }
+        else { setSyncStatus('Atualizado'); showToast('Registro salvo e sincronizado.'); }
+      }).catch(() => { setSyncStatus('Pendente'); showToast('Salvo neste dispositivo. A sincronização falhou; tente novamente mais tarde.'); });
     }
     return true;
   };
   window.deleteMeal = async id => {
     if (activeUser) { const { error } = await client.from('meal_entries').delete().eq('id', id).eq('user_id', activeUser.id); if (error) return showToast('Não foi possível remover o registro.'); }
     const next = readMeals().filter(m => m.id !== id); try { localStorage.setItem(key(), JSON.stringify(next)); } catch {}
-    renderMeals(); showToast('Registro removido.');
+    setSyncStatus(activeUser ? 'Atualizado' : 'Local'); renderMeals(); showToast('Registro removido.');
   };
   const load = async user => {
     activeUser = user; if (!user) return;
     const { data, error } = await client.from('meal_entries').select('id,entry_type,meal_kind,name,entry_date,notes').eq('user_id', user.id).order('entry_date', { ascending: false });
-    if (error) return showToast('Não foi possível carregar seus registros.');
+    if (error) { setSyncStatus('Erro'); return showToast('Não foi possível carregar seus registros.'); }
     const remoteItems = (data || []).map(r => ({ id:r.id, kind:r.meal_kind, name:r.name, date:r.entry_date, notes:r.notes, entry_type:r.entry_type }));
     // Preserve locally cached entries if a previous sync failed, then retry them.
     let cachedItems = [];
@@ -66,13 +68,14 @@
     const profile = await client.from('profiles').select('display_name').eq('id', user.id).maybeSingle();
     document.querySelectorAll('.profile-name').forEach(e => e.textContent = profile.data?.display_name || user.user_metadata?.display_name || 'Seu espaço');
     const accountState = document.getElementById('account-state'); if (accountState) accountState.textContent = pendingSyncFailed ? 'Sincronização pendente' : 'Conta sincronizada';
+    setSyncStatus(pendingSyncFailed ? 'Pendente' : 'Atualizado');
     const notice = document.getElementById('storage-notice'); if (notice) notice.textContent = 'Seus registros estão associados à sua conta e protegidos por políticas de acesso. Use somente as informações que deseja salvar.';
     const profileNotice = document.getElementById('profile-storage-notice'); if (profileNotice) profileNotice.textContent = 'Seus registros ficam salvos na sua conta e você pode acessá-los ao entrar novamente.';
     const deleteLabel = document.querySelector('.settings-group .sg-label[style*="--rose"]'); if (deleteLabel) deleteLabel.textContent = 'Apagar meus registros';
     renderMeals(); goTo('dash'); showToast('Você entrou na sua conta.');
     if (pendingSyncFailed) showToast('Alguns registros ficaram neste dispositivo e ainda não sincronizaram.');
   };
-  window.signOutNutriFlow = async () => { const { error } = await client.auth.signOut(); if (error) return showToast('Não foi possível sair da conta.'); activeUser = null; goTo('login'); };
+  window.signOutNutriFlow = async () => { const { error } = await client.auth.signOut(); if (error) return showToast('Não foi possível sair da conta.'); activeUser = null; setSyncStatus('Local'); goTo('login'); };
   window.clearDemoData = async () => {
     if (!confirm('Apagar seus registros salvos? Esta ação remove os registros da sua conta e deste navegador.')) return;
     if (activeUser) {
@@ -80,7 +83,7 @@
       if (error) return showToast('Não foi possível apagar os registros.');
     }
     try { localStorage.removeItem(key()); localStorage.removeItem(`nutriflow.pet.unlocked.${activeUser?.id || 'demo'}`); localStorage.removeItem('nutriflow.demo.meals'); localStorage.removeItem('nutriflow.pet.unlocked.demo'); } catch {}
-    renderMeals(); showToast('Registros apagados.');
+    setSyncStatus(activeUser ? 'Atualizado' : 'Local'); renderMeals(); showToast('Registros apagados.');
   };
   client.auth.onAuthStateChange((_event, session) => { if (session?.user) setTimeout(() => load(session.user), 0); else activeUser = null; });
   client.auth.getSession().then(({ data }) => { if (data.session?.user) load(data.session.user); });
