@@ -4,6 +4,7 @@
   const client = window.supabase.createClient(cfg.url, cfg.publishableKey, { auth: { autoRefreshToken: true, persistSession: true, detectSessionInUrl: true } });
   let activeUser = null;
   const key = () => `nutriflow.meals.${activeUser?.id || 'demo'}`;
+  window.isNutriFlowAccountActive = () => Boolean(activeUser);
   window.loginWithSupabase = async () => {
     const email = document.getElementById('login-email').value.trim();
     const password = document.getElementById('login-password').value;
@@ -31,7 +32,10 @@
     try { localStorage.setItem(key(), JSON.stringify(items)); } catch { showToast('Não foi possível salvar neste navegador.'); return false; }
     if (activeUser && items.length) {
       const rows = items.map(m => ({ id: m.id, user_id: activeUser.id, entry_type: m.entry_type || 'log', meal_kind: m.kind, name: m.name, entry_date: m.date, notes: m.notes || '' }));
-      client.from('meal_entries').upsert(rows, { onConflict: 'id' }).then(({ error }) => showToast(error ? 'Salvo no dispositivo; falhou a sincronização.' : 'Registro sincronizado.'));
+      client.from('meal_entries').upsert(rows, { onConflict: 'id' }).then(({ error }) => {
+        if (error) showToast('Salvo neste dispositivo. A sincronização falhou; tente novamente mais tarde.');
+        else showToast('Registro salvo e sincronizado.');
+      }).catch(() => showToast('Salvo neste dispositivo. A sincronização falhou; tente novamente mais tarde.'));
     }
     return true;
   };
@@ -44,13 +48,27 @@
     activeUser = user; if (!user) return;
     const { data, error } = await client.from('meal_entries').select('id,entry_type,meal_kind,name,entry_date,notes').eq('user_id', user.id).order('entry_date', { ascending: false });
     if (error) return showToast('Não foi possível carregar seus registros.');
-    const items = (data || []).map(r => ({ id:r.id, kind:r.meal_kind, name:r.name, date:r.entry_date, notes:r.notes, entry_type:r.entry_type }));
+    const remoteItems = (data || []).map(r => ({ id:r.id, kind:r.meal_kind, name:r.name, date:r.entry_date, notes:r.notes, entry_type:r.entry_type }));
+    // Preserve locally cached entries if a previous sync failed, then retry them.
+    let cachedItems = [];
+    try { cachedItems = JSON.parse(localStorage.getItem(key()) || '[]'); } catch {}
+    const remoteIds = new Set(remoteItems.map(item => item.id));
+    const pendingItems = cachedItems.filter(item => !remoteIds.has(item.id));
+    const items = [...remoteItems, ...pendingItems];
+    let pendingSyncFailed = false;
+    if (pendingItems.length) {
+      const rows = pendingItems.map(m => ({ id: m.id, user_id: user.id, entry_type: m.entry_type || 'log', meal_kind: m.kind, name: m.name, entry_date: m.date, notes: m.notes || '' }));
+      const { error: syncError } = await client.from('meal_entries').upsert(rows, { onConflict: 'id' });
+      pendingSyncFailed = Boolean(syncError);
+    }
     try { localStorage.setItem(key(), JSON.stringify(items)); } catch {}
     const profile = await client.from('profiles').select('display_name').eq('id', user.id).maybeSingle();
     document.querySelectorAll('.profile-name').forEach(e => e.textContent = profile.data?.display_name || user.user_metadata?.display_name || 'Seu espaço');
-    const accountState = document.getElementById('account-state'); if (accountState) accountState.textContent = 'Conta sincronizada';
+    const accountState = document.getElementById('account-state'); if (accountState) accountState.textContent = pendingSyncFailed ? 'Sincronização pendente' : 'Conta sincronizada';
     const notice = document.getElementById('storage-notice'); if (notice) notice.textContent = 'Seus registros estão associados à sua conta e protegidos por políticas de acesso. Use somente as informações que deseja salvar.';
+    const deleteLabel = document.querySelector('.settings-group .sg-label[style*="--rose"]'); if (deleteLabel) deleteLabel.textContent = 'Apagar meus registros';
     renderMeals(); goTo('dash'); showToast('Você entrou na sua conta.');
+    if (pendingSyncFailed) showToast('Alguns registros ficaram neste dispositivo e ainda não sincronizaram.');
   };
   window.signOutNutriFlow = async () => { const { error } = await client.auth.signOut(); if (error) return showToast('Não foi possível sair da conta.'); activeUser = null; goTo('login'); };
   window.clearDemoData = async () => {
