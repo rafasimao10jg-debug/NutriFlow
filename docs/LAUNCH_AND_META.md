@@ -4,11 +4,11 @@ Atualizado em 4 de novembro de 2026. Este plano é um rascunho operacional, não
 
 ## Estado do produto
 
-O app já tem uma página pública de apresentação e uma demonstração navegável para registrar refeições e ideias, ver histórico, alternar tema e acompanhar os dias para liberar o Flow. O assistente aparece na navegação, mas suas respostas são guiadas; não há IA conectada. Cadastro, login, confirmação de senha e recuperação de senha pelo Supabase existem no código, mas ainda precisam de validação ponta a ponta. A prévia do Replit ainda não contém a branch `codex/flow-name-assistant`.
+O app tem página pública, demonstração de registros, tema claro/escuro e sequência para liberar o Flow. O assistente agora chama a API da OpenAI pelo servidor Node, com a chave lida de `OPENAI_API_KEY` no ambiente, limite temporário por endereço e aviso de privacidade no chat. Ainda falta confirmar a chave no Replit e validar uma chamada real publicada. Cadastro, login, confirmação de senha e recuperação pelo Supabase precisam de validação ponta a ponta. A prévia do Replit ainda não contém a branch `codex/flow-name-assistant`.
 
 **Posicionamento que o produto atual sustenta:** NutriFlow ajuda adultos a organizar ideias e registros de refeições no próprio ritmo. O Flow é uma companhia visual liberada após cinco dias seguidos de registro.
 
-**Não anunciar como disponível ainda:** recomendações de IA, planejamento semanal completo, cálculo de calorias/nutrientes, resultados de peso ou benefício clínico. A IA real é requisito para o lançamento pago; o assistente atual é apenas uma demonstração guiada.
+**Não anunciar como disponível ainda:** recomendações de IA até a chamada real no Replit ser confirmada, planejamento semanal completo, cálculo de calorias/nutrientes, resultados de peso ou benefício clínico. O assistente oferece ideias gerais, não aconselhamento clínico.
 
 ## Oferta paga — definição pendente
 
@@ -24,7 +24,7 @@ O primeiro lançamento será uma oferta paga. O preço, condições, cobrança, 
 
 **Texto principal:**
 
-Rascunho para usar somente depois da integração e validação da IA e da definição da oferta: Organize suas ideias de refeições, registre o que quer guardar e conte com um assistente de IA para apoiar sua rotina. Conheça o NutriFlow.
+Rascunho para usar somente depois de validar a chamada de IA publicada e definir a oferta: Organize suas ideias de refeições, registre o que quer guardar e conte com um assistente de IA para apoiar sua rotina. Conheça o NutriFlow.
 
 **Título:** Mais clareza para organizar refeições
 
@@ -37,7 +37,7 @@ Rascunho para usar somente depois da integração e validação da IA e da defin
 3. Mostrar o progresso do Flow: “Cinco dias seguidos liberam o Flow.”
 4. Encerrar com: “NutriFlow. Organize no seu ritmo.”
 
-Mostrar apenas recursos reais e testados. Não simular resposta de IA, plano alimentar, cobrança ou sincronização. Até a IA funcionar, este roteiro não está liberado para publicação como anúncio do produto pago.
+Mostrar apenas recursos reais e testados. Não simular resposta de IA, plano alimentar, cobrança ou sincronização. Este roteiro só pode ser publicado depois de confirmar uma chamada real de IA no endereço público e definir a oferta paga.
 
 ## Primeira rodada de campanha
 
@@ -58,7 +58,7 @@ Na criação do anúncio, evitar texto que afirme ou sugira que a pessoa tem uma
 | P0 | Integrar a branch `codex/flow-name-assistant` ao projeto que alimenta o Replit e confirmar um endereço público estável | Pendente; a página pública está só na branch |
 | P0 | Executar/confirmar a migration no Supabase; testar cadastro, confirmação, login, recuperação e sincronização com contas de teste | Não verificado |
 | P0 | Publicar Termos e Política de Privacidade com responsável, dados coletados, retenção, contato e exclusão de conta | Não existe no app |
-| P0 | Integrar uma IA real no servidor, guardar a chave somente em Secrets do ambiente publicado, definir limites de uso e testar respostas, erros e custo | Bloqueador; assistente atual é guiado e nenhuma chave foi criada |
+| P0 | Configurar `OPENAI_API_KEY` nos Secrets do Replit e validar uma resposta real, limites de uso, erros e custo | Código integrado; falta confirmar o segredo e testar no ambiente publicado |
 | P1 | Decidir se o beta inclui somente registros ou também um planejador semanal; a tela atual não separa planos de registros | Funcionalidade parcial |
 | P1 | Revisar navegação por teclado, leitores de tela, contraste, erros de rede e telas pequenas | Revisão incompleta |
 | P1 | Criar roteiro de suporte e resposta a falhas de login/sincronização | Pendente |

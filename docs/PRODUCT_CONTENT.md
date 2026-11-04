@@ -113,7 +113,7 @@ Não use rankings, culpa, metas automáticas de peso ou alertas para compensar r
 **Sugestões de pergunta:** Me ajude a organizar refeições para amanhã; sugira opções com os ingredientes que tenho; adapte uma ideia à minha preferência alimentar.<br>
 **Aviso contextual:** As respostas são sugestões gerais e podem conter erros. Para orientação individual ou uma condição de saúde, converse com um nutricionista ou profissional de saúde.
 
-Na demonstração, as respostas são guiadas e não usam um modelo de IA conectado. A integração real depende de um fornecedor, chave privada no servidor, definição dos dados enviados, retenção e controles de privacidade. O assistente deve pedir contexto quando necessário, indicar incerteza e não fornecer diagnóstico, tratamento, prescrição clínica ou aconselhamento em urgências. Não deve inventar nutrientes, fontes ou credenciais profissionais. Se não puder responder com segurança, explique o limite e sugira procurar um profissional qualificado.
+O assistente envia a pergunta digitada à OpenAI para gerar resposta. A chave privada fica no servidor. A interface avisa a pessoa para não incluir dados pessoais ou de saúde. O assistente oferece ideias gerais de organização; não deve fornecer diagnóstico, tratamento, prescrição clínica, orientação para urgências ou garantir segurança em alergias. Se o assunto envolver doença, gravidez, transtorno alimentar, criança, medicamento ou outra decisão clínica, explique o limite e recomende procurar profissional qualificado. Não invente nutrientes, fontes ou credenciais profissionais.
 
 ## Mensagens de estado
 
