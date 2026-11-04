@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: nutriflow
+    runtime: node
+    branch: codex/flow-name-assistant
+    plan: free
+    buildCommand: npm install
+    startCommand: node server.js
+    healthCheckPath: /
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: OPENAI_MODEL
+        value: gpt-4.1-mini

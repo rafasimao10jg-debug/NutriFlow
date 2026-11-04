@@ -22,6 +22,10 @@ Aplicação web em português para registrar refeições e ideias, acompanhar a 
 
 Use Node.js 20 ou superior. Para rodar localmente, execute `node server.js` (não precisa instalar dependências). No Replit, o comando de execução usa `npm start`; crie lá um segredo chamado exatamente `OPENAI_API_KEY`. Para ativar a IA localmente, configure essa variável no ambiente antes de iniciar; não coloque a chave em arquivos versionados. Sem ela, a aplicação abre e o assistente informa que não está configurado.
 
+## Publicar sem Replit
+
+O arquivo `render.yaml` prepara um Web Service do Render conectado à branch `codex/flow-name-assistant`. No Render, crie um Blueprint a partir deste repositório e preencha `OPENAI_API_KEY` diretamente no formulário de ambiente. Nunca coloque a chave no Git. O Blueprint está no plano grátis para teste; o plano grátis não é adequado para produção e pode levar cerca de um minuto para acordar após inatividade. Escolha um plano pago só depois de revisar o custo atual e antes de anunciar para clientes.
+
 ## Supabase
 
 Consulte [docs/SUPABASE_SETUP.md](docs/SUPABASE_SETUP.md). A migration em `supabase/migrations/` cria as tabelas e políticas de acesso. O arquivo `supabase/config.example.js` contém apenas a URL e a chave publicável do cliente; nunca coloque uma chave `service_role` ou outra chave secreta no navegador ou no Git.

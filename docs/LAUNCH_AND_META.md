@@ -4,7 +4,7 @@ Atualizado em 4 de novembro de 2026. Este plano é um rascunho operacional, não
 
 ## Estado do produto
 
-O app tem página pública, demonstração de registros, tema claro/escuro e sequência para liberar o Flow. O assistente agora chama a API da OpenAI pelo servidor Node, com a chave lida de `OPENAI_API_KEY` no ambiente, limite temporário por endereço e aviso de privacidade no chat. Ainda falta confirmar a chave no Replit e validar uma chamada real publicada. Cadastro, login, confirmação de senha e recuperação pelo Supabase precisam de validação ponta a ponta. A prévia do Replit ainda não contém a branch `codex/flow-name-assistant`.
+O app tem página pública, demonstração de registros, tema claro/escuro e sequência para liberar o Flow. O assistente agora chama a API da OpenAI pelo servidor Node, com a chave lida de `OPENAI_API_KEY` no ambiente, limite temporário por endereço e aviso de privacidade no chat. Há um Blueprint preparado para Render, mas nenhum serviço público foi criado e a IA ainda não foi validada em produção. Cadastro, login, confirmação de senha e recuperação pelo Supabase precisam de validação ponta a ponta.
 
 **Posicionamento que o produto atual sustenta:** NutriFlow ajuda adultos a organizar ideias e registros de refeições no próprio ritmo. O Flow é uma companhia visual liberada após cinco dias seguidos de registro.
 
@@ -55,10 +55,10 @@ Na criação do anúncio, evitar texto que afirme ou sugira que a pessoa tem uma
 
 | Prioridade | Pendência | Estado |
 | --- | --- | --- |
-| P0 | Integrar a branch `codex/flow-name-assistant` ao projeto que alimenta o Replit e confirmar um endereço público estável | Pendente; a página pública está só na branch |
+| P0 | Criar serviço no Render a partir de `render.yaml`, configurar a chave diretamente nos Secrets e confirmar endereço público estável | Blueprint pronto; depende de conectar a conta GitHub ao Render e preencher o segredo |
 | P0 | Executar/confirmar a migration no Supabase; testar cadastro, confirmação, login, recuperação e sincronização com contas de teste | Não verificado |
 | P0 | Publicar Termos e Política de Privacidade com responsável, dados coletados, retenção, contato e exclusão de conta | Não existe no app |
-| P0 | Configurar `OPENAI_API_KEY` nos Secrets do Replit e validar uma resposta real, limites de uso, erros e custo | Código integrado; falta confirmar o segredo e testar no ambiente publicado |
+| P0 | Configurar `OPENAI_API_KEY` nos Secrets do Render e validar uma resposta real, limites de uso, erros e custo | Código integrado; falta serviço publicado, segredo no Render e teste real |
 | P1 | Decidir se o beta inclui somente registros ou também um planejador semanal; a tela atual não separa planos de registros | Funcionalidade parcial |
 | P1 | Revisar navegação por teclado, leitores de tela, contraste, erros de rede e telas pequenas | Revisão incompleta |
 | P1 | Criar roteiro de suporte e resposta a falhas de login/sincronização | Pendente |
