@@ -9,6 +9,7 @@ Aplicação web em português para registrar refeições e ideias, acompanhar a 
 - Registro de refeições e ideias, com salvamento local na demonstração e sincronização com o Supabase quando a pessoa entra na conta.
 - Indicadores de histórico e sequência de 5 dias para liberar o Flow.
 - Assistente visível na navegação. No momento, ele usa respostas guiadas de demonstração; **não há modelo de IA conectado**.
+- Página pública de apresentação com atalhos para demonstração, cadastro e login.
 
 ## Tecnologias
 
@@ -38,3 +39,5 @@ Use apenas informações fictícias na demonstração local. O produto ajuda a o
 ## Colaboração
 
 Leia [AGENTS.md](AGENTS.md), [CLAUDE.md](CLAUDE.md) e [docs/AI_COLLABORATION.md](docs/AI_COLLABORATION.md) antes de alterar o projeto.
+
+Para os bloqueios de lançamento, rascunho de oferta e preparação da primeira campanha, consulte [docs/LAUNCH_AND_META.md](docs/LAUNCH_AND_META.md).

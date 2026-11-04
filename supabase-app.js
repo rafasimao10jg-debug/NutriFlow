@@ -3,31 +3,53 @@
   if (!cfg?.url || !cfg?.publishableKey || !window.supabase?.createClient) return;
   const client = window.supabase.createClient(cfg.url, cfg.publishableKey, { auth: { autoRefreshToken: true, persistSession: true, detectSessionInUrl: true } });
   let activeUser = null;
+  let passwordRecovery = location.hash.includes('type=recovery');
   const setSyncStatus = value => { const status = document.getElementById('sync-status-home'); if (status) status.textContent = value; };
   const key = () => `nutriflow.meals.${activeUser?.id || 'demo'}`;
   window.getNutriFlowUserId = () => activeUser?.id || null;
   window.isNutriFlowAccountActive = () => Boolean(activeUser);
   window.loginWithSupabase = async () => {
-    const email = document.getElementById('login-email').value.trim();
+    const emailInput = document.getElementById('login-email');
+    const email = emailInput.value.trim();
     const password = document.getElementById('login-password').value;
-    if (!email || !password) return showToast('Informe seu e-mail e sua senha.');
+    if (!emailInput.checkValidity()) return showToast('Confira o formato do seu e-mail.');
+    if (!password) return showToast('Informe sua senha.');
     const { error } = await client.auth.signInWithPassword({ email, password });
     if (error) showToast('Não foi possível entrar. Confira seus dados e tente novamente.');
   };
   window.registerWithSupabase = async () => {
     const name = document.getElementById('signup-name').value.trim();
-    const email = document.getElementById('signup-email').value.trim();
+    const emailInput = document.getElementById('signup-email');
+    const email = emailInput.value.trim();
     const password = document.getElementById('signup-password').value;
-    if (!name || !email || password.length < 8) return showToast('Preencha nome, e-mail e senha com pelo menos 8 caracteres.');
+    const confirmation = document.getElementById('signup-password-confirm').value;
+    if (!name) return showToast('Informe como podemos chamar você.');
+    if (!emailInput.checkValidity()) return showToast('Confira o formato do seu e-mail.');
+    if (password.length < 8) return showToast('Sua senha precisa ter pelo menos 8 caracteres.');
+    if (password !== confirmation) return showToast('As senhas não correspondem.');
     const { data, error } = await client.auth.signUp({ email, password, options: { data: { display_name: name }, emailRedirectTo: location.origin } });
     if (error) return showToast('Não foi possível criar a conta. Confira os campos e tente novamente.');
     if (!data.session) showToast('Confira seu e-mail para confirmar a conta.');
   };
   window.recoverSupabasePassword = async () => {
-    const email = document.getElementById('login-email').value.trim();
-    if (!email) return showToast('Informe seu e-mail para receber as instruções.');
+    const emailInput = document.getElementById('login-email');
+    const email = emailInput.value.trim();
+    if (!emailInput.checkValidity()) return showToast('Confira o formato do seu e-mail.');
     const { error } = await client.auth.resetPasswordForEmail(email, { redirectTo: location.origin });
     showToast(error ? 'Não foi possível enviar as instruções agora.' : 'Se houver uma conta, você receberá instruções por e-mail.');
+  };
+  window.saveNewPassword = async () => {
+    const password = document.getElementById('reset-password').value;
+    const confirmation = document.getElementById('reset-password-confirm').value;
+    if (password.length < 8) return showToast('A senha precisa ter pelo menos 8 caracteres.');
+    if (password !== confirmation) return showToast('As senhas não correspondem.');
+    const { error } = await client.auth.updateUser({ password });
+    if (error) return showToast('Não foi possível atualizar a senha. Abra novamente o link de recuperação e tente outra vez.');
+    passwordRecovery = false;
+    history.replaceState(null, '', location.pathname);
+    const { data } = await client.auth.getUser();
+    if (data.user) await load(data.user);
+    showToast('Senha atualizada.');
   };
   window.readMeals = () => { try { return JSON.parse(localStorage.getItem(key()) || '[]'); } catch { return []; } };
   window.saveMeals = (items) => {
@@ -85,6 +107,10 @@
     try { localStorage.removeItem(key()); localStorage.removeItem(`nutriflow.pet.unlocked.${activeUser?.id || 'demo'}`); localStorage.removeItem('nutriflow.demo.meals'); localStorage.removeItem('nutriflow.pet.unlocked.demo'); } catch {}
     setSyncStatus(activeUser ? 'Atualizado' : 'Local'); renderMeals(); showToast('Registros apagados.');
   };
-  client.auth.onAuthStateChange((_event, session) => { if (session?.user) setTimeout(() => load(session.user), 0); else activeUser = null; });
-  client.auth.getSession().then(({ data }) => { if (data.session?.user) load(data.session.user); });
+  client.auth.onAuthStateChange((event, session) => {
+    if (event === 'PASSWORD_RECOVERY') { passwordRecovery = true; goTo('reset'); return; }
+    if (session?.user) { if (passwordRecovery) goTo('reset'); else setTimeout(() => load(session.user), 0); }
+    else activeUser = null;
+  });
+  client.auth.getSession().then(({ data }) => { if (data.session?.user) { if (passwordRecovery) goTo('reset'); else load(data.session.user); } });
 })();

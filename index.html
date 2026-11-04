@@ -3,7 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>NutriFlow AI — protótipo</title>
+<title>NutriFlow — organize sua rotina alimentar</title>
+<meta name="description" content="Organize ideias de refeições, consulte seus registros e acompanhe sua rotina no seu ritmo com o NutriFlow.">
+<meta property="og:title" content="NutriFlow — mais clareza para organizar refeições">
+<meta property="og:description" content="Registre ideias, consulte seu histórico e acompanhe sua sequência no seu ritmo.">
+<meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -116,6 +120,27 @@ input,select{font-family:inherit}
   min-height:100vh;padding:32px 24px;
   background:var(--bg);position:relative;overflow:hidden;
 }
+.landing-wrap{flex-direction:column;align-items:center;min-height:100vh;padding:24px;background:var(--bg);position:relative;overflow:hidden}
+.landing-shell{width:100%;max-width:940px;position:relative;z-index:1}
+.landing-header{display:flex;align-items:center;justify-content:space-between;margin:8px 0 44px}
+.landing-header{flex-wrap:wrap;gap:12px}
+.landing-login,.landing-theme{width:auto;margin:0;padding:10px 14px;white-space:nowrap}
+.landing-theme{display:flex;align-items:center;gap:7px}
+.landing-header .auth-logo{margin:0}
+.landing-actions{display:flex;gap:10px;align-items:center}
+.landing-hero{display:grid;grid-template-columns:1.2fr .8fr;gap:32px;align-items:center;padding:clamp(24px,5vw,52px);border:1px solid var(--border);border-radius:var(--r-xl);background:linear-gradient(135deg,var(--bg-card),var(--pri-light));box-shadow:var(--sh-lg)}
+.landing-hero .auth-title{font-size:clamp(32px,5vw,48px);line-height:1.1;margin-bottom:14px}
+.landing-copy{font-size:16px;line-height:1.65;color:var(--ink-mid);margin:0 0 20px}
+.landing-cta{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.landing-cta .btn-pri,.landing-cta .btn-social{width:auto;margin:0;padding:12px 18px}
+.landing-demo-link{font-size:13px;color:var(--pri);font-weight:700;cursor:pointer;padding:10px}
+.landing-mascot{min-height:230px;display:grid;place-items:center;font-size:100px;background:linear-gradient(145deg,var(--teal-light),var(--pri-light));border-radius:var(--r-xl)}
+.landing-features{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:22px 0}
+.landing-feature{padding:18px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-lg)}
+.landing-feature strong{display:block;color:var(--ink);font-size:14px;margin:8px 0 4px}
+.landing-feature span{font-size:12px;line-height:1.5;color:var(--ink-mid)}
+.landing-disclaimer{font-size:12px;line-height:1.55;color:var(--ink-mid);text-align:center;padding:0 12px 20px}
+@media(max-width:680px){.landing-wrap{padding:18px}.landing-header{margin:12px 0 24px}.landing-hero{grid-template-columns:1fr;gap:18px;padding:24px}.landing-mascot{min-height:125px;font-size:64px;grid-row:1}.landing-features{grid-template-columns:1fr;gap:10px}.landing-feature{padding:14px}.landing-header .auth-logo-name{font-size:19px}.landing-cta{align-items:stretch;flex-direction:column}.landing-cta .btn-pri,.landing-cta .btn-social,.landing-demo-link{width:100%;text-align:center;justify-content:center}}
 /* decorative blobs */
 .auth-blob{
   position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;opacity:.35;
@@ -199,6 +224,7 @@ input,select{font-family:inherit}
 
 .auth-foot{text-align:center;margin-top:20px;font-size:13px;color:var(--ink-mid)}
 .auth-foot a{color:var(--pri);font-weight:600;cursor:pointer}
+.auth-link{display:inline-block;padding:8px 0;background:transparent;color:var(--pri);font-size:12px;font-weight:600;text-align:right}
 
 /* pw meter */
 .pw-meter{display:flex;gap:4px;margin-top:7px}
@@ -734,10 +760,39 @@ input,select{font-family:inherit}
 
 <div class="toast" id="toast"></div>
 
+<!-- PUBLIC INTRO / CAMPAIGN DESTINATION -->
+<main class="screen landing-wrap active" id="screen-start">
+  <div class="auth-blob blob1"></div><div class="auth-blob blob2"></div>
+  <div class="landing-shell">
+    <header class="landing-header">
+      <div class="auth-logo"><div class="auth-logo-mark">🌿</div><div class="auth-logo-name">NutriFlow</div></div>
+      <div class="landing-actions"><button class="btn-social landing-theme" type="button" onclick="toggleTheme()"><span id="ti-start">🌙</span><span id="tl-start">Escuro</span></button><button class="btn-social landing-login" type="button" onclick="goTo('login')">Já tenho conta</button></div>
+    </header>
+    <section class="landing-hero" aria-labelledby="landing-title">
+      <div>
+        <div class="hero-eyebrow">SUA ROTINA, NO SEU RITMO</div>
+        <h1 class="auth-title" id="landing-title">Mais clareza para organizar suas refeições.</h1>
+        <p class="landing-copy">Guarde ideias, consulte o que anotou e acompanhe sua constância em um só lugar. Comece do jeito que fizer sentido para você.</p>
+        <div class="landing-cta">
+          <button class="btn-pri" type="button" onclick="goTo('signup')">Criar minha conta</button>
+          <button class="btn-social" type="button" onclick="goToDash()">Experimentar demonstração</button>
+        </div>
+      </div>
+      <div class="landing-mascot" aria-hidden="true">🗓️</div>
+    </section>
+    <section class="landing-features" aria-label="O que você pode fazer no NutriFlow">
+      <article class="landing-feature"><span aria-hidden="true">🥗</span><strong>Guarde suas ideias</strong><span>Anote uma refeição por data e consulte sua lista quando quiser.</span></article>
+      <article class="landing-feature"><span aria-hidden="true">📈</span><strong>Acompanhe sua sequência</strong><span>Veja seus dias com registro e avance no seu ritmo.</span></article>
+      <article class="landing-feature"><span aria-hidden="true">🌱</span><strong>Conheça o Flow</strong><span>Registre algo por cinco dias seguidos para liberar seu pet de companhia.</span></article>
+    </section>
+    <p class="landing-disclaimer">Na demonstração, os dados ficam neste navegador. O assistente ainda usa respostas guiadas, sem IA conectada. O NutriFlow ajuda a organizar registros e não substitui orientação profissional.</p>
+  </div>
+</main>
+
 <!-- ══════════════════════════════════════
      LOGIN
 ══════════════════════════════════════ -->
-<div class="screen auth-wrap active" id="screen-login">
+<div class="screen auth-wrap" id="screen-login">
   <div class="auth-blob blob1"></div>
   <div class="auth-blob blob2"></div>
   <button class="theme-pill" onclick="toggleTheme()">
@@ -757,13 +812,9 @@ input,select{font-family:inherit}
     <button class="btn-pri" style="margin-bottom:6px" onclick="loginWithSupabase()">Entrar</button>
     <button class="btn-social" onclick="goToDash()">Explorar demonstração</button>
     <div class="demo-note">Quer só conhecer o app? Toque em “Explorar demonstração”. Os dados de exemplo ficam neste navegador.</div>
-    <div style="text-align:right;margin-bottom:16px"><span onclick="recoverSupabasePassword()" style="font-size:12px;color:var(--pri);cursor:pointer;font-weight:600">Esqueci minha senha</span></div>
+    <div style="text-align:right;margin-bottom:16px"><button class="auth-link" type="button" onclick="recoverSupabasePassword()">Esqueci minha senha</button></div>
 
-    <div class="or-row">ou</div>
-    <button class="btn-social" onclick="showToast('🔵 Google em breve')">🔵 Continuar com Google</button>
-    <button class="btn-social" onclick="showToast('🍎 Apple em breve')">🍎 Continuar com Apple</button>
-
-    <div class="auth-foot">Não tem conta? <a onclick="goTo('signup')">Criar agora</a></div>
+    <div class="auth-foot">Não tem conta? <a onclick="goTo('signup')">Criar agora</a><br><a onclick="goTo('start')">Voltar ao início</a></div>
   </div>
 </div>
 
@@ -791,19 +842,24 @@ input,select{font-family:inherit}
       <input id="signup-password" type="password" autocomplete="new-password" minlength="8" required placeholder="Mínimo 8 caracteres" oninput="pwMeter(this.value)">
       <div class="pw-meter"><div class="pw-bar" id="b1"></div><div class="pw-bar" id="b2"></div><div class="pw-bar" id="b3"></div></div>
     </div>
-    <div class="field">
-      <label for="signup-goal">O que você quer fazer primeiro?</label>
-      <select id="signup-goal">
-        <option>Planejar minhas refeições</option>
-        <option>Registrar minhas refeições</option>
-        <option>Criar mais constância</option>
-        <option>Explorar sugestões</option>
-      </select>
-    </div>
-
+    <div class="field"><label for="signup-password-confirm">Repita sua senha</label><input id="signup-password-confirm" type="password" autocomplete="new-password" minlength="8" required placeholder="Digite a senha novamente"></div>
     <button class="btn-pri" onclick="registerWithSupabase()">Criar minha conta</button>
     <div class="demo-note">Vamos enviar um e-mail para confirmar seu cadastro. Crie uma senha que você não usa em outros sites.</div>
-    <div class="auth-foot" style="margin-top:16px">Já tem conta? <a onclick="goTo('login')">Entrar</a></div>
+    <div class="auth-foot" style="margin-top:16px">Já tem conta? <a onclick="goTo('login')">Entrar</a><br><a onclick="goTo('start')">Voltar ao início</a></div>
+  </div>
+</div>
+
+<!-- PASSWORD RESET -->
+<div class="screen auth-wrap" id="screen-reset">
+  <div class="auth-blob blob1"></div><div class="auth-blob blob2"></div>
+  <button class="theme-pill" type="button" onclick="toggleTheme()"><span id="ti-reset">🌙</span><span id="tl-reset">Escuro</span></button>
+  <div class="auth-box">
+    <div class="auth-logo"><div class="auth-logo-mark">🌿</div><div class="auth-logo-name">NutriFlow</div></div>
+    <div class="auth-title">Crie uma nova senha</div>
+    <div class="auth-sub">Escolha uma senha com pelo menos 8 caracteres.</div>
+    <div class="field"><label for="reset-password">Nova senha</label><input id="reset-password" type="password" autocomplete="new-password" minlength="8" required></div>
+    <div class="field"><label for="reset-password-confirm">Repita a nova senha</label><input id="reset-password-confirm" type="password" autocomplete="new-password" minlength="8" required></div>
+    <button class="btn-pri" type="button" onclick="saveNewPassword()">Salvar nova senha</button>
   </div>
 </div>
 
@@ -985,7 +1041,7 @@ let selectedDate=new Date();
 let tt;
 function readMeals(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]')}catch{return []}}
 function saveMeals(items){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(items));return true}catch{showToast('Não foi possível salvar neste navegador.');return false}}
-function toggleTheme(){const dark=document.documentElement.getAttribute('data-theme')!=='dark';document.documentElement.setAttribute('data-theme',dark?'dark':'light');try{localStorage.setItem(THEME_KEY,dark?'dark':'light')}catch{};document.querySelectorAll('#ti-login,#ti-signup,#ti-dash').forEach(e=>e.textContent=dark?'☀️':'🌙');document.querySelectorAll('#tl-login,#tl-signup').forEach(e=>e.textContent=dark?'Claro':'Escuro');const label=document.getElementById('theme-label-sg');if(label)label.textContent=(dark?'Escuro':'Claro')+' ›'}
+function toggleTheme(){const dark=document.documentElement.getAttribute('data-theme')!=='dark';document.documentElement.setAttribute('data-theme',dark?'dark':'light');try{localStorage.setItem(THEME_KEY,dark?'dark':'light')}catch{};document.querySelectorAll('#ti-start,#ti-login,#ti-signup,#ti-reset,#ti-dash').forEach(e=>e.textContent=dark?'☀️':'🌙');document.querySelectorAll('#tl-start,#tl-login,#tl-signup,#tl-reset').forEach(e=>e.textContent=dark?'Claro':'Escuro');const label=document.getElementById('theme-label-sg');if(label)label.textContent=(dark?'Escuro':'Claro')+' ›'}
 function goTo(name){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));const screen=document.getElementById('screen-'+name);if(screen)screen.classList.add('active')}
 function goToDash(){goTo('dash');renderMeals();showToast('Demonstração aberta. Seus dados ficam neste navegador.')}
 const tabs=['overview','meals','progress','ai','profile'];
@@ -993,7 +1049,7 @@ function navTo(name){tabs.forEach(t=>{const sub=document.getElementById('sub-'+t
 function openTutorial(){document.getElementById('tutorial-dialog').showModal()}
 function closeTutorial(){document.getElementById('tutorial-dialog').close()}
 function tutorialGoToMeals(){closeTutorial();navTo('meals')}
-function showToast(msg){clearTimeout(tt);const e=document.getElementById('toast');e.textContent=msg;e.className='toast'+(document.getElementById('screen-login').classList.contains('active')||document.getElementById('screen-signup').classList.contains('active')?' in-auth':'');setTimeout(()=>e.classList.add('show'),10);tt=setTimeout(()=>e.classList.remove('show'),3000)}
+function showToast(msg){clearTimeout(tt);const e=document.getElementById('toast');e.textContent=msg;e.className='toast'+(document.getElementById('screen-start').classList.contains('active')||document.getElementById('screen-login').classList.contains('active')||document.getElementById('screen-signup').classList.contains('active')||document.getElementById('screen-reset').classList.contains('active')?' in-auth':'');setTimeout(()=>e.classList.add('show'),10);tt=setTimeout(()=>e.classList.remove('show'),3000)}
 function pwMeter(value){const bars=['b1','b2','b3'].map(id=>document.getElementById(id)).filter(Boolean);bars.forEach(b=>b.className='pw-bar');if(!value)return;if(value.length<6){bars[0].classList.add('weak');return}if(value.length<10){bars.slice(0,2).forEach(b=>b.classList.add('mid'));return}bars.forEach(b=>b.classList.add('strong'))}
 function dateKey(date){const d=new Date(date);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
 function openMealDialog(){const dialog=document.getElementById('meal-dialog');document.getElementById('meal-date').value=dateKey(selectedDate);dialog.showModal();document.getElementById('meal-name').focus()}
@@ -1011,7 +1067,7 @@ document.getElementById('assistant-form')?.addEventListener('submit',event=>{eve
 function deleteMeal(id){const next=readMeals().filter(m=>m.id!==id);if(saveMeals(next)){renderMeals();showToast('Registro removido deste navegador.')}}
 function clearDemoData(){if(!confirm('Apagar todos os registros desta demonstração neste navegador?'))return;try{localStorage.removeItem(STORAGE_KEY);localStorage.removeItem(petUnlockStorageKey())}catch{}renderMeals();showToast('Registros apagados.')}
 function toggleToggle(id){const el=document.getElementById(id);if(el)el.classList.toggle('on')}
-document.addEventListener('DOMContentLoaded',()=>{try{const theme=localStorage.getItem(THEME_KEY);if(theme==='dark'){document.documentElement.setAttribute('data-theme','dark')}const dark=document.documentElement.getAttribute('data-theme')==='dark';document.querySelectorAll('#ti-login,#ti-signup,#ti-dash').forEach(e=>e.textContent=dark?'☀️':'🌙');document.querySelectorAll('#tl-login,#tl-signup').forEach(e=>e.textContent=dark?'Claro':'Escuro');const themeLabel=document.getElementById('theme-label-sg');if(themeLabel)themeLabel.textContent=(dark?'Escuro':'Claro')+' ›'}catch{};const date=document.getElementById('today-date');if(date)date.textContent=new Date().toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long'});selectedDate=new Date();renderDayPills();renderMeals();document.getElementById('meal-form').addEventListener('submit',event=>{event.preventDefault();const name=document.getElementById('meal-name').value.trim();if(!name)return;const item={id:crypto.randomUUID(),kind:document.getElementById('meal-kind').value,name,date:document.getElementById('meal-date').value};const all=readMeals();all.push(item);if(saveMeals(all)){closeMealDialog();event.target.reset();selectedDate=new Date(item.date+'T12:00:00');renderDayPills();renderMeals();showToast(window.isNutriFlowAccountActive?.()?'Salvo neste dispositivo; sincronizando...':'Registro salvo somente neste navegador.')}})});
+document.addEventListener('DOMContentLoaded',()=>{try{const theme=localStorage.getItem(THEME_KEY);if(theme==='dark'){document.documentElement.setAttribute('data-theme','dark')}const dark=document.documentElement.getAttribute('data-theme')==='dark';document.querySelectorAll('#ti-start,#ti-login,#ti-signup,#ti-reset,#ti-dash').forEach(e=>e.textContent=dark?'☀️':'🌙');document.querySelectorAll('#tl-start,#tl-login,#tl-signup,#tl-reset').forEach(e=>e.textContent=dark?'Claro':'Escuro');const themeLabel=document.getElementById('theme-label-sg');if(themeLabel)themeLabel.textContent=(dark?'Escuro':'Claro')+' ›'}catch{};const date=document.getElementById('today-date');if(date)date.textContent=new Date().toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long'});selectedDate=new Date();renderDayPills();renderMeals();document.getElementById('meal-form').addEventListener('submit',event=>{event.preventDefault();const name=document.getElementById('meal-name').value.trim();if(!name)return;const item={id:crypto.randomUUID(),kind:document.getElementById('meal-kind').value,name,date:document.getElementById('meal-date').value};const all=readMeals();all.push(item);if(saveMeals(all)){closeMealDialog();event.target.reset();selectedDate=new Date(item.date+'T12:00:00');renderDayPills();renderMeals();showToast(window.isNutriFlowAccountActive?.()?'Salvo neste dispositivo; sincronizando...':'Registro salvo somente neste navegador.')}})});
 </script>
 <script src="supabase-app.js"></script>
 </body>
