@@ -20,7 +20,7 @@ Aplicação web em português para registrar refeições e ideias, acompanhar a 
 
 ## Executar
 
-Use Node.js 20 ou superior e inicie com `npm start`. No Replit, crie um segredo chamado exatamente `OPENAI_API_KEY` com sua chave da OpenAI. Para rodar localmente com o assistente, defina essa variável no ambiente antes de iniciar; não coloque a chave em arquivos versionados. Sem ela, o servidor mantém a aplicação acessível, mas o assistente informa que não está configurado.
+Use Node.js 20 ou superior. Para rodar localmente, execute `node server.js` (não precisa instalar dependências). No Replit, o comando de execução usa `npm start`; crie lá um segredo chamado exatamente `OPENAI_API_KEY`. Para ativar a IA localmente, configure essa variável no ambiente antes de iniciar; não coloque a chave em arquivos versionados. Sem ela, a aplicação abre e o assistente informa que não está configurado.
 
 ## Supabase
 
