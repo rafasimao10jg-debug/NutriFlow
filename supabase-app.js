@@ -48,9 +48,20 @@
     try { localStorage.setItem(key(), JSON.stringify(items)); } catch {}
     const profile = await client.from('profiles').select('display_name').eq('id', user.id).maybeSingle();
     document.querySelectorAll('.profile-name').forEach(e => e.textContent = profile.data?.display_name || user.user_metadata?.display_name || 'Seu espaço');
-    renderMeals(); goToDash(); showToast('Você entrou na sua conta.');
+    const accountState = document.getElementById('account-state'); if (accountState) accountState.textContent = 'Conta sincronizada';
+    const notice = document.getElementById('storage-notice'); if (notice) notice.textContent = 'Seus registros estão associados à sua conta e protegidos por políticas de acesso. Use somente as informações que deseja salvar.';
+    renderMeals(); goTo('dash'); showToast('Você entrou na sua conta.');
   };
   window.signOutNutriFlow = async () => { const { error } = await client.auth.signOut(); if (error) return showToast('Não foi possível sair da conta.'); activeUser = null; goTo('login'); };
+  window.clearDemoData = async () => {
+    if (!confirm('Apagar seus registros salvos? Esta ação remove os registros da sua conta e deste navegador.')) return;
+    if (activeUser) {
+      const { error } = await client.from('meal_entries').delete().eq('user_id', activeUser.id);
+      if (error) return showToast('Não foi possível apagar os registros.');
+    }
+    try { localStorage.removeItem(key()); localStorage.removeItem('nutriflow.demo.meals'); } catch {}
+    renderMeals(); showToast('Registros apagados.');
+  };
   client.auth.onAuthStateChange((_event, session) => { if (session?.user) setTimeout(() => load(session.user), 0); else activeUser = null; });
   client.auth.getSession().then(({ data }) => { if (data.session?.user) load(data.session.user); });
 })();

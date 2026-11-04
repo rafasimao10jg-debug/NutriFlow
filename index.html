@@ -810,7 +810,7 @@ input,select{font-family:inherit}
         <button class="hero-btn" onclick="navTo('meals')">Abrir meu planejamento →</button>
       </div>
 
-      <div class="demo-banner">Protótipo local: os registros ficam apenas neste navegador. Não há conta, sincronização ou proteção de dados de saúde. Use somente dados fictícios nesta prévia.</div>
+      <div class="demo-banner" id="storage-notice">Demonstração: os registros ficam apenas neste navegador. Entre ou crie uma conta para sincronizar suas refeições.</div>
 
       <div class="quick-stats">
         <div class="qs-card"><div class="qs-top"><div class="qs-icon purple">🗓️</div><div class="qs-delta neu">Neste navegador</div></div><div class="qs-val" id="plan-count">0</div><div class="qs-label">Planos salvos</div></div>
@@ -856,7 +856,7 @@ input,select{font-family:inherit}
 
     <!-- PROFILE -->
     <div class="sub" id="sub-profile">
-      <div class="profile-top"><div class="avatar-big">🌿</div><div class="profile-name">Seu espaço</div><div class="profile-plan">Protótipo local</div></div>
+      <div class="profile-top"><div class="avatar-big">🌿</div><div class="profile-name">Seu espaço</div><div class="profile-plan" id="account-state">Demonstração local</div></div>
       <div class="demo-banner">Nenhuma conta está conectada. As preferências e os registros desta prévia ficam no armazenamento local do navegador.</div>
       <div class="settings-group"><div class="sg-title">Preferências</div><div class="sg-card">
         <div class="sg-row" onclick="toggleTheme();showToast('Preferência de tema atualizada.')"><div class="sg-left"><div class="sg-icon" style="background:var(--rose-light)">🎨</div><div class="sg-label">Tema</div></div><div class="sg-right" id="theme-label-sg">Claro ›</div></div>
