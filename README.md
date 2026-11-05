@@ -8,7 +8,7 @@ Aplicação web em português para registrar refeições e ideias, acompanhar a 
 - Cadastro, login por e-mail e senha e recuperação de senha pelo Supabase Auth.
 - Registro de refeições e ideias, com salvamento local na demonstração e sincronização com o Supabase quando a pessoa entra na conta.
 - Indicadores de histórico e sequência de 5 dias para liberar o Flow.
-- Assistente local opcional com WebLLM e WebGPU: o modelo roda no navegador do dispositivo; o texto das perguntas não é enviado ao servidor NutriFlow nem a uma API paga. Quando a cobrança for ativada, o servidor recebe somente a sessão e uma chamada de controle de limite, sem o texto da pergunta.
+- Assistente local opcional com WebLLM e WebGPU usando Qwen2.5-0.5B: o modelo roda no navegador do dispositivo; o texto das perguntas não é enviado ao servidor NutriFlow nem a uma API paga. Quando a cobrança for ativada, o servidor recebe somente a sessão e uma chamada de controle de limite, sem o texto da pergunta.
 - Página pública de apresentação com atalhos para demonstração, cadastro e login.
 - PWA instalável no Android e iPhone, com ícone NutriFlow, atalho no perfil e cache da tela principal.
 
@@ -21,7 +21,7 @@ Aplicação web em português para registrar refeições e ideias, acompanhar a 
 
 ## Executar
 
-Use Node.js 20 ou superior. Para rodar localmente, execute `node server.js` (não precisa instalar dependências). No Replit, o comando de execução usa `npm start`. Não configure `OPENAI_API_KEY`: o servidor não chama a OpenAI. Para usar a IA local, abra o app por HTTPS em um navegador com WebGPU e toque em **Ativar IA neste dispositivo**. No primeiro uso, o navegador baixa a biblioteca e o modelo; isso exige internet e espaço. As perguntas são processadas no aparelho. O uso depende do hardware e pode consumir memória e bateria.
+Use Node.js 20 ou superior. Para rodar localmente, execute `node server.js` (não precisa instalar dependências). No Replit, o comando de execução usa `npm start`. Não configure `OPENAI_API_KEY`: o servidor não chama a OpenAI. Para usar a IA local, abra o app por HTTPS em um navegador com WebGPU e toque em **Ativar IA neste dispositivo**. O app usa Qwen2.5-0.5B quantizado; a configuração listada pelo WebLLM pede cerca de 1,06 GB de memória gráfica e os arquivos do modelo têm cerca de 290 MB. O uso depende do hardware e pode consumir memória e bateria.
 
 ## Publicar sem Replit
 
