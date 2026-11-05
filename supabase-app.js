@@ -6,6 +6,7 @@
     auth: { autoRefreshToken: true, persistSession: true, detectSessionInUrl: true },
   });
   const demoKey = 'nutriflow.demo.meals';
+  const legacyDemoKey = 'nutriflow.meals.demo';
   let activeUser = null;
   let passwordRecovery = location.hash.includes('type=recovery');
   let currentLoad = 0;
@@ -14,7 +15,20 @@
     const status = document.getElementById('sync-status-home');
     if (status) status.textContent = value;
   };
-  const accountKey = userId => `nutriflow.meals.${userId || 'demo'}`;
+  const accountKey = userId => userId ? `nutriflow.meals.${userId}` : demoKey;
+  const pendingKey = userId => `nutriflow.pending.${userId}`;
+  const getPendingIds = userId => {
+    try {
+      const value = JSON.parse(localStorage.getItem(pendingKey(userId)) || '[]');
+      return new Set(Array.isArray(value) ? value.filter(id => typeof id === 'string') : []);
+    } catch { return new Set(); }
+  };
+  const savePendingIds = (userId, ids) => {
+    try {
+      if (ids.size) localStorage.setItem(pendingKey(userId), JSON.stringify([...ids]));
+      else localStorage.removeItem(pendingKey(userId));
+    } catch {}
+  };
   const readLocal = storageKey => {
     try {
       const value = JSON.parse(localStorage.getItem(storageKey) || '[]');
@@ -93,19 +107,35 @@
     } catch { showToast('Não foi possível conectar agora. Abra novamente o link e tente outra vez.'); }
   };
 
-  window.readMeals = () => readLocal(accountKey(activeUser?.id));
+  window.readMeals = () => {
+    if (activeUser) return readLocal(accountKey(activeUser.id));
+    const merged = new Map([...readLocal(demoKey), ...readLocal(legacyDemoKey)].map(item => [item.id, item]));
+    return [...merged.values()];
+  };
   window.saveMeals = items => {
     const user = activeUser;
     const storageKey = accountKey(user?.id);
+    const previousItems = window.readMeals();
     try { localStorage.setItem(storageKey, JSON.stringify(items)); }
     catch { showToast('O armazenamento deste dispositivo está cheio. Libere espaço e tente novamente.'); return false; }
-    if (user && items.length) {
+    if (!user) { try { localStorage.removeItem(legacyDemoKey); } catch {} }
+    const previousById = new Map(previousItems.map(item => [item.id, JSON.stringify(item)]));
+    const changedItems = items.filter(item => previousById.get(item.id) !== JSON.stringify(item));
+    if (user && changedItems.length) {
+      const pendingIds = getPendingIds(user.id);
+      changedItems.forEach(item => pendingIds.add(item.id));
+      savePendingIds(user.id, pendingIds);
       setSyncStatus('Sincronizando');
-      client.from('meal_entries').upsert(items.map(item => toRow(item, user.id)), { onConflict: 'id' })
+      client.from('meal_entries').upsert(changedItems.map(item => toRow(item, user.id)), { onConflict: 'id' })
         .then(({ error }) => {
           if (activeUser?.id !== user.id) return;
           if (error) { setSyncStatus('Pendente'); showToast('Salvo neste dispositivo. A sincronização está pendente; tente novamente mais tarde.'); }
-          else setSyncStatus('Atualizado');
+          else {
+            const latestPending = getPendingIds(user.id);
+            changedItems.forEach(item => latestPending.delete(item.id));
+            savePendingIds(user.id, latestPending);
+            setSyncStatus('Atualizado');
+          }
         })
         .catch(() => {
           if (activeUser?.id === user.id) { setSyncStatus('Pendente'); showToast('Salvo neste dispositivo. A sincronização está pendente; tente novamente mais tarde.'); }
@@ -117,13 +147,16 @@
   const retryPendingSync = async () => {
     const user = activeUser;
     if (!user || !navigator.onLine) return;
-    const items = readLocal(accountKey(user.id));
+    const pendingIds = getPendingIds(user.id);
+    const items = readLocal(accountKey(user.id)).filter(item => pendingIds.has(item.id));
     if (!items.length) { setSyncStatus('Atualizado'); return; }
     setSyncStatus('Sincronizando');
     try {
       const { error } = await client.from('meal_entries').upsert(items.map(item => toRow(item, user.id)), { onConflict: 'id' });
       if (activeUser?.id !== user.id) return;
       if (error) { setSyncStatus('Pendente'); return; }
+      items.forEach(item => pendingIds.delete(item.id));
+      savePendingIds(user.id, pendingIds);
       setSyncStatus('Atualizado');
       const accountState = document.getElementById('account-state');
       if (accountState) accountState.textContent = 'Conta sincronizada';
@@ -141,9 +174,16 @@
       } catch { return showToast('Sem conexão. O registro continua salvo; tente remover novamente quando voltar à internet.'); }
     }
     const storageKey = accountKey(user?.id);
-    const next = readLocal(storageKey).filter(meal => meal.id !== id);
+    const currentItems = user ? readLocal(storageKey) : window.readMeals();
+    const next = currentItems.filter(meal => meal.id !== id);
     try { localStorage.setItem(storageKey, JSON.stringify(next)); }
     catch { return showToast('Não foi possível atualizar os dados neste dispositivo.'); }
+    if (!user) { try { localStorage.removeItem(legacyDemoKey); } catch {} }
+    if (user) {
+      const pendingIds = getPendingIds(user.id);
+      pendingIds.delete(id);
+      savePendingIds(user.id, pendingIds);
+    }
     if (user && activeUser?.id === user.id) setSyncStatus('Atualizado');
     renderMeals();
     showToast('Registro removido.');
@@ -161,20 +201,33 @@
         .eq('user_id', user.id)
         .order('entry_date', { ascending: false });
     } catch {
-      if (loadId === currentLoad) { setSyncStatus('Pendente'); showToast('Sem conexão. Seus registros deste dispositivo continuam disponíveis.'); }
+      if (loadId === currentLoad) {
+        setSyncStatus('Pendente');
+        renderMeals();
+        goTo('dash');
+        showToast('Sem conexão. Mostrando os registros salvos neste dispositivo.');
+      }
       return;
     }
     if (loadId !== currentLoad) return;
-    if (result.error) { setSyncStatus('Erro'); return showToast('Não foi possível carregar seus registros. Tente novamente.'); }
+    if (result.error) {
+      setSyncStatus('Pendente');
+      renderMeals();
+      goTo('dash');
+      return showToast('Não foi possível sincronizar agora. Mostrando os registros salvos neste dispositivo.');
+    }
 
     let remoteItems = (result.data || []).map(fromRow);
     const localKey = accountKey(user.id);
     const cachedItems = readLocal(localKey);
+    const pendingIds = getPendingIds(user.id);
     const remoteIds = new Set(remoteItems.map(item => item.id));
-    const pendingItems = cachedItems.filter(item => !remoteIds.has(item.id));
+    remoteIds.forEach(id => pendingIds.delete(id));
+    savePendingIds(user.id, pendingIds);
+    const pendingItems = cachedItems.filter(item => pendingIds.has(item.id) && !remoteIds.has(item.id));
 
     // Offer a one-time, explicit transfer of demo records to this account.
-    const demoItems = readLocal(demoKey);
+    const demoItems = [...new Map([...readLocal(demoKey), ...readLocal(legacyDemoKey)].map(item => [item.id, item])).values()];
     let transferDemo = false;
     let transferAsked = false;
     try { transferAsked = sessionStorage.getItem(`nutriflow.demo-transfer.${user.id}`) === '1'; } catch {}
@@ -191,7 +244,11 @@
         syncFailed = Boolean(error);
       } catch { syncFailed = true; }
       if (loadId !== currentLoad) return;
-      if (!syncFailed) remoteItems = [...remoteItems, ...syncItems];
+      if (!syncFailed) {
+        remoteItems = [...remoteItems, ...syncItems];
+        syncItems.forEach(item => pendingIds.delete(item.id));
+        savePendingIds(user.id, pendingIds);
+      }
     }
 
     const merged = [...remoteItems];
@@ -201,7 +258,7 @@
     }
     try { localStorage.setItem(localKey, JSON.stringify(merged)); } catch {}
     if (transferDemo && !syncFailed) {
-      try { localStorage.removeItem(demoKey); localStorage.removeItem('nutriflow.pet.unlocked.demo'); } catch {}
+      try { localStorage.removeItem(demoKey); localStorage.removeItem(legacyDemoKey); localStorage.removeItem('nutriflow.pet.unlocked.demo'); } catch {}
     }
 
     let profile = { data: null };
@@ -249,7 +306,7 @@
     try {
       localStorage.removeItem(accountKey(user?.id));
       localStorage.removeItem(`nutriflow.pet.unlocked.${user?.id || 'demo'}`);
-      if (!user) { localStorage.removeItem(demoKey); localStorage.removeItem('nutriflow.pet.unlocked.demo'); }
+      if (!user) { localStorage.removeItem(demoKey); localStorage.removeItem(legacyDemoKey); localStorage.removeItem('nutriflow.pet.unlocked.demo'); }
     } catch { return showToast('Não foi possível apagar os dados deste dispositivo.'); }
     setSyncStatus(user ? 'Atualizado' : 'Local');
     renderMeals();
