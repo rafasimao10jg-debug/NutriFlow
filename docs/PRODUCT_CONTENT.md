@@ -76,6 +76,7 @@ Adultos que querem planejar refeições e criar uma rotina alimentar mais organi
 **Saudação:** Oi, {nome}. Vamos no seu ritmo.<br>
 **Resumo:** Aqui está o que você escolheu acompanhar hoje.<br>
 **Ações:** Planejar refeições · Registrar refeição · Ver meu progresso<br>
+**Dica diária:** Exibir uma sugestão prática de refeição que muda a cada dia e pode ser guardada como ideia. As sugestões são inspirações gerais, sem promessas nutricionais ou clínicas.<br>
 **Cartão sem registros:** Seu dia começa quando você quiser. Registre uma refeição ou monte um plano simples.<br>
 **Cartão com registros:** Você já registrou {quantidade} {refeição/refeições} hoje. Cada registro ajuda a deixar seu histórico mais útil.
 

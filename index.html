@@ -559,7 +559,7 @@ input,select{font-family:inherit}
   border-radius:var(--r-xl);padding:18px;margin-bottom:16px;
   box-shadow:var(--sh-sm);
 }
-.week-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.week-nav{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
 .wn-btn{
   width:36px;height:36px;border-radius:50%;
   background:var(--bg-subtle);border:1.5px solid var(--border);
@@ -567,23 +567,41 @@ input,select{font-family:inherit}
   font-size:17px;color:var(--ink-mid);transition:all .12s;
 }
 .wn-btn:hover{background:var(--bg-hover);color:var(--ink)}
-.week-label{font-size:14px;font-weight:700;color:var(--ink)}
+.week-label{font-size:14px;font-weight:700;color:var(--ink);text-align:center;line-height:1.35}
+.week-actions{display:flex;justify-content:center;margin-bottom:12px}
+.week-today{padding:7px 13px;border:1px solid var(--border);border-radius:999px;background:var(--bg-subtle);color:var(--pri);font-size:12px;font-weight:700}
+.week-today:hover{background:var(--pri-light)}
 
-.day-pills{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px}
-.day-pills::-webkit-scrollbar{height:0}
+.day-pills{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px;padding:2px 1px 5px}
 .day-pill{
   flex-shrink:0;display:flex;flex-direction:column;align-items:center;
-  gap:4px;padding:8px 10px;border-radius:var(--r-md);
+  gap:3px;min-width:0;padding:8px 2px;border-radius:var(--r-md);
   border:1.5px solid var(--border);background:var(--bg-subtle);
-  cursor:pointer;transition:all .15s;min-width:46px;
+  cursor:pointer;transition:all .15s;min-height:70px;
 }
+.day-pill.today:not(.active){border-color:var(--pri)}
 .day-pill.active{
   background:var(--pri);border-color:var(--pri);
   box-shadow:0 4px 12px var(--pri-glow);
 }
 .dp-name{font-size:10px;font-weight:700;letter-spacing:.05em;color:var(--ink-soft)}
 .dp-num{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:var(--ink)}
+.dp-count{min-height:12px;font-size:10px;font-weight:700;line-height:1;color:var(--pri)}
 .day-pill.active .dp-name,.day-pill.active .dp-num{color:#fff}
+.day-pill.active .dp-count{color:#fff}
+.selected-day-summary{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:12px;padding:12px 14px;background:var(--bg-subtle);border-radius:var(--r-md)}
+.selected-day-label{display:block;margin-bottom:3px;color:var(--ink-soft);font-size:11px}
+.selected-day-date{color:var(--ink);font-size:14px;font-weight:700}
+.selected-day-count{flex-shrink:0;color:var(--pri);font-size:12px;font-weight:700;text-align:right}
+.calendar-hint{margin:7px 2px 0;color:var(--ink-soft);font-size:11px;text-align:center}
+.section-description{margin-top:4px;color:var(--ink-soft);font-size:13px;line-height:1.45}
+
+.daily-tip-card{margin:16px 0;padding:18px;background:linear-gradient(135deg,var(--pri-light),var(--bg-card));border:1px solid var(--border);border-radius:var(--r-xl);box-shadow:var(--sh-sm)}
+.daily-tip-eyebrow{color:var(--pri);font-size:12px;font-weight:700;margin-bottom:8px}
+.daily-tip-title{color:var(--ink);font-size:17px;font-weight:700;line-height:1.3;margin:0 0 6px}
+.daily-tip-copy{color:var(--ink-mid);font-size:13px;line-height:1.5;margin:0 0 14px}
+.daily-tip-button{padding:9px 13px;border:1px solid var(--border);border-radius:var(--r-md);background:var(--bg-card);color:var(--pri);font-size:13px;font-weight:700}
+.daily-tip-button:hover{background:var(--pri);color:#fff}
 
 .gen-btn{
   display:flex;align-items:center;justify-content:center;gap:8px;
@@ -979,6 +997,13 @@ input,select{font-family:inherit}
 
       <div class="demo-banner" id="storage-notice">Demonstração: seus registros ficam salvos neste navegador.</div>
 
+      <article class="daily-tip-card" aria-labelledby="daily-tip-heading">
+        <div class="daily-tip-eyebrow" id="daily-tip-heading">💡 Dica de refeição de hoje</div>
+        <h2 class="daily-tip-title" id="daily-tip-title">Uma ideia simples para hoje</h2>
+        <p class="daily-tip-copy" id="daily-tip-copy">Sugestões práticas para você adaptar ao que tem em casa.</p>
+        <button class="daily-tip-button" type="button" onclick="saveDailyMealTip()">Guardar como ideia</button>
+      </article>
+
       <div class="quick-stats">
         <div class="qs-card"><div class="qs-top"><div class="qs-icon purple">🔥</div><div class="qs-delta neu">Flow</div></div><div class="qs-val" id="streak-count-home">0</div><div class="qs-label">Dias seguidos</div></div>
         <div class="qs-card"><div class="qs-top"><div class="qs-icon teal">🥗</div><div class="qs-delta neu">Seus registros</div></div><div class="qs-val" id="meal-count">0</div><div class="qs-label">Refeições anotadas</div></div>
@@ -1004,11 +1029,15 @@ input,select{font-family:inherit}
 
     <!-- MEALS -->
     <div class="sub" id="sub-meals">
+      <div class="section-head"><div><div class="section-title">Planeje suas refeições</div><p class="section-description">Escolha uma data para ver o que anotou ou guardar uma nova ideia.</p></div></div>
       <div class="plan-header">
-        <div class="week-nav"><button class="wn-btn" onclick="shiftWeek(-1)" aria-label="Semana anterior">‹</button><div class="week-label" id="week-label"></div><button class="wn-btn" onclick="shiftWeek(1)" aria-label="Próxima semana">›</button></div>
-        <div class="day-pills" id="day-pills"></div>
+        <div class="week-nav"><button class="wn-btn" type="button" onclick="shiftWeek(-1)" aria-label="Semana anterior">‹</button><div class="week-label" id="week-label" aria-live="polite"></div><button class="wn-btn" type="button" onclick="shiftWeek(1)" aria-label="Próxima semana">›</button></div>
+        <div class="week-actions"><button class="week-today" type="button" onclick="goToToday()">Ir para hoje</button></div>
+        <div class="day-pills" id="day-pills" role="group" aria-label="Escolha o dia para ver as refeições"></div>
+        <p class="calendar-hint">O número abaixo de cada dia mostra quantas anotações você salvou.</p>
+        <div class="selected-day-summary" aria-live="polite"><div><span class="selected-day-label">Data selecionada</span><strong class="selected-day-date" id="selected-day-date"></strong></div><div class="selected-day-count" id="selected-day-count"></div></div>
       </div>
-      <div class="demo-banner">Anote refeições ou ideias. Na demonstração, os dados ficam neste navegador.</div>
+      <div class="demo-banner">Seus registros aparecem no dia escolhido. Você pode anotar uma refeição ou salvar uma ideia para consultar depois.</div>
       <button class="gen-btn" onclick="openMealDialog()">+ Anotar refeição</button>
       <div style="height:14px"></div>
       <div id="meal-list" class="demo-empty"><strong>Nenhuma refeição nesta data.</strong>Adicione uma ideia fictícia para ver como o planejamento funciona.</div>
@@ -1028,7 +1057,7 @@ input,select{font-family:inherit}
       <div class="assistant-card">
         <div class="pet-title">Ideias para sua rotina</div>
         <p class="assistant-intro">Peça ideias gerais para organizar refeições. Você escolhe o que combina com você.</p>
-        <div class="assistant-demo">A IA roda no seu aparelho e não envia o texto da conversa ao servidor. O modelo ocupa cerca de 290 MB para baixar. Esta versão reduz o uso de memória gráfica; o primeiro download precisa de internet e espaço. Prefira Wi-Fi.</div>
+        <div class="assistant-demo">O modelo ocupa cerca de 290 MB para baixar. A preparação usa internet, espaço, memória e bateria. Use Wi-Fi e um aparelho compatível com WebGPU.</div>
         <div class="assistant-local-controls" id="assistant-local-controls">
           <button class="btn-pri assistant-local-button" id="assistant-local-enable" type="button" onclick="enableLocalAssistant()">Ativar IA neste dispositivo</button>
           <div class="assistant-local-status" id="assistant-local-status" role="status" aria-live="polite">O modelo é compacto para usar menos memória; ainda assim, o download tem cerca de 290 MB.</div>
@@ -1120,6 +1149,15 @@ input,select{font-family:inherit}
 <script>
 const STORAGE_KEY='nutriflow.demo.meals';
 const THEME_KEY='nutriflow.demo.theme';
+const DAILY_MEAL_TIPS=[
+  {kind:'Almoço',name:'Arroz, feijão e ovo com tomate',copy:'Prepare o ovo do jeito que preferir e sirva com tomate picado ou outro acompanhamento que já tenha em casa.'},
+  {kind:'Jantar',name:'Macarrão com legumes',copy:'Misture o macarrão com legumes refogados ou cozidos e tempere com o que você costuma usar.'},
+  {kind:'Café da manhã',name:'Pão com queijo e fruta',copy:'Monte com o pão e o queijo que tiver. Se quiser, acrescente uma fruta disponível em casa.'},
+  {kind:'Almoço',name:'Batata com frango desfiado',copy:'Use batata cozida ou assada e junte frango já preparado; finalize com ervas ou temperos da sua preferência.'},
+  {kind:'Lanche',name:'Iogurte com banana e aveia',copy:'Misture os ingredientes e ajuste a combinação ao que você tem disponível.'},
+  {kind:'Jantar',name:'Omelete com o que sobrou',copy:'Junte ovos a legumes ou queijo que já estejam na geladeira e sirva com pão, arroz ou outro acompanhamento.'},
+  {kind:'Almoço',name:'Arroz com legumes e grão-de-bico',copy:'Combine arroz pronto com legumes e grão-de-bico cozidos; use os temperos que já fazem parte da sua rotina.'}
+];
 let selectedDate=new Date();
 let tt;
 function readMeals(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]')}catch{return []}}
@@ -1131,19 +1169,102 @@ function showPixPayment(result){if(typeof result.qrCode!=='string'||typeof resul
 async function copyPixCode(){const field=document.getElementById('pix-copy-code');try{await navigator.clipboard.writeText(field.value);showToast('Código Pix copiado.')}catch{field.focus();field.select();const copied=document.execCommand('copy');showToast(copied?'Código Pix copiado.':'Selecione e copie o código Pix.')}}
 async function startNutriFlowCheckout(plan){if(!['base','ai'].includes(plan))return;const getToken=window.getNutriFlowAccessToken;if(typeof getToken!=='function'){showToast('O checkout Pix ainda está sendo preparado. Nenhuma cobrança foi feita.');return}const token=await getToken();if(!token){try{sessionStorage.setItem('nutriflow.pending-checkout',plan)}catch{}goTo('login');showToast('Entre ou crie sua conta para continuar com a oferta.');return}try{const response=await fetch('/api/checkout/'+plan,{method:'POST',headers:{Authorization:'Bearer '+token}});const result=await response.json().catch(()=>({}));if(!response.ok)throw new Error(result.error||'O checkout Pix ainda está sendo preparado.');if(plan==='base'&&result.qrCode&&result.qrImageBase64){showPixPayment(result);return}if(typeof result.checkoutUrl==='string'&&result.checkoutUrl.startsWith('https://')){location.assign(result.checkoutUrl);return}throw new Error('Não recebi os dados esperados para o pagamento Pix.')}catch(error){showToast(error.message||'Não consegui abrir o pagamento Pix. Nenhuma cobrança foi feita.')}}
 const tabs=['overview','meals','progress','ai','profile'];
-function navTo(name){tabs.forEach(t=>{const sub=document.getElementById('sub-'+t),bn=document.getElementById('bn-'+t);if(sub)sub.classList.toggle('active',t===name);if(bn){bn.classList.toggle('active',t===name);if(t===name)bn.setAttribute('aria-current','page');else bn.removeAttribute('aria-current')}});if(name==='meals')renderDayPills();if(name==='progress')renderMeals()}
+function navTo(name){tabs.forEach(t=>{const sub=document.getElementById('sub-'+t),bn=document.getElementById('bn-'+t);if(sub)sub.classList.toggle('active',t===name);if(bn){bn.classList.toggle('active',t===name);if(t===name)bn.setAttribute('aria-current','page');else bn.removeAttribute('aria-current')}});if(name==='meals'||name==='progress')renderMeals()}
 function openTutorial(){document.getElementById('tutorial-dialog').showModal()}
 function closeTutorial(){document.getElementById('tutorial-dialog').close()}
 function tutorialGoToMeals(){closeTutorial();navTo('meals')}
 function showToast(msg){clearTimeout(tt);const e=document.getElementById('toast');e.textContent=msg;e.className='toast'+(document.getElementById('screen-start').classList.contains('active')||document.getElementById('screen-login').classList.contains('active')||document.getElementById('screen-signup').classList.contains('active')||document.getElementById('screen-reset').classList.contains('active')?' in-auth':'');setTimeout(()=>e.classList.add('show'),10);tt=setTimeout(()=>e.classList.remove('show'),3000)}
 function pwMeter(value){const bars=['b1','b2','b3'].map(id=>document.getElementById(id)).filter(Boolean);bars.forEach(b=>b.className='pw-bar');if(!value)return;if(value.length<6){bars[0].classList.add('weak');return}if(value.length<10){bars.slice(0,2).forEach(b=>b.classList.add('mid'));return}bars.forEach(b=>b.classList.add('strong'))}
 function dateKey(date){const d=new Date(date);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function getDailyMealTip(date=new Date()){const [year,month,day]=dateKey(date).split('-').map(Number);const dayIndex=Math.floor(Date.UTC(year,month-1,day)/86400000);return DAILY_MEAL_TIPS[dayIndex%DAILY_MEAL_TIPS.length]}
+function renderDailyMealTip(){const tip=getDailyMealTip();const title=document.getElementById('daily-tip-title');const copy=document.getElementById('daily-tip-copy');if(title)title.textContent=tip.name;if(copy)copy.textContent=tip.copy}
+function saveDailyMealTip(){const tip=getDailyMealTip();const today=new Date();const todayKey=dateKey(today);const all=readMeals();const exists=all.some(item=>item.date===todayKey&&item.name===tip.name);selectedDate=new Date(todayKey+'T12:00:00');if(exists){navTo('meals');showToast('A ideia de hoje já está salva nas suas refeições.');return}const entry={id:crypto.randomUUID(),kind:tip.kind,name:tip.name,date:todayKey};if(saveMeals([...all,entry])){navTo('meals');showToast('Ideia de hoje guardada nas suas refeições.')}}
 function openMealDialog(){const dialog=document.getElementById('meal-dialog');document.getElementById('meal-date').value=dateKey(selectedDate);dialog.showModal();document.getElementById('meal-name').focus()}
 function closeMealDialog(){document.getElementById('meal-dialog').close()}
-function renderDayPills(){const wrap=document.getElementById('day-pills');if(!wrap)return;wrap.replaceChildren();const monday=new Date(selectedDate);const day=(monday.getDay()+6)%7;monday.setDate(monday.getDate()-day);const last=new Date(monday);last.setDate(monday.getDate()+6);document.getElementById('week-label').textContent=monday.toLocaleDateString('pt-BR',{day:'numeric',month:'short'})+' — '+last.toLocaleDateString('pt-BR',{day:'numeric',month:'short',year:'numeric'});const short=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];for(let i=0;i<7;i++){const d=new Date(monday);d.setDate(monday.getDate()+i);const b=document.createElement('button');b.type='button';b.className='day-pill'+(dateKey(d)===dateKey(selectedDate)?' active':'');b.setAttribute('aria-pressed',dateKey(d)===dateKey(selectedDate)?'true':'false');b.innerHTML='<div class="dp-name">'+short[d.getDay()]+'</div><div class="dp-num">'+d.getDate()+'</div>';b.addEventListener('click',()=>{selectedDate=d;renderDayPills();renderMeals()});wrap.append(b)}}
-function shiftWeek(amount){selectedDate.setDate(selectedDate.getDate()+amount*7);renderDayPills();renderMeals()}
+function renderDayPills(){
+  const wrap=document.getElementById('day-pills');
+  if(!wrap)return;
+  wrap.replaceChildren();
+  const monday=new Date(selectedDate);
+  monday.setDate(monday.getDate()-(monday.getDay()+6)%7);
+  const last=new Date(monday);
+  last.setDate(monday.getDate()+6);
+  const sameMonth=monday.getMonth()===last.getMonth()&&monday.getFullYear()===last.getFullYear();
+  const weekText=sameMonth
+    ? `${monday.getDate()}–${last.getDate()} de ${last.toLocaleDateString('pt-BR',{month:'long',year:'numeric'})}`
+    : `${monday.toLocaleDateString('pt-BR',{day:'numeric',month:'short'})} – ${last.toLocaleDateString('pt-BR',{day:'numeric',month:'short',year:'numeric'})}`;
+  document.getElementById('week-label').textContent=weekText;
+  const counts=new Map();
+  readMeals().forEach(item=>counts.set(item.date,(counts.get(item.date)||0)+1));
+  const short=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+  const todayKey=dateKey(new Date());
+  for(let i=0;i<7;i++){
+    const d=new Date(monday);
+    d.setDate(monday.getDate()+i);
+    const key=dateKey(d);
+    const count=counts.get(key)||0;
+    const isSelected=key===dateKey(selectedDate);
+    const isToday=key===todayKey;
+    const b=document.createElement('button');
+    b.type='button';
+    b.className='day-pill'+(isSelected?' active':'')+(isToday?' today':'');
+    b.setAttribute('aria-pressed',isSelected?'true':'false');
+    b.setAttribute('aria-label',`${d.toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long'})}${isToday?', hoje':''}. ${count?`${count} anotações`:'Sem anotações'}${isSelected?', selecionado':''}`);
+    const name=document.createElement('span');name.className='dp-name';name.textContent=short[d.getDay()];
+    const number=document.createElement('span');number.className='dp-num';number.textContent=String(d.getDate());
+    const total=document.createElement('span');total.className='dp-count';total.textContent=String(count);
+    b.append(name,number,total);
+    b.addEventListener('click',()=>{selectedDate=d;renderMeals()});
+    wrap.append(b);
+  }
+}
+function shiftWeek(amount){selectedDate.setDate(selectedDate.getDate()+amount*7);renderMeals()}
+function goToToday(){selectedDate=new Date();renderMeals()}
+function renderSelectedDaySummary(entries=readMeals()){
+  const dateText=document.getElementById('selected-day-date');
+  const countText=document.getElementById('selected-day-count');
+  if(!dateText||!countText)return;
+  dateText.textContent=selectedDate.toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  const count=entries.filter(item=>item.date===dateKey(selectedDate)).length;
+  countText.textContent=count===0?'Nenhuma anotação':count===1?'1 refeição ou ideia':`${count} refeições ou ideias`;
+}
 function mealCard(meal,onDelete){const card=document.createElement('div');card.className='meal-card';const emoji=document.createElement('div');emoji.className='meal-emoji';emoji.textContent=meal.kind==='Almoço'?'🥗':meal.kind==='Jantar'?'🌙':meal.kind==='Café da manhã'?'☀️':'🍎';const info=document.createElement('div');info.className='meal-info';const name=document.createElement('div');name.className='meal-name';name.textContent=meal.name;const meta=document.createElement('div');meta.className='meal-time';meta.textContent=meal.kind+' · '+new Date(meal.date+'T12:00:00').toLocaleDateString('pt-BR');info.append(name,meta);const remove=document.createElement('button');remove.type='button';remove.className='section-link';remove.textContent='Remover';remove.setAttribute('aria-label','Remover '+meal.name);remove.addEventListener('click',onDelete);card.append(emoji,info,remove);return card}
-function renderMeals(){const all=readMeals();const dayItems=all.filter(m=>m.date===dateKey(selectedDate));const list=document.getElementById('meal-list');if(list){list.replaceChildren();if(dayItems.length)dayItems.forEach(item=>list.append(mealCard(item,()=>deleteMeal(item.id))));else{const empty=document.createElement('div');empty.className='demo-empty';empty.innerHTML='<strong>Nenhuma refeição anotada nesta data.</strong>Anote uma refeição ou ideia para esse dia.';list.append(empty)}}const today=document.getElementById('today-meals');if(today){const todayItems=all.filter(m=>m.date===dateKey(new Date()));today.replaceChildren();if(todayItems.length)todayItems.forEach(item=>today.append(mealCard(item,()=>deleteMeal(item.id))));else{today.className='demo-empty';today.innerHTML='<strong>Ainda não há refeições anotadas hoje.</strong>Anote uma refeição ou ideia quando quiser.'}}const days=new Set(all.map(m=>m.date)).size;const set=(id,value)=>{const e=document.getElementById(id);if(e)e.textContent=String(value)};set('meal-count',all.length);set('active-day-count',days);set('progress-meals',all.length);set('progress-days',days);const nav=document.getElementById('nav-meal-count');if(nav)nav.textContent=String(all.length);renderPet(all)}
+function renderMeals(){
+  const all=readMeals();
+  const dayItems=all.filter(m=>m.date===dateKey(selectedDate));
+  const list=document.getElementById('meal-list');
+  if(list){
+    list.replaceChildren();
+    if(dayItems.length)dayItems.forEach(item=>list.append(mealCard(item,()=>deleteMeal(item.id))));
+    else{
+      const empty=document.createElement('div');
+      empty.className='demo-empty';
+      empty.innerHTML='<strong>Nenhuma refeição anotada nesta data.</strong>Anote uma refeição ou ideia para esse dia.';
+      list.append(empty);
+    }
+  }
+  const today=document.getElementById('today-meals');
+  if(today){
+    const todayItems=all.filter(m=>m.date===dateKey(new Date()));
+    today.replaceChildren();
+    if(todayItems.length)todayItems.forEach(item=>today.append(mealCard(item,()=>deleteMeal(item.id))));
+    else{
+      today.className='demo-empty';
+      today.innerHTML='<strong>Ainda não há refeições anotadas hoje.</strong>Anote uma refeição ou ideia quando quiser.';
+    }
+  }
+  const days=new Set(all.map(m=>m.date)).size;
+  const set=(id,value)=>{const e=document.getElementById(id);if(e)e.textContent=String(value)};
+  set('meal-count',all.length);
+  set('active-day-count',days);
+  set('progress-meals',all.length);
+  set('progress-days',days);
+  const nav=document.getElementById('nav-meal-count');
+  if(nav)nav.textContent=String(all.length);
+  renderSelectedDaySummary(all);
+  renderDayPills();
+  renderPet(all);
+}
 function petUnlockStorageKey(){return 'nutriflow.pet.unlocked.'+(window.getNutriFlowUserId?.()||'demo')}
 function calculatePetProgress(entries){const today=dateKey(new Date());const dayNumber=value=>Math.floor(Date.parse(value+'T00:00:00Z')/86400000);const days=[...new Set(entries.map(item=>item.date).filter(value=>/^\d{4}-\d{2}-\d{2}$/.test(value)&&value<=today))].sort();let longest=0,run=0,previous=null;for(const value of days){const number=dayNumber(value);run=previous!==null&&number===previous+1?run+1:1;longest=Math.max(longest,run);previous=number}let current=0;if(days.length&&dayNumber(days[days.length-1])>=dayNumber(today)-1){current=1;for(let i=days.length-2;i>=0;i--){if(dayNumber(days[i])===dayNumber(days[i+1])-1)current++;else break}}let savedUnlock=false;try{savedUnlock=localStorage.getItem(petUnlockStorageKey())==='1';if(longest>=5&&!savedUnlock){localStorage.setItem(petUnlockStorageKey(),'1');savedUnlock=true}}catch{}return{today,days,longest,current,unlocked:savedUnlock||longest>=5,lastDay:days[days.length-1]||null}}
 function renderPet(entries=readMeals()){const state=calculatePetProgress(entries);const seeds=state.unlocked?5:state.current;const set=(id,value)=>{const el=document.getElementById(id);if(el)el.textContent=value};const status=state.unlocked?'Flow está liberado!':state.current?`${state.current} de 5 dias seguidos`:state.days.length?'Sua sequência voltou ao zero':'0 de 5 dias seguidos';const copy=state.unlocked?'Você completou 5 dias seguidos e liberou o Flow. Ele continua com você mesmo se sua sequência parar.':state.current?(state.lastDay===state.today?`${state.current} de 5 dias seguidos. Anote amanhã para continuar.`:`${state.current} de 5 dias seguidos. Anote hoje para continuar.`):state.days.length?'Sua sequência voltou ao zero. Anote hoje para começar de novo.':'Anote uma refeição ou ideia hoje para começar.';const homeCopy=state.unlocked?'Flow já é seu! Você pode manter sua sequência ou recomeçar quando quiser.':state.current?(state.lastDay===state.today?`${state.current} de 5 dias. Anote amanhã para continuar.`:`${state.current} de 5 dias. Anote hoje para continuar.`):state.days.length?'Sua sequência voltou ao zero. Anote hoje para começar de novo.':'Anote algo por 5 dias seguidos para liberar o Flow.';set('pet-avatar',state.unlocked?'🐱':'🌱');set('pet-avatar-home',state.unlocked?'🐱':'🌱');set('pet-title',state.unlocked?'Flow está com você!':'Libere o Flow');set('pet-title-home',state.unlocked?'Flow está com você!':'Seu pet está a caminho');set('pet-copy',copy);set('pet-copy-home',homeCopy);set('seed-count',status);set('streak-count-home',state.current);set('pet-note',state.unlocked?'Se passar um dia sem registro, só a sequência atual volta ao zero. O Flow continua com você.':'Se passar um dia sem registro, a sequência volta ao zero. Depois de liberar, o Flow continua com você.');const row=document.getElementById('seed-row');if(row){row.replaceChildren();for(let i=0;i<5;i++){const seed=document.createElement('span');seed.className='seed'+(i<seeds?' collected':'');seed.textContent='🌱';seed.setAttribute('aria-hidden','true');row.append(seed)}}const bar=document.getElementById('pet-progress-bar');if(bar)bar.style.width=(seeds*20)+'%';const progress=document.querySelector('[aria-label="Progresso para liberar o Flow"]');if(progress){progress.setAttribute('aria-valuenow',String(seeds));progress.setAttribute('aria-valuetext',status)}}
@@ -1174,7 +1295,37 @@ document.getElementById('assistant-form')?.addEventListener('submit',event=>{eve
 function deleteMeal(id){const next=readMeals().filter(m=>m.id!==id);if(saveMeals(next)){renderMeals();showToast('Registro removido deste navegador.')}}
 function clearDemoData(){if(!confirm('Apagar todos os registros desta demonstração neste navegador?'))return;try{localStorage.removeItem(STORAGE_KEY);localStorage.removeItem(petUnlockStorageKey())}catch{}renderMeals();showToast('Registros apagados.')}
 function toggleToggle(id){const el=document.getElementById(id);if(el)el.classList.toggle('on')}
-document.addEventListener('DOMContentLoaded',()=>{try{const theme=localStorage.getItem(THEME_KEY);if(theme==='dark'){document.documentElement.setAttribute('data-theme','dark')}const dark=document.documentElement.getAttribute('data-theme')==='dark';document.querySelectorAll('#ti-start,#ti-login,#ti-signup,#ti-reset,#ti-dash').forEach(e=>e.textContent=dark?'☀️':'🌙');document.querySelectorAll('#tl-start,#tl-login,#tl-signup,#tl-reset').forEach(e=>e.textContent=dark?'Claro':'Escuro');const themeLabel=document.getElementById('theme-label-sg');if(themeLabel)themeLabel.textContent=(dark?'Escuro':'Claro')+' ›'}catch{};const date=document.getElementById('today-date');if(date)date.textContent=new Date().toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long'});selectedDate=new Date();renderDayPills();renderMeals();document.getElementById('meal-form').addEventListener('submit',event=>{event.preventDefault();const name=document.getElementById('meal-name').value.trim();if(!name)return;const item={id:crypto.randomUUID(),kind:document.getElementById('meal-kind').value,name,date:document.getElementById('meal-date').value};const all=readMeals();all.push(item);if(saveMeals(all)){closeMealDialog();event.target.reset();selectedDate=new Date(item.date+'T12:00:00');renderDayPills();renderMeals();showToast(window.isNutriFlowAccountActive?.()?'Salvo neste dispositivo; sincronizando...':'Registro salvo somente neste navegador.')}})});
+document.addEventListener('DOMContentLoaded',()=>{
+  try{
+    const theme=localStorage.getItem(THEME_KEY);
+    if(theme==='dark')document.documentElement.setAttribute('data-theme','dark');
+    const dark=document.documentElement.getAttribute('data-theme')==='dark';
+    document.querySelectorAll('#ti-start,#ti-login,#ti-signup,#ti-reset,#ti-dash').forEach(e=>e.textContent=dark?'☀️':'🌙');
+    document.querySelectorAll('#tl-start,#tl-login,#tl-signup,#tl-reset').forEach(e=>e.textContent=dark?'Claro':'Escuro');
+    const themeLabel=document.getElementById('theme-label-sg');
+    if(themeLabel)themeLabel.textContent=(dark?'Escuro':'Claro')+' ›';
+  }catch{}
+  renderDailyMealTip();
+  const date=document.getElementById('today-date');
+  if(date)date.textContent=new Date().toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long'});
+  selectedDate=new Date();
+  renderMeals();
+  document.getElementById('meal-form').addEventListener('submit',event=>{
+    event.preventDefault();
+    const name=document.getElementById('meal-name').value.trim();
+    if(!name)return;
+    const item={id:crypto.randomUUID(),kind:document.getElementById('meal-kind').value,name,date:document.getElementById('meal-date').value};
+    const all=readMeals();
+    all.push(item);
+    if(saveMeals(all)){
+      closeMealDialog();
+      event.target.reset();
+      selectedDate=new Date(item.date+'T12:00:00');
+      renderMeals();
+      showToast(window.isNutriFlowAccountActive?.()?'Salvo neste dispositivo; sincronizando...':'Registro salvo somente neste navegador.');
+    }
+  });
+});
 </script>
 <script src="supabase-app.js"></script>
 <script>if('serviceWorker'in navigator&&location.protocol==='https:'){window.addEventListener('load',()=>navigator.serviceWorker.register('/service-worker.js').catch(()=>{}))}</script>
