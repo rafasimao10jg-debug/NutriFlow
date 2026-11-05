@@ -108,6 +108,10 @@ O primeiro MVP pode guardar descrições livres e horários. Não estime caloria
 
 Não use rankings, culpa, metas automáticas de peso ou alertas para compensar refeições. Explique a regra da sequência do pet com clareza e sem julgamento.
 
+### Resumo semanal
+
+No início da semana, exibir um resumo da última semana completa (segunda a domingo): quantidade de dias com registros e quantidade de refeições ou ideias anotadas. Excluir planos futuros. O resumo é descritivo: não dá nota, não avalia a qualidade da alimentação e não infere saúde, nutrientes ou resultados. Incluir uma frase curta de incentivo; a pessoa pode pedir uma variação à IA local. Essa ação usa uma resposta da cota e envia ao modelo apenas totais agregados. A geração só começa depois de ação explícita. Não prometer notificação push: o resumo fica disponível dentro do app quando a pessoa o abre.
+
 ### Assistente NutriFlow (modo de demonstração)
 
 **Apresentação:** Posso ajudar com ideias gerais para organizar refeições e explorar opções. Você decide o que combina com sua rotina.<br>
@@ -115,6 +119,8 @@ Não use rankings, culpa, metas automáticas de peso ou alertas para compensar r
 **Aviso contextual:** As respostas são sugestões gerais e podem conter erros. Para orientação individual ou uma condição de saúde, converse com um nutricionista ou profissional de saúde.
 
 O assistente usa Qwen2.5-0.5B local por WebLLM/WebGPU, com histórico curto da conversa mantido só em memória nesta sessão. Após a ativação explícita e o primeiro download, a pergunta é processada no dispositivo e não é enviada ao servidor NutriFlow nem a uma API de geração. A biblioteca e os arquivos do modelo são baixados de serviços externos. O servidor recebe somente a sessão e uma chamada sem o texto da pergunta para conferir os limites de uso; explique isso na Política de Privacidade. Informar necessidade de internet no primeiro uso, espaço, memória, bateria e compatibilidade; não iniciar o download até a pessoa ativar. O assistente oferece ideias gerais de organização; não deve fornecer diagnóstico, tratamento, prescrição clínica, orientação para urgências ou garantir segurança em alergias. Se o assunto envolver doença, gravidez, transtorno alimentar, criança, medicamento ou outra decisão clínica, explique o limite e recomende procurar profissional qualificado. Não invente nutrientes, fontes ou credenciais profissionais.
+
+Pedidos comuns de ideias gerais de refeição podem usar sugestões predefinidas no app para reduzir recusas e atrasos do modelo pequeno. Perguntas abertas continuam usando o modelo local e devem ser curtas, cautelosas e transparentes sobre incertezas. A frase da revisão semanal recebe somente contagens agregadas e é validada antes de aparecer; se o modelo falhar, usar uma frase segura predefinida.
 
 ## Mensagens de estado
 
