@@ -3,7 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>NutriFlow AI — protótipo</title>
+<title>NutriFlow — organize sua rotina alimentar</title>
+<meta name="description" content="Organize ideias de refeições, consulte seus registros e acompanhe sua rotina no seu ritmo com o NutriFlow.">
+<meta name="theme-color" content="#5B4FE9">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="NutriFlow">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" href="/icons/nutriflow.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/icons/icon-192.png">
+<meta property="og:title" content="NutriFlow — mais clareza para organizar refeições">
+<meta property="og:description" content="Registre ideias, consulte seu histórico e acompanhe sua sequência no seu ritmo.">
+<meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -116,6 +127,51 @@ input,select{font-family:inherit}
   min-height:100vh;padding:32px 24px;
   background:var(--bg);position:relative;overflow:hidden;
 }
+.landing-wrap{flex-direction:column;align-items:center;min-height:100vh;padding:24px;background:var(--bg);position:relative;overflow:hidden}
+.landing-shell{width:100%;max-width:940px;position:relative;z-index:1}
+.landing-header{display:flex;align-items:center;justify-content:space-between;margin:8px 0 44px}
+.landing-header{flex-wrap:wrap;gap:12px}
+.landing-login,.landing-theme{width:auto;margin:0;padding:10px 14px;white-space:nowrap}
+.landing-theme{display:flex;align-items:center;gap:7px}
+.landing-header .auth-logo{margin:0}
+.landing-actions{display:flex;gap:10px;align-items:center}
+.landing-hero{display:grid;grid-template-columns:1.2fr .8fr;gap:32px;align-items:center;padding:clamp(24px,5vw,52px);border:1px solid var(--border);border-radius:var(--r-xl);background:linear-gradient(135deg,var(--bg-card),var(--pri-light));box-shadow:var(--sh-lg)}
+.landing-hero .auth-title{font-size:clamp(32px,5vw,48px);line-height:1.1;margin-bottom:14px}
+.landing-copy{font-size:16px;line-height:1.65;color:var(--ink-mid);margin:0 0 20px}
+.landing-cta{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.landing-cta .btn-pri,.landing-cta .btn-social{width:auto;margin:0;padding:12px 18px}
+.landing-demo-link{font-size:13px;color:var(--pri);font-weight:700;cursor:pointer;padding:10px}
+.landing-mascot{min-height:230px;display:grid;place-items:center;font-size:100px;background:linear-gradient(145deg,var(--teal-light),var(--pri-light));border-radius:var(--r-xl)}
+.landing-features{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:22px 0}
+.landing-feature{padding:18px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-lg)}
+.landing-feature strong{display:block;color:var(--ink);font-size:14px;margin:8px 0 4px}
+.landing-feature span{font-size:12px;line-height:1.5;color:var(--ink-mid)}
+.offer-section{margin:30px 0 22px}
+.offer-heading{text-align:center;margin:0 0 18px}
+.offer-heading h2{font-family:'Syne',sans-serif;font-size:clamp(22px,4vw,30px);color:var(--ink);margin:0 0 6px}
+.offer-heading p{font-size:14px;color:var(--ink-mid);margin:0}
+.offer-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.offer-card{display:flex;flex-direction:column;padding:22px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:var(--sh-sm)}
+.offer-card.featured{border-color:var(--pri);box-shadow:0 0 0 2px var(--pri-light),var(--sh-sm)}
+.offer-tag{font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-weight:800;color:var(--pri);margin-bottom:8px}
+.offer-title{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--ink)}
+.offer-price{font-family:'Syne',sans-serif;font-size:30px;font-weight:800;color:var(--ink);margin:10px 0 2px}
+.offer-frequency{font-size:12px;color:var(--ink-mid);margin-bottom:14px}
+.offer-list{display:grid;gap:9px;padding:0;margin:0 0 18px;list-style:none;color:var(--ink-mid);font-size:13px;line-height:1.45}
+.offer-list li::before{content:'✓';color:var(--teal);font-weight:800;margin-right:8px}
+.offer-card .btn-pri,.offer-card .btn-social{width:100%;margin-top:auto}
+.offer-status{font-size:11px;line-height:1.45;color:var(--ink-soft);text-align:center;margin:10px 0 0}
+.offer-terms{font-size:11px;line-height:1.5;color:var(--ink-soft);text-align:center;margin:14px auto 0;max-width:720px}
+.pix-dialog{width:min(420px,calc(100% - 28px));max-height:88vh;overflow:auto;margin:auto;padding:24px;background:var(--bg-card);color:var(--ink);border:1px solid var(--border);border-radius:var(--r-xl);box-shadow:var(--sh-lg)}
+.pix-dialog::backdrop{background:rgba(15,19,51,.62);backdrop-filter:blur(4px)}
+.pix-dialog h2{font-family:'Syne',sans-serif;font-size:22px;margin:0 0 8px}
+.pix-dialog p{font-size:13px;line-height:1.5;color:var(--ink-mid)}
+.pix-qr{display:block;width:min(240px,100%);aspect-ratio:1;object-fit:contain;margin:14px auto;border:1px solid var(--border);border-radius:12px;background:#fff}
+.pix-code{width:100%;min-height:74px;resize:vertical;border:1px solid var(--border);border-radius:10px;padding:10px;background:var(--bg-subtle);color:var(--ink);font:12px/1.45 monospace}
+.pix-actions{display:flex;gap:10px;margin-top:12px}
+.pix-actions button{width:100%}
+.landing-disclaimer{font-size:12px;line-height:1.55;color:var(--ink-mid);text-align:center;padding:0 12px 20px}
+@media(max-width:680px){.landing-wrap{padding:18px}.landing-header{margin:12px 0 24px}.landing-hero{grid-template-columns:1fr;gap:18px;padding:24px}.landing-mascot{min-height:125px;font-size:64px;grid-row:1}.landing-features{grid-template-columns:1fr;gap:10px}.landing-feature{padding:14px}.offer-cards{grid-template-columns:1fr}.offer-card{padding:18px}.landing-header .auth-logo-name{font-size:19px}.landing-cta{align-items:stretch;flex-direction:column}.landing-cta .btn-pri,.landing-cta .btn-social,.landing-demo-link{width:100%;text-align:center;justify-content:center}}
 /* decorative blobs */
 .auth-blob{
   position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;opacity:.35;
@@ -199,6 +255,7 @@ input,select{font-family:inherit}
 
 .auth-foot{text-align:center;margin-top:20px;font-size:13px;color:var(--ink-mid)}
 .auth-foot a{color:var(--pri);font-weight:600;cursor:pointer}
+.auth-link{display:inline-block;padding:8px 0;background:transparent;color:var(--pri);font-size:12px;font-weight:600;text-align:right}
 
 /* pw meter */
 .pw-meter{display:flex;gap:4px;margin-top:7px}
@@ -453,6 +510,23 @@ input,select{font-family:inherit}
   font-size:11px;font-weight:700;padding:4px 10px;
   border-radius:var(--r-pill);margin-bottom:10px;
 }
+.assistant-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-lg);padding:18px;margin:14px 0}
+.assistant-intro{font-size:14px;line-height:1.55;color:var(--ink-mid);margin:8px 0 14px}
+.assistant-demo{font-size:12px;line-height:1.5;color:var(--ink-mid);background:var(--amber-light);border-radius:12px;padding:10px 12px;margin:12px 0}
+.assistant-local-controls{display:grid;gap:8px;margin:12px 0}
+.assistant-local-controls[hidden]{display:none}
+.assistant-local-status{font-size:12px;line-height:1.45;color:var(--ink-mid);min-height:18px}
+.assistant-local-status[data-state="error"]{color:#b42318}
+.assistant-local-status[data-state="ready"]{color:#16804a}
+.assistant-local-button{width:100%;min-height:42px}
+.assistant-chips{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.assistant-chip{border:1px solid var(--border);border-radius:999px;background:var(--bg-subtle);color:var(--ink);padding:9px 12px;font:inherit;font-size:12px;cursor:pointer}
+.assistant-chat{display:grid;gap:10px;max-height:260px;overflow:auto;margin:14px 0}
+.assistant-message{max-width:92%;padding:12px 14px;border-radius:16px;background:var(--bg-subtle);color:var(--ink);font-size:13px;line-height:1.55;white-space:pre-line}
+.assistant-message.user{justify-self:end;background:var(--pri);color:#fff}
+.assistant-form{display:flex;gap:8px}
+.assistant-form input{min-width:0;flex:1;border:1px solid var(--border);border-radius:12px;background:var(--bg);color:var(--ink);padding:12px;font:inherit;font-size:14px}
+.assistant-form button{width:auto;padding:0 16px}
 .insight-item{display:flex;gap:10px;margin-bottom:10px}
 .insight-item:last-child{margin-bottom:0}
 .i-dot{
@@ -696,17 +770,107 @@ input,select{font-family:inherit}
 .dialog-head h2{font-family:'Syne',sans-serif;font-size:20px}
 .dialog-close{width:36px;height:36px;border-radius:50%;background:var(--bg-subtle);color:var(--ink);font-size:20px}
 .demo-empty{background:var(--bg-card);border:1px dashed var(--border-mid);border-radius:var(--r-lg);padding:22px;text-align:center;color:var(--ink-mid);font-size:13px}
+.pet-card{display:grid;grid-template-columns:84px 1fr;gap:16px;align-items:center;background:linear-gradient(135deg,var(--pri-light),var(--teal-light));border:1px solid var(--border);border-radius:var(--r-lg);padding:18px;margin:18px 0}
+.pet-avatar{width:76px;height:76px;border-radius:24px;display:grid;place-items:center;background:var(--bg-card);font-size:42px;box-shadow:var(--sh-sm)}
+.pet-title{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--ink);margin-bottom:4px}
+.pet-copy{font-size:13px;line-height:1.5;color:var(--ink-mid)}
+.seed-row{display:flex;gap:6px;align-items:center;margin:12px 0 7px}
+.seed{font-size:21px;filter:grayscale(1);opacity:.35}
+.seed.collected{filter:none;opacity:1}
+.pet-progress{height:7px;border-radius:99px;background:var(--bg-card);overflow:hidden;margin:8px 0}
+.pet-progress span{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--pri),var(--teal));transition:width .25s}
+.pet-note{font-size:11px;color:var(--ink-soft);line-height:1.45;margin-top:7px}
+.guide-dialog{width:min(560px,calc(100% - 28px));max-height:min(86vh,720px);overflow:auto;margin:auto;background:var(--bg-card);color:var(--ink);border:1px solid var(--border);border-radius:var(--r-xl);padding:24px;box-shadow:var(--sh-lg)}
+.guide-dialog::backdrop{background:rgba(15,19,51,.52);backdrop-filter:blur(4px)}
+.guide-intro{color:var(--ink-mid);line-height:1.55;margin:0 0 18px}
+.guide-steps{display:grid;gap:12px}
+.guide-step{padding:14px;border:1px solid var(--border);border-radius:var(--r-md);background:var(--bg-subtle)}
+.guide-step h3{font-size:15px;margin-bottom:5px;color:var(--ink)}
+.guide-step p{font-size:13px;line-height:1.55;color:var(--ink-mid);margin:0}
+.guide-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:18px}
+.guide-actions .btn-social,.guide-actions .btn-pri{width:auto}
+.guide-open{margin:12px 0 0;padding:8px 0;background:transparent;color:var(--pri);font-size:13px;font-weight:700}
 .demo-empty strong{display:block;color:var(--ink);margin-bottom:5px}
 </style>
 </head>
 <body>
 
 <div class="toast" id="toast"></div>
+<dialog class="pix-dialog" id="pix-dialog" aria-labelledby="pix-dialog-title">
+  <h2 id="pix-dialog-title">Pague com Pix</h2>
+  <p><strong>Valor: R$ 29,90.</strong> Escaneie o QR Code ou copie o código Pix no app do seu banco. O acesso será liberado após o Mercado Pago confirmar o pagamento.</p>
+  <img class="pix-qr" id="pix-qr-image" alt="QR Code Pix para pagamento">
+  <label for="pix-copy-code" style="display:block;font-size:12px;font-weight:700;margin:8px 0">Pix copia e cola</label>
+  <textarea class="pix-code" id="pix-copy-code" readonly></textarea>
+  <p id="pix-expiration"></p>
+  <div class="pix-actions"><button class="btn-pri" type="button" onclick="copyPixCode()">Copiar código Pix</button><button class="btn-social" type="button" onclick="document.getElementById('pix-dialog').close()">Fechar</button></div>
+</dialog>
+
+<!-- PUBLIC INTRO / CAMPAIGN DESTINATION -->
+<main class="screen landing-wrap active" id="screen-start">
+  <div class="auth-blob blob1"></div><div class="auth-blob blob2"></div>
+  <div class="landing-shell">
+    <header class="landing-header">
+      <div class="auth-logo"><div class="auth-logo-mark">🌿</div><div class="auth-logo-name">NutriFlow</div></div>
+      <div class="landing-actions"><button class="btn-social landing-theme" type="button" onclick="toggleTheme()"><span id="ti-start">🌙</span><span id="tl-start">Escuro</span></button><button class="btn-social landing-login" type="button" onclick="goTo('login')">Já tenho conta</button></div>
+    </header>
+    <section class="landing-hero" aria-labelledby="landing-title">
+      <div>
+        <div class="hero-eyebrow">SUA ROTINA, NO SEU RITMO</div>
+        <h1 class="auth-title" id="landing-title">Mais clareza para organizar suas refeições.</h1>
+        <p class="landing-copy">Guarde ideias, consulte o que anotou e acompanhe sua constância em um só lugar. Comece do jeito que fizer sentido para você.</p>
+        <div class="landing-cta">
+          <button class="btn-pri" type="button" onclick="goTo('signup')">Criar minha conta</button>
+          <button class="btn-social" type="button" onclick="goToDash()">Experimentar demonstração</button>
+        </div>
+      </div>
+      <div class="landing-mascot" aria-hidden="true">🗓️</div>
+    </section>
+    <section class="landing-features" aria-label="O que você pode fazer no NutriFlow">
+      <article class="landing-feature"><span aria-hidden="true">🥗</span><strong>Guarde suas ideias</strong><span>Anote uma refeição por data e consulte sua lista quando quiser.</span></article>
+      <article class="landing-feature"><span aria-hidden="true">📈</span><strong>Acompanhe sua sequência</strong><span>Veja seus dias com registro e avance no seu ritmo.</span></article>
+      <article class="landing-feature"><span aria-hidden="true">🌱</span><strong>Conheça o Flow</strong><span>Registre algo por cinco dias seguidos para liberar seu pet de companhia.</span></article>
+    </section>
+    <section class="offer-section" id="oferta" aria-labelledby="offer-title">
+      <div class="offer-heading"><h2 id="offer-title">Escolha como quer usar o NutriFlow</h2><p>Comece organizando sua rotina e adicione mais apoio de IA quando quiser.</p></div>
+      <div class="offer-cards">
+        <article class="offer-card">
+          <div class="offer-tag">Acesso ao app · somente Pix</div>
+          <div class="offer-title">NutriFlow</div>
+          <div class="offer-price">R$ 29,90</div>
+          <div class="offer-frequency">pagamento único</div>
+          <ul class="offer-list">
+            <li>Acesso às ferramentas do app</li>
+            <li>Registros e acompanhamento do Flow</li>
+            <li>5 respostas da IA incluídas no acesso</li>
+          </ul>
+          <button class="btn-pri" type="button" onclick="startNutriFlowCheckout('base')">Continuar para o acesso</button>
+          <p class="offer-status">Pagamento somente via Pix. Acesso após confirmação.</p>
+        </article>
+        <article class="offer-card featured">
+          <div class="offer-tag">IA opcional · somente Pix</div>
+          <div class="offer-title">NutriFlow + IA</div>
+          <div class="offer-price">R$ 14,90</div>
+          <div class="offer-frequency">assinatura mensal via Pix · até 100 respostas por mês civil</div>
+          <ul class="offer-list">
+            <li>Respostas de IA para ideias e organização</li>
+            <li>Até 100 respostas por mês civil; limite reinicia no dia 1</li>
+            <li>Assinatura separada do acesso ao app</li>
+          </ul>
+          <button class="btn-social" type="button" onclick="startNutriFlowCheckout('ai')">Ativar assinatura de IA</button>
+          <p class="offer-status">Renovação mensal via Pix; ativa após confirmação de cada cobrança.</p>
+        </article>
+      </div>
+      <p class="offer-terms">O valor e os limites estão definidos para a oferta planejada. Antes de iniciar qualquer pagamento, o checkout mostrará renovação, cancelamento, suporte e condições aplicáveis. A IA oferece ideias gerais e não substitui orientação profissional.</p>
+    </section>
+    <p class="landing-disclaimer">Na demonstração, os registros ficam neste navegador. O assistente pode funcionar com um modelo baixado e executado no próprio dispositivo; as perguntas não são enviadas ao servidor do NutriFlow. O NutriFlow não substitui orientação profissional.</p>
+  </div>
+</main>
 
 <!-- ══════════════════════════════════════
      LOGIN
 ══════════════════════════════════════ -->
-<div class="screen auth-wrap active" id="screen-login">
+<div class="screen auth-wrap" id="screen-login">
   <div class="auth-blob blob1"></div>
   <div class="auth-blob blob2"></div>
   <button class="theme-pill" onclick="toggleTheme()">
@@ -718,21 +882,17 @@ input,select{font-family:inherit}
       <div class="auth-logo-name">NutriFlow</div>
     </div>
     <div class="auth-title">Bem-vindo de volta</div>
-    <div class="auth-sub">Entre para continuar sua jornada</div>
+    <div class="auth-sub">Entre para ver suas refeições e continuar de onde parou.</div>
 
-    <div class="field"><label>E-mail</label><input type="email" placeholder="voce@email.com"></div>
-    <div class="field"><label>Senha</label><input type="password" placeholder="••••••••"></div>
+    <div class="field"><label for="login-email">E-mail</label><input id="login-email" type="email" autocomplete="email" required placeholder="voce@email.com"></div>
+    <div class="field"><label for="login-password">Senha</label><input id="login-password" type="password" autocomplete="current-password" required placeholder="••••••••"></div>
 
-    <button class="btn-pri" style="margin-bottom:6px" onclick="showToast('O login real ainda não está conectado.')">Entrar</button>
+    <button class="btn-pri" style="margin-bottom:6px" onclick="loginWithSupabase()">Entrar</button>
     <button class="btn-social" onclick="goToDash()">Explorar demonstração</button>
-    <div class="demo-note">Prévia visual: não informe senhas nem dados pessoais. O cadastro e a autenticação ainda não estão conectados.</div>
-    <div style="text-align:right;margin-bottom:16px"><span style="font-size:12px;color:var(--pri);cursor:pointer;font-weight:600">Esqueci minha senha</span></div>
+    <div class="demo-note">Quer só conhecer o app? Toque em “Explorar demonstração”. Os dados de exemplo ficam neste navegador.</div>
+    <div style="text-align:right;margin-bottom:16px"><button class="auth-link" type="button" onclick="recoverSupabasePassword()">Esqueci minha senha</button></div>
 
-    <div class="or-row">ou</div>
-    <button class="btn-social" onclick="showToast('🔵 Google em breve')">🔵 Continuar com Google</button>
-    <button class="btn-social" onclick="showToast('🍎 Apple em breve')">🍎 Continuar com Apple</button>
-
-    <div class="auth-foot">Não tem conta? <a onclick="goTo('signup')">Criar agora</a></div>
+    <div class="auth-foot">Não tem conta? <a onclick="goTo('signup')">Criar agora</a><br><a onclick="goTo('start')">Voltar ao início</a></div>
   </div>
 </div>
 
@@ -751,31 +911,33 @@ input,select{font-family:inherit}
       <div class="auth-logo-name">NutriFlow</div>
     </div>
     <div class="auth-title">Criar conta</div>
-    <div class="auth-sub">Organize suas refeições e retome sua rotina quando quiser.</div>
+    <div class="auth-sub">Salve suas refeições e acesse seus registros em outro momento.</div>
 
-    <div class="two-col">
-      <div class="field"><label>Nome</label><input type="text" placeholder="João"></div>
-      <div class="field"><label>Sobrenome</label><input type="text" placeholder="Silva"></div>
-    </div>
-    <div class="field"><label>E-mail</label><input type="email" placeholder="voce@email.com"></div>
+    <div class="field"><label for="signup-name">Como podemos chamar você?</label><input id="signup-name" type="text" autocomplete="name" maxlength="80" required placeholder="Seu nome"></div>
+    <div class="field"><label for="signup-email">E-mail</label><input id="signup-email" type="email" autocomplete="email" required placeholder="voce@email.com"></div>
     <div class="field">
-      <label>Senha</label>
-      <input type="password" placeholder="Mínimo 8 caracteres" oninput="pwMeter(this.value)">
+      <label for="signup-password">Senha</label>
+      <input id="signup-password" type="password" autocomplete="new-password" minlength="8" required placeholder="Mínimo 8 caracteres" oninput="pwMeter(this.value)">
       <div class="pw-meter"><div class="pw-bar" id="b1"></div><div class="pw-bar" id="b2"></div><div class="pw-bar" id="b3"></div></div>
     </div>
-    <div class="field">
-      <label>Objetivo</label>
-      <select>
-        <option>Planejar minhas refeições</option>
-        <option>Registrar minhas refeições</option>
-        <option>Criar mais constância</option>
-        <option>Explorar sugestões</option>
-      </select>
-    </div>
+    <div class="field"><label for="signup-password-confirm">Repita sua senha</label><input id="signup-password-confirm" type="password" autocomplete="new-password" minlength="8" required placeholder="Digite a senha novamente"></div>
+    <button class="btn-pri" onclick="registerWithSupabase()">Criar minha conta</button>
+    <div class="demo-note">Vamos enviar um e-mail para confirmar seu cadastro. Crie uma senha que você não usa em outros sites.</div>
+    <div class="auth-foot" style="margin-top:16px">Já tem conta? <a onclick="goTo('login')">Entrar</a><br><a onclick="goTo('start')">Voltar ao início</a></div>
+  </div>
+</div>
 
-    <button class="btn-pri" onclick="showToast('O cadastro real ainda não está conectado.')">Criar minha conta</button>
-    <div class="demo-note">Este protótipo não cria contas e não salva senhas. Não informe dados de saúde neste formulário.</div>
-    <div class="auth-foot" style="margin-top:16px">Já tem conta? <a onclick="goTo('login')">Entrar</a></div>
+<!-- PASSWORD RESET -->
+<div class="screen auth-wrap" id="screen-reset">
+  <div class="auth-blob blob1"></div><div class="auth-blob blob2"></div>
+  <button class="theme-pill" type="button" onclick="toggleTheme()"><span id="ti-reset">🌙</span><span id="tl-reset">Escuro</span></button>
+  <div class="auth-box">
+    <div class="auth-logo"><div class="auth-logo-mark">🌿</div><div class="auth-logo-name">NutriFlow</div></div>
+    <div class="auth-title">Crie uma nova senha</div>
+    <div class="auth-sub">Escolha uma senha com pelo menos 8 caracteres.</div>
+    <div class="field"><label for="reset-password">Nova senha</label><input id="reset-password" type="password" autocomplete="new-password" minlength="8" required></div>
+    <div class="field"><label for="reset-password-confirm">Repita a nova senha</label><input id="reset-password-confirm" type="password" autocomplete="new-password" minlength="8" required></div>
+    <button class="btn-pri" type="button" onclick="saveNewPassword()">Salvar nova senha</button>
   </div>
 </div>
 
@@ -791,6 +953,7 @@ input,select{font-family:inherit}
       <div class="topbar-logo-name">NutriFlow</div>
     </div>
     <div class="topbar-actions">
+      <button class="topbar-btn" type="button" onclick="openTutorial()" aria-label="Abrir guia rápido" title="Guia rápido">?</button>
       <button class="topbar-btn" onclick="toggleTheme()" title="Tema">
         <span id="ti-dash">🌙</span>
       </button>
@@ -809,26 +972,33 @@ input,select{font-family:inherit}
       <div class="hero-card">
         <div class="hero-eyebrow" id="today-date">Sua rotina começa no seu ritmo</div>
         <div class="hero-title">Mais clareza para organizar suas refeições. 🌿</div>
-        <div class="hero-sub">Planeje o que quiser guardar e volte para continuar quando fizer sentido.</div>
-        <button class="hero-btn" onclick="navTo('meals')">Abrir meu planejamento →</button>
+        <div class="hero-sub">Anote refeições ou ideias para consultar depois.</div>
+        <button class="hero-btn" onclick="navTo('meals')">Ver minhas refeições →</button>
+        <button class="guide-open" type="button" onclick="openTutorial()">Como usar o app</button>
       </div>
 
-      <div class="demo-banner">Protótipo local: os registros ficam apenas neste navegador. Não há conta, sincronização ou proteção de dados de saúde. Use somente dados fictícios nesta prévia.</div>
+      <div class="demo-banner" id="storage-notice">Demonstração: seus registros ficam salvos neste navegador.</div>
 
       <div class="quick-stats">
-        <div class="qs-card"><div class="qs-top"><div class="qs-icon purple">🗓️</div><div class="qs-delta neu">Neste navegador</div></div><div class="qs-val" id="plan-count">0</div><div class="qs-label">Planos salvos</div></div>
+        <div class="qs-card"><div class="qs-top"><div class="qs-icon purple">🔥</div><div class="qs-delta neu">Flow</div></div><div class="qs-val" id="streak-count-home">0</div><div class="qs-label">Dias seguidos</div></div>
         <div class="qs-card"><div class="qs-top"><div class="qs-icon teal">🥗</div><div class="qs-delta neu">Seus registros</div></div><div class="qs-val" id="meal-count">0</div><div class="qs-label">Refeições anotadas</div></div>
         <div class="qs-card"><div class="qs-top"><div class="qs-icon amber">📅</div><div class="qs-delta neu">Sem cobrança</div></div><div class="qs-val" id="active-day-count">0</div><div class="qs-label">Dias com registro</div></div>
-        <div class="qs-card"><div class="qs-top"><div class="qs-icon rose">💾</div><div class="qs-delta neu">Local</div></div><div class="qs-val">—</div><div class="qs-label">Sincronização</div></div>
+        <div class="qs-card"><div class="qs-top"><div class="qs-icon rose">💾</div><div class="qs-delta neu" id="sync-status-home">Local</div></div><div class="qs-val">—</div><div class="qs-label">Sincronização</div></div>
       </div>
 
-      <div class="section-head"><div class="section-title">Registros de hoje</div><span class="section-link" onclick="navTo('meals')">Ver planejamento</span></div>
-      <div id="today-meals" class="demo-empty"><strong>Seu histórico começa quando você quiser.</strong>Use somente informações fictícias nesta demonstração.</div>
+      <div class="section-head"><div class="section-title">O que você anotou hoje</div><span class="section-link" onclick="navTo('meals')">Ver todas</span></div>
+      <div id="today-meals" class="demo-empty"><strong>Ainda não há refeições anotadas hoje.</strong>Adicione uma ideia quando quiser.</div>
       <div class="meal-actions"><button class="btn-pri" style="max-width:240px" onclick="openMealDialog()">+ Registrar refeição</button></div>
+
+      <div class="pet-card" onclick="navTo('ai')" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();navTo('ai')}">
+        <div class="pet-avatar" id="pet-avatar-home">🌱</div>
+        <div><div class="pet-title" id="pet-title-home">Seu pet está a caminho</div><div class="pet-copy" id="pet-copy-home">Registre algo por 5 dias seguidos para liberar o Flow.</div><div class="section-link">Ver progresso do Flow →</div></div>
+      </div>
 
       <div class="insight-card">
         <div class="insight-ai">✨ NutriFlow AI</div>
-        <div class="i-text">As sugestões de inteligência artificial ainda não estão conectadas. O produto não fornece diagnóstico nem recomendações clínicas.</div>
+        <div class="i-text">Quer ideias simples para organizar suas refeições? Abra o assistente e conte o que você precisa.</div>
+        <button class="btn-pri" style="margin-top:12px;max-width:230px" type="button" onclick="navTo('ai')">Abrir assistente IA →</button>
       </div>
     </div>
 
@@ -838,58 +1008,84 @@ input,select{font-family:inherit}
         <div class="week-nav"><button class="wn-btn" onclick="shiftWeek(-1)" aria-label="Semana anterior">‹</button><div class="week-label" id="week-label"></div><button class="wn-btn" onclick="shiftWeek(1)" aria-label="Próxima semana">›</button></div>
         <div class="day-pills" id="day-pills"></div>
       </div>
-      <div class="demo-banner">Planejamento de demonstração guardado neste dispositivo. Não use informações médicas ou sensíveis.</div>
-      <button class="gen-btn" onclick="openMealDialog()">+ Planejar ou registrar refeição</button>
+      <div class="demo-banner">Anote refeições ou ideias. Na demonstração, os dados ficam neste navegador.</div>
+      <button class="gen-btn" onclick="openMealDialog()">+ Anotar refeição</button>
       <div style="height:14px"></div>
       <div id="meal-list" class="demo-empty"><strong>Nenhuma refeição nesta data.</strong>Adicione uma ideia fictícia para ver como o planejamento funciona.</div>
     </div>
 
     <!-- PROGRESS -->
     <div class="sub" id="sub-progress">
-      <div class="prog-hero"><div class="ph-row"><div class="ph-metric"><div class="ph-val" id="progress-meals">0</div><div class="ph-label">refeições anotadas</div></div><div class="ph-divider"></div><div class="ph-metric"><div class="ph-val" id="progress-days">0</div><div class="ph-label">dias com registro</div></div><div class="ph-divider"></div><div class="ph-metric"><div class="ph-val" id="progress-plans">0</div><div class="ph-label">planos salvos</div></div></div><div class="ph-delta">Acompanhe os registros que você escolheu guardar.</div></div>
-      <div class="chart-card"><div class="section-title" style="margin-bottom:12px">Seu histórico</div><div id="progress-empty" class="demo-empty"><strong>O primeiro registro é um começo.</strong>Não há metas automáticas de peso, calorias ou atividade neste protótipo.</div></div>
+      <div class="prog-hero"><div class="ph-row"><div class="ph-metric"><div class="ph-val" id="progress-meals">0</div><div class="ph-label">refeições e ideias</div></div><div class="ph-divider"></div><div class="ph-metric"><div class="ph-val" id="progress-days">0</div><div class="ph-label">dias com registro</div></div></div><div class="ph-delta">Acompanhe os registros que você escolheu guardar.</div></div>
+      <div class="chart-card"><div class="section-title" style="margin-bottom:12px">Seu histórico</div><div id="progress-empty" class="demo-empty"><strong>Seu histórico começa com a primeira anotação.</strong>Se a sequência do pet parar, os registros anteriores continuam salvos.</div></div>
       <div class="section-head"><div class="section-title">Você decide o ritmo</div></div>
-      <div class="goal-list"><div class="goal-row"><div class="gr-name">🗓️ Planeje quando ajudar</div><div class="gr-detail">Troque ou remova qualquer ideia depois.</div></div><div class="goal-row"><div class="gr-name">🥗 Registre o que quiser guardar</div><div class="gr-detail">Um registro não precisa ser completo ou perfeito.</div></div><div class="goal-row"><div class="gr-name">🌿 Retome sem cobrança</div><div class="gr-detail">Um dia diferente não apaga seu histórico.</div></div></div>
+      <div class="goal-list"><div class="goal-row"><div class="gr-name">🗓️ Anote refeições ou ideias</div><div class="gr-detail">Você pode mudar ou remover os registros depois.</div></div><div class="goal-row"><div class="gr-name">🥗 Veja sua lista</div><div class="gr-detail">Abra “Refeições” para consultar o que anotou em cada data.</div></div><div class="goal-row"><div class="gr-name">📅 Seu histórico continua salvo</div><div class="gr-detail">A sequência do pet reinicia se passar um dia sem registro; seus registros anteriores continuam no histórico.</div></div></div>
     </div>
 
     <!-- AI TOOLS -->
     <div class="sub" id="sub-ai">
-      <div class="coming-soon"><div class="cs-icon">✨</div><div class="cs-title">Assistente NutriFlow</div><div class="cs-sub">As sugestões de IA ainda estão em desenvolvimento. O protótipo não analisa hábitos nem cria planos personalizados.</div><div class="cs-pill">Em preparação</div><p class="demo-note">Quando disponível, a IA deverá oferecer ideias gerais e explicar seus limites. Ela não substituirá orientação profissional.</p></div>
+      <div class="section-head"><div class="section-title">✨ Assistente NutriFlow</div></div>
+      <div class="assistant-card">
+        <div class="pet-title">Ideias para sua rotina</div>
+        <p class="assistant-intro">Peça ideias gerais para organizar refeições. Você escolhe o que combina com você.</p>
+        <div class="assistant-demo">A IA roda no seu aparelho e não envia o texto da conversa ao servidor. O modelo ocupa cerca de 290 MB para baixar. Esta versão reduz o uso de memória gráfica; o primeiro download precisa de internet e espaço. Prefira Wi-Fi.</div>
+        <div class="assistant-local-controls" id="assistant-local-controls">
+          <button class="btn-pri assistant-local-button" id="assistant-local-enable" type="button" onclick="enableLocalAssistant()">Ativar IA neste dispositivo</button>
+          <div class="assistant-local-status" id="assistant-local-status" role="status" aria-live="polite">O modelo é compacto para usar menos memória; ainda assim, o download tem cerca de 290 MB.</div>
+        </div>
+        <div class="assistant-chips" aria-label="Sugestões de perguntas">
+          <button class="assistant-chip" type="button" onclick="askAssistant('Me ajude a organizar refeições para amanhã')">Organizar amanhã</button>
+          <button class="assistant-chip" type="button" onclick="askAssistant('Quero ideias simples para minhas refeições')">Ideias simples</button>
+          <button class="assistant-chip" type="button" onclick="askAssistant('Como planejar usando o que já tenho em casa?')">Usar o que tenho em casa</button>
+        </div>
+        <div class="assistant-chat" id="assistant-chat" aria-live="polite" aria-label="Conversa com o assistente">
+          <div class="assistant-message">Olá! Posso ajudar com ideias gerais e com a organização das refeições. Escolha uma sugestão ou escreva sua pergunta.</div>
+        </div>
+        <form class="assistant-form" id="assistant-form"><input id="assistant-input" type="text" maxlength="600" placeholder="Escreva sua pergunta…" aria-label="Sua pergunta" required><button class="btn-pri" type="submit" aria-label="Enviar pergunta">Enviar</button></form>
+      </div>
+      <div class="section-head"><div class="section-title">Seu pet: Flow</div></div>
+      <div class="pet-card" style="grid-template-columns:110px 1fr;margin-top:0">
+        <div class="pet-avatar" id="pet-avatar">🌱</div>
+        <div><div class="pet-title" id="pet-title">Libere o Flow</div><div class="pet-copy" id="pet-copy">Anote uma refeição ou ideia por dia, durante 5 dias seguidos.</div><div class="seed-row" id="seed-row" aria-label="Dias seguidos registrados"></div><div class="pet-progress" role="progressbar" aria-label="Progresso para liberar o Flow" aria-valuemin="0" aria-valuemax="5" aria-valuenow="0"><span id="pet-progress-bar" style="width:0%"></span></div><div class="pet-copy" id="seed-count">0 de 5 dias seguidos</div><div class="pet-note" id="pet-note">Se passar um dia sem anotar nada, a sequência volta ao zero. Depois de liberar, o Flow continua com você.</div></div>
+      </div>
+      <div class="section-head"><div class="section-title">Como funciona</div></div>
+      <div class="goal-list"><div class="goal-row"><div class="gr-name">1. Anote algo em cada dia</div><div class="gr-detail">Uma refeição ou ideia já conta. Mais anotações no mesmo dia não aumentam a sequência.</div></div><div class="goal-row"><div class="gr-name">2. Complete 5 dias seguidos</div><div class="gr-detail">Se um dia passar sem registro, a contagem volta ao zero.</div></div><div class="goal-row"><div class="gr-name">3. Conheça o Flow</div><div class="gr-detail">Depois de liberado, ele fica com você. O pet é só uma companhia visual; não avalia sua alimentação.</div></div></div>
     </div>
 
     <!-- PROFILE -->
     <div class="sub" id="sub-profile">
-      <div class="profile-top"><div class="avatar-big">🌿</div><div class="profile-name">Seu espaço</div><div class="profile-plan">Protótipo local</div></div>
-      <div class="demo-banner">Nenhuma conta está conectada. As preferências e os registros desta prévia ficam no armazenamento local do navegador.</div>
+      <div class="profile-top"><div class="avatar-big">🌿</div><div class="profile-name">Seu espaço</div><div class="profile-plan" id="account-state">Demonstração local</div></div>
+      <div class="demo-banner" id="profile-storage-notice">Na demonstração, seus dados ficam salvos neste navegador.</div>
       <div class="settings-group"><div class="sg-title">Preferências</div><div class="sg-card">
         <div class="sg-row" onclick="toggleTheme();showToast('Preferência de tema atualizada.')"><div class="sg-left"><div class="sg-icon" style="background:var(--rose-light)">🎨</div><div class="sg-label">Tema</div></div><div class="sg-right" id="theme-label-sg">Claro ›</div></div>
+        <div class="sg-row" id="install-app-row" role="button" tabindex="0" onclick="installNutriFlow()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();installNutriFlow()}"><div class="sg-left"><div class="sg-icon" style="background:var(--pri-light)">📲</div><div class="sg-label">Instalar NutriFlow</div></div><div class="sg-right">Adicionar ao celular ›</div></div>
         <div class="sg-row"><div class="sg-left"><div class="sg-icon" style="background:var(--pri-light)">🔔</div><div class="sg-label">Lembretes de refeição</div></div><div class="sg-right">Ainda não disponíveis</div></div>
       </div></div>
-      <div class="settings-group"><div class="sg-title">Dados da demonstração</div><div class="sg-card"><div class="sg-row" onclick="clearDemoData()"><div class="sg-left"><div class="sg-icon" style="background:var(--rose-light)">🗑️</div><div class="sg-label" style="color:var(--rose)">Apagar registros locais</div></div><div class="sg-right">Remover ›</div></div><div class="sg-row" onclick="goTo('login')"><div class="sg-left"><div class="sg-icon" style="background:var(--bg-subtle)">↩️</div><div class="sg-label">Voltar à apresentação</div></div><div class="sg-right">›</div></div></div></div>
+      <div class="settings-group"><div class="sg-title" id="data-settings-title">Dados deste dispositivo</div><div class="sg-card"><div class="sg-row" onclick="clearDemoData()"><div class="sg-left"><div class="sg-icon" style="background:var(--rose-light)">🗑️</div><div class="sg-label" id="clear-data-label" style="color:var(--rose)">Apagar registros locais</div></div><div class="sg-right">Remover ›</div></div><div class="sg-row" onclick="signOutNutriFlow()"><div class="sg-left"><div class="sg-icon" style="background:var(--bg-subtle)">↩️</div><div class="sg-label">Sair da conta</div></div><div class="sg-right">›</div></div></div></div>
     </div>
 
     </div><!-- /page-area -->
 
   <!-- BOTTOM NAV -->
   <nav class="botbar">
-    <div class="botnav-item active" id="bn-overview" onclick="navTo('overview')">
+    <div class="botnav-item active" id="bn-overview" role="button" aria-current="page" tabindex="0" onclick="navTo('overview')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();navTo('overview')}">
       <div class="botnav-icon">🏠</div>
       <div class="botnav-label">Início</div>
     </div>
-    <div class="botnav-item" id="bn-meals" onclick="navTo('meals')">
+    <div class="botnav-item" id="bn-meals" role="button" tabindex="0" onclick="navTo('meals')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();navTo('meals')}">
       <div class="botnav-icon">🥗</div>
       <div class="botnav-label">Refeições</div>
       <div class="botnav-pip" id="nav-meal-count">0</div>
     </div>
-    <div class="botnav-item" id="bn-progress" onclick="navTo('progress')">
+    <div class="botnav-item" id="bn-progress" role="button" tabindex="0" onclick="navTo('progress')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();navTo('progress')}">
       <div class="botnav-icon">📈</div>
       <div class="botnav-label">Progresso</div>
     </div>
-    <div class="botnav-item" id="bn-ai" onclick="navTo('ai')">
+    <div class="botnav-item" id="bn-ai" role="button" tabindex="0" onclick="navTo('ai')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();navTo('ai')}">
       <div class="botnav-icon">✨</div>
-      <div class="botnav-label">IA</div>
+      <div class="botnav-label">Assistente IA</div>
     </div>
-    <div class="botnav-item" id="bn-profile" onclick="navTo('profile')">
+    <div class="botnav-item" id="bn-profile" role="button" tabindex="0" onclick="navTo('profile')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();navTo('profile')}">
       <div class="botnav-icon">👤</div>
       <div class="botnav-label">Perfil</div>
     </div>
@@ -904,10 +1100,23 @@ input,select{font-family:inherit}
     <div class="field"><label for="meal-kind">Tipo de refeição</label><select id="meal-kind"><option>Café da manhã</option><option>Lanche</option><option>Almoço</option><option>Jantar</option><option>Outra</option></select></div>
     <div class="field"><label for="meal-name">O que você quer guardar?</label><input id="meal-name" type="text" maxlength="120" required placeholder="Ex.: ideia para o almoço"></div>
     <div class="field"><label for="meal-date">Data</label><input id="meal-date" type="date" required></div>
-    <p class="demo-note">Demonstração local: use dados fictícios. Não há login, sincronização nem proteção adequada para dados de saúde.</p>
-    <button class="btn-pri" type="submit">Salvar neste navegador</button>
+    <p class="demo-note">Na demonstração, use dados fictícios: eles ficam salvos neste navegador. Na sua conta, os registros são sincronizados.</p>
+    <button class="btn-pri" type="submit">Salvar registro</button>
   </form>
 </dialog>
+<dialog class="guide-dialog" id="tutorial-dialog" aria-labelledby="tutorial-title" aria-describedby="tutorial-intro">
+  <div class="dialog-head"><h2 id="tutorial-title">Guia rápido do NutriFlow</h2><button class="dialog-close" type="button" onclick="closeTutorial()" aria-label="Fechar guia">×</button></div>
+  <p class="guide-intro" id="tutorial-intro">Veja como anotar refeições, acompanhar seu progresso e liberar o Flow.</p>
+  <div class="guide-steps">
+    <section class="guide-step"><h3>1. Anote uma refeição</h3><p>Abra “Refeições”, escolha uma data, escreva o nome e toque em “Salvar registro”. Você pode anotar uma refeição ou uma ideia.</p></section>
+    <section class="guide-step"><h3>2. Acompanhe sua sequência</h3><p>Um dia conta quando você salva ao menos um registro com a data de hoje. Mais registros no mesmo dia contam como um dia só. Planejamentos para datas futuras não contam.</p></section>
+    <section class="guide-step"><h3>3. Libere o Flow</h3><p>Anote algo por 5 dias seguidos. Se passar um dia sem registro, a sequência volta ao zero. Depois de liberado, o Flow continua com você.</p></section>
+    <section class="guide-step"><h3>4. Seus dados</h3><p>Na demonstração, os registros ficam neste navegador. Ao entrar na sua conta, eles são sincronizados. Use apenas informações que deseja salvar.</p></section>
+  </div>
+  <div class="guide-actions"><button class="btn-social" type="button" onclick="closeTutorial()">Fechar guia</button><button class="btn-pri" type="button" onclick="tutorialGoToMeals()">Abrir Refeições</button></div>
+</dialog>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase/config.example.js"></script>
 <script>
 const STORAGE_KEY='nutriflow.demo.meals';
 const THEME_KEY='nutriflow.demo.theme';
@@ -915,12 +1124,18 @@ let selectedDate=new Date();
 let tt;
 function readMeals(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]')}catch{return []}}
 function saveMeals(items){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(items));return true}catch{showToast('Não foi possível salvar neste navegador.');return false}}
-function toggleTheme(){const dark=document.documentElement.getAttribute('data-theme')!=='dark';document.documentElement.setAttribute('data-theme',dark?'dark':'light');try{localStorage.setItem(THEME_KEY,dark?'dark':'light')}catch{};document.querySelectorAll('#ti-login,#ti-signup,#ti-dash').forEach(e=>e.textContent=dark?'☀️':'🌙');document.querySelectorAll('#tl-login,#tl-signup').forEach(e=>e.textContent=dark?'Claro':'Escuro');const label=document.getElementById('theme-label-sg');if(label)label.textContent=(dark?'Escuro':'Claro')+' ›'}
+function toggleTheme(){const dark=document.documentElement.getAttribute('data-theme')!=='dark';document.documentElement.setAttribute('data-theme',dark?'dark':'light');try{localStorage.setItem(THEME_KEY,dark?'dark':'light')}catch{};document.querySelectorAll('#ti-start,#ti-login,#ti-signup,#ti-reset,#ti-dash').forEach(e=>e.textContent=dark?'☀️':'🌙');document.querySelectorAll('#tl-start,#tl-login,#tl-signup,#tl-reset').forEach(e=>e.textContent=dark?'Claro':'Escuro');const label=document.getElementById('theme-label-sg');if(label)label.textContent=(dark?'Escuro':'Claro')+' ›'}
 function goTo(name){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));const screen=document.getElementById('screen-'+name);if(screen)screen.classList.add('active')}
-function goToDash(){goTo('dash');renderMeals();showToast('Você está explorando a demonstração local.')}
+function goToDash(){goTo('dash');renderMeals();showToast('Demonstração aberta. Seus dados ficam neste navegador.')}
+function showPixPayment(result){if(typeof result.qrCode!=='string'||typeof result.qrImageBase64!=='string'||result.qrImageBase64.length>2000000){showToast('Não consegui mostrar o Pix. Tente iniciar o pagamento novamente.');return}document.getElementById('pix-qr-image').src='data:image/png;base64,'+result.qrImageBase64;document.getElementById('pix-copy-code').value=result.qrCode;const expiry=document.getElementById('pix-expiration');expiry.textContent=result.expiresAt?'Válido até '+new Date(result.expiresAt).toLocaleString('pt-BR')+'.':'O código tem prazo de validade informado pelo Mercado Pago.';document.getElementById('pix-dialog').showModal()}
+async function copyPixCode(){const field=document.getElementById('pix-copy-code');try{await navigator.clipboard.writeText(field.value);showToast('Código Pix copiado.')}catch{field.focus();field.select();const copied=document.execCommand('copy');showToast(copied?'Código Pix copiado.':'Selecione e copie o código Pix.')}}
+async function startNutriFlowCheckout(plan){if(!['base','ai'].includes(plan))return;const getToken=window.getNutriFlowAccessToken;if(typeof getToken!=='function'){showToast('O checkout Pix ainda está sendo preparado. Nenhuma cobrança foi feita.');return}const token=await getToken();if(!token){try{sessionStorage.setItem('nutriflow.pending-checkout',plan)}catch{}goTo('login');showToast('Entre ou crie sua conta para continuar com a oferta.');return}try{const response=await fetch('/api/checkout/'+plan,{method:'POST',headers:{Authorization:'Bearer '+token}});const result=await response.json().catch(()=>({}));if(!response.ok)throw new Error(result.error||'O checkout Pix ainda está sendo preparado.');if(plan==='base'&&result.qrCode&&result.qrImageBase64){showPixPayment(result);return}if(typeof result.checkoutUrl==='string'&&result.checkoutUrl.startsWith('https://')){location.assign(result.checkoutUrl);return}throw new Error('Não recebi os dados esperados para o pagamento Pix.')}catch(error){showToast(error.message||'Não consegui abrir o pagamento Pix. Nenhuma cobrança foi feita.')}}
 const tabs=['overview','meals','progress','ai','profile'];
-function navTo(name){tabs.forEach(t=>{const sub=document.getElementById('sub-'+t),bn=document.getElementById('bn-'+t);if(sub)sub.classList.toggle('active',t===name);if(bn)bn.classList.toggle('active',t===name)});if(name==='meals')renderDayPills();if(name==='progress')renderMeals()}
-function showToast(msg){clearTimeout(tt);const e=document.getElementById('toast');e.textContent=msg;e.className='toast'+(document.getElementById('screen-login').classList.contains('active')||document.getElementById('screen-signup').classList.contains('active')?' in-auth':'');setTimeout(()=>e.classList.add('show'),10);tt=setTimeout(()=>e.classList.remove('show'),3000)}
+function navTo(name){tabs.forEach(t=>{const sub=document.getElementById('sub-'+t),bn=document.getElementById('bn-'+t);if(sub)sub.classList.toggle('active',t===name);if(bn){bn.classList.toggle('active',t===name);if(t===name)bn.setAttribute('aria-current','page');else bn.removeAttribute('aria-current')}});if(name==='meals')renderDayPills();if(name==='progress')renderMeals()}
+function openTutorial(){document.getElementById('tutorial-dialog').showModal()}
+function closeTutorial(){document.getElementById('tutorial-dialog').close()}
+function tutorialGoToMeals(){closeTutorial();navTo('meals')}
+function showToast(msg){clearTimeout(tt);const e=document.getElementById('toast');e.textContent=msg;e.className='toast'+(document.getElementById('screen-start').classList.contains('active')||document.getElementById('screen-login').classList.contains('active')||document.getElementById('screen-signup').classList.contains('active')||document.getElementById('screen-reset').classList.contains('active')?' in-auth':'');setTimeout(()=>e.classList.add('show'),10);tt=setTimeout(()=>e.classList.remove('show'),3000)}
 function pwMeter(value){const bars=['b1','b2','b3'].map(id=>document.getElementById(id)).filter(Boolean);bars.forEach(b=>b.className='pw-bar');if(!value)return;if(value.length<6){bars[0].classList.add('weak');return}if(value.length<10){bars.slice(0,2).forEach(b=>b.classList.add('mid'));return}bars.forEach(b=>b.classList.add('strong'))}
 function dateKey(date){const d=new Date(date);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
 function openMealDialog(){const dialog=document.getElementById('meal-dialog');document.getElementById('meal-date').value=dateKey(selectedDate);dialog.showModal();document.getElementById('meal-name').focus()}
@@ -928,11 +1143,40 @@ function closeMealDialog(){document.getElementById('meal-dialog').close()}
 function renderDayPills(){const wrap=document.getElementById('day-pills');if(!wrap)return;wrap.replaceChildren();const monday=new Date(selectedDate);const day=(monday.getDay()+6)%7;monday.setDate(monday.getDate()-day);const last=new Date(monday);last.setDate(monday.getDate()+6);document.getElementById('week-label').textContent=monday.toLocaleDateString('pt-BR',{day:'numeric',month:'short'})+' — '+last.toLocaleDateString('pt-BR',{day:'numeric',month:'short',year:'numeric'});const short=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];for(let i=0;i<7;i++){const d=new Date(monday);d.setDate(monday.getDate()+i);const b=document.createElement('button');b.type='button';b.className='day-pill'+(dateKey(d)===dateKey(selectedDate)?' active':'');b.setAttribute('aria-pressed',dateKey(d)===dateKey(selectedDate)?'true':'false');b.innerHTML='<div class="dp-name">'+short[d.getDay()]+'</div><div class="dp-num">'+d.getDate()+'</div>';b.addEventListener('click',()=>{selectedDate=d;renderDayPills();renderMeals()});wrap.append(b)}}
 function shiftWeek(amount){selectedDate.setDate(selectedDate.getDate()+amount*7);renderDayPills();renderMeals()}
 function mealCard(meal,onDelete){const card=document.createElement('div');card.className='meal-card';const emoji=document.createElement('div');emoji.className='meal-emoji';emoji.textContent=meal.kind==='Almoço'?'🥗':meal.kind==='Jantar'?'🌙':meal.kind==='Café da manhã'?'☀️':'🍎';const info=document.createElement('div');info.className='meal-info';const name=document.createElement('div');name.className='meal-name';name.textContent=meal.name;const meta=document.createElement('div');meta.className='meal-time';meta.textContent=meal.kind+' · '+new Date(meal.date+'T12:00:00').toLocaleDateString('pt-BR');info.append(name,meta);const remove=document.createElement('button');remove.type='button';remove.className='section-link';remove.textContent='Remover';remove.setAttribute('aria-label','Remover '+meal.name);remove.addEventListener('click',onDelete);card.append(emoji,info,remove);return card}
-function renderMeals(){const all=readMeals();const dayItems=all.filter(m=>m.date===dateKey(selectedDate));const list=document.getElementById('meal-list');if(list){list.replaceChildren();if(dayItems.length)dayItems.forEach(item=>list.append(mealCard(item,()=>deleteMeal(item.id))));else{const empty=document.createElement('div');empty.className='demo-empty';empty.innerHTML='<strong>Nenhuma refeição nesta data.</strong>Adicione uma ideia fictícia para ver como o planejamento funciona.';list.append(empty)}}const today=document.getElementById('today-meals');if(today){const todayItems=all.filter(m=>m.date===dateKey(new Date()));today.replaceChildren();if(todayItems.length)todayItems.forEach(item=>today.append(mealCard(item,()=>deleteMeal(item.id))));else{today.className='demo-empty';today.innerHTML='<strong>Seu histórico começa quando você quiser.</strong>Use somente informações fictícias nesta demonstração.'}}const days=new Set(all.map(m=>m.date)).size;const set=(id,value)=>{const e=document.getElementById(id);if(e)e.textContent=String(value)};set('meal-count',all.length);set('plan-count',all.length);set('active-day-count',days);set('progress-meals',all.length);set('progress-days',days);set('progress-plans',all.length);const nav=document.getElementById('nav-meal-count');if(nav)nav.textContent=String(all.length)}
+function renderMeals(){const all=readMeals();const dayItems=all.filter(m=>m.date===dateKey(selectedDate));const list=document.getElementById('meal-list');if(list){list.replaceChildren();if(dayItems.length)dayItems.forEach(item=>list.append(mealCard(item,()=>deleteMeal(item.id))));else{const empty=document.createElement('div');empty.className='demo-empty';empty.innerHTML='<strong>Nenhuma refeição anotada nesta data.</strong>Anote uma refeição ou ideia para esse dia.';list.append(empty)}}const today=document.getElementById('today-meals');if(today){const todayItems=all.filter(m=>m.date===dateKey(new Date()));today.replaceChildren();if(todayItems.length)todayItems.forEach(item=>today.append(mealCard(item,()=>deleteMeal(item.id))));else{today.className='demo-empty';today.innerHTML='<strong>Ainda não há refeições anotadas hoje.</strong>Anote uma refeição ou ideia quando quiser.'}}const days=new Set(all.map(m=>m.date)).size;const set=(id,value)=>{const e=document.getElementById(id);if(e)e.textContent=String(value)};set('meal-count',all.length);set('active-day-count',days);set('progress-meals',all.length);set('progress-days',days);const nav=document.getElementById('nav-meal-count');if(nav)nav.textContent=String(all.length);renderPet(all)}
+function petUnlockStorageKey(){return 'nutriflow.pet.unlocked.'+(window.getNutriFlowUserId?.()||'demo')}
+function calculatePetProgress(entries){const today=dateKey(new Date());const dayNumber=value=>Math.floor(Date.parse(value+'T00:00:00Z')/86400000);const days=[...new Set(entries.map(item=>item.date).filter(value=>/^\d{4}-\d{2}-\d{2}$/.test(value)&&value<=today))].sort();let longest=0,run=0,previous=null;for(const value of days){const number=dayNumber(value);run=previous!==null&&number===previous+1?run+1:1;longest=Math.max(longest,run);previous=number}let current=0;if(days.length&&dayNumber(days[days.length-1])>=dayNumber(today)-1){current=1;for(let i=days.length-2;i>=0;i--){if(dayNumber(days[i])===dayNumber(days[i+1])-1)current++;else break}}let savedUnlock=false;try{savedUnlock=localStorage.getItem(petUnlockStorageKey())==='1';if(longest>=5&&!savedUnlock){localStorage.setItem(petUnlockStorageKey(),'1');savedUnlock=true}}catch{}return{today,days,longest,current,unlocked:savedUnlock||longest>=5,lastDay:days[days.length-1]||null}}
+function renderPet(entries=readMeals()){const state=calculatePetProgress(entries);const seeds=state.unlocked?5:state.current;const set=(id,value)=>{const el=document.getElementById(id);if(el)el.textContent=value};const status=state.unlocked?'Flow está liberado!':state.current?`${state.current} de 5 dias seguidos`:state.days.length?'Sua sequência voltou ao zero':'0 de 5 dias seguidos';const copy=state.unlocked?'Você completou 5 dias seguidos e liberou o Flow. Ele continua com você mesmo se sua sequência parar.':state.current?(state.lastDay===state.today?`${state.current} de 5 dias seguidos. Anote amanhã para continuar.`:`${state.current} de 5 dias seguidos. Anote hoje para continuar.`):state.days.length?'Sua sequência voltou ao zero. Anote hoje para começar de novo.':'Anote uma refeição ou ideia hoje para começar.';const homeCopy=state.unlocked?'Flow já é seu! Você pode manter sua sequência ou recomeçar quando quiser.':state.current?(state.lastDay===state.today?`${state.current} de 5 dias. Anote amanhã para continuar.`:`${state.current} de 5 dias. Anote hoje para continuar.`):state.days.length?'Sua sequência voltou ao zero. Anote hoje para começar de novo.':'Anote algo por 5 dias seguidos para liberar o Flow.';set('pet-avatar',state.unlocked?'🐱':'🌱');set('pet-avatar-home',state.unlocked?'🐱':'🌱');set('pet-title',state.unlocked?'Flow está com você!':'Libere o Flow');set('pet-title-home',state.unlocked?'Flow está com você!':'Seu pet está a caminho');set('pet-copy',copy);set('pet-copy-home',homeCopy);set('seed-count',status);set('streak-count-home',state.current);set('pet-note',state.unlocked?'Se passar um dia sem registro, só a sequência atual volta ao zero. O Flow continua com você.':'Se passar um dia sem registro, a sequência volta ao zero. Depois de liberar, o Flow continua com você.');const row=document.getElementById('seed-row');if(row){row.replaceChildren();for(let i=0;i<5;i++){const seed=document.createElement('span');seed.className='seed'+(i<seeds?' collected':'');seed.textContent='🌱';seed.setAttribute('aria-hidden','true');row.append(seed)}}const bar=document.getElementById('pet-progress-bar');if(bar)bar.style.width=(seeds*20)+'%';const progress=document.querySelector('[aria-label="Progresso para liberar o Flow"]');if(progress){progress.setAttribute('aria-valuenow',String(seeds));progress.setAttribute('aria-valuetext',status)}}
+function addAssistantMessage(text,kind='assistant'){const chat=document.getElementById('assistant-chat');if(!chat)return;const message=document.createElement('div');message.className='assistant-message'+(kind==='user'?' user':'');message.textContent=text;chat.append(message);chat.scrollTop=chat.scrollHeight}
+let nutriFlowInstallPrompt=null;
+window.addEventListener('beforeinstallprompt',event=>{event.preventDefault();nutriFlowInstallPrompt=event});
+window.addEventListener('appinstalled',()=>{nutriFlowInstallPrompt=null;showToast('NutriFlow instalado no celular.')});
+async function installNutriFlow(){if(window.matchMedia('(display-mode: standalone)').matches){showToast('NutriFlow já está instalado.');return}if(nutriFlowInstallPrompt){nutriFlowInstallPrompt.prompt();await nutriFlowInstallPrompt.userChoice;nutriFlowInstallPrompt=null;return}const isApple=/iPhone|iPad|iPod/.test(navigator.userAgent);alert(isApple?'Para instalar: toque em Compartilhar no Safari e escolha “Adicionar à Tela de Início”.':'Para instalar: abra o menu ⋮ do Chrome e toque em “Instalar app” ou “Adicionar à tela inicial”.')}
+const LOCAL_ASSISTANT_MODEL='Qwen2.5-0.5B-Instruct-q4f16_1-MLC';
+const PREVIOUS_LOCAL_ASSISTANT_MODEL='SmolLM2-360M-Instruct-q4f32_1-MLC';
+const LOCAL_ASSISTANT_INSTRUCTIONS=[
+  'Você é o assistente do NutriFlow. Ajude com ideias de pratos, receitas simples e organização das refeições do dia a dia. Esses pedidos comuns são permitidos: responda com uma sugestão útil e não diga que não pode ajudar.',
+  'Fale em português brasileiro, de forma simpática, simples e direta. Comece pela resposta. Para ideias de pratos, dê 2 ou 3 opções com ingredientes comuns e preparo curto. Se faltar informação, ofereça uma opção padrão e faça no máximo uma pergunta ao final.',
+  'Exemplo: se a pessoa pedir ideias de almoço, sugira pratos concretos como arroz, feijão e ovos; macarrão com legumes; ou frango com batata. Evite respostas genéricas, introduções longas, listas de avisos e repetir a pergunta.',
+  'Não diagnostique nem prescreva tratamentos ou dietas para doenças. Em pedidos de diagnóstico, tratamento ou segurança de alergia, diga brevemente que não pode avaliar isso e recomende orientação profissional. Não invente calorias ou dados nutricionais.',
+].join(' ');
+const LOCAL_ASSISTANT_HISTORY_LIMIT=4;
+const LOCAL_ASSISTANT_REFUSAL_PATTERN=/\b(?:n[aã]o (?:posso|consigo|tenho|possuo|sei|tem|h[aá])|n[aã]o sou capaz|sem (?:ideias?|sugest[oõ]es?)|como modelo de linguagem|fui projetad[oa] para|n[aã]o tenho permiss[aã]o)\b/i;
+const LOCAL_ASSISTANT_SENSITIVE_PATTERN=/\b(alerg(?:ia|ias)|diabet(?:es|ico)|doen[cç]a|gr[aá]vid[ae]z|rem[eé]dio|medicamento|transtorno alimentar|tratamento|diagn[oó]stico|sintoma|press[aã]o alta|colesterol|cel[ií]ac[oa])\b/i;
+const LOCAL_ASSISTANT_MEAL_PATTERN=/\b(refei[cç][aã]o|prato|almo[cç]o|jantar|lanche|receita|card[aá]pio|comida|comer|ingrediente|cafe da manh[aã]|caf[eé] da manh[aã])\b/i;
+let localAssistantEngine=null;
+let localAssistantLoading=null;
+const localAssistantConversation=[];
+function setLocalAssistantStatus(message,state=''){const status=document.getElementById('assistant-local-status');if(status){status.textContent=message;status.dataset.state=state}}
+async function enableLocalAssistant(){if(localAssistantEngine){document.getElementById('assistant-local-controls')?.setAttribute('hidden','');return localAssistantEngine}if(localAssistantLoading)return localAssistantLoading;if(!window.isSecureContext){setLocalAssistantStatus('A IA local precisa que você abra o NutriFlow pelo endereço HTTPS.','error');return null}if(!navigator.gpu){setLocalAssistantStatus('Este navegador ou aparelho não oferece WebGPU. Atualize o Chrome ou use outro dispositivo compatível; o app não enviará suas perguntas para uma API paga.','error');return null}const button=document.getElementById('assistant-local-enable');if(button){button.disabled=true;button.textContent='Preparando modelo…'}setLocalAssistantStatus('Conectando ao modelo local. O primeiro download pode demorar e usar espaço no aparelho…');localAssistantLoading=(async()=>{try{const webllm=await import('https://esm.run/@mlc-ai/web-llm');const appConfig={...webllm.prebuiltAppConfig,model_list:webllm.prebuiltAppConfig.model_list.map(record=>record.model_id===LOCAL_ASSISTANT_MODEL?{...record,overrides:{...record.overrides,context_window_size:2048}}:record)};localAssistantEngine=await webllm.CreateMLCEngine(LOCAL_ASSISTANT_MODEL,{appConfig,initProgressCallback:report=>{const detail=String(report?.text||'Preparando o modelo…');const progress=Number(report?.progress);setLocalAssistantStatus(Number.isFinite(progress)&&progress>0?`${detail} ${Math.round(progress*100)}%`:detail)}});try{await webllm.deleteModelAllInfoInCache(PREVIOUS_LOCAL_ASSISTANT_MODEL,webllm.prebuiltAppConfig)}catch{}document.getElementById('assistant-local-controls')?.setAttribute('hidden','');return localAssistantEngine}catch(error){console.error('Local AI initialization failed:',error?.name||'unknown');localAssistantEngine=null;setLocalAssistantStatus('Não consegui preparar a IA local. Confira sua conexão, espaço livre e compatibilidade com WebGPU e tente novamente. Nenhuma API paga foi chamada.','error');if(button){button.textContent='Tentar preparar novamente';button.disabled=false}return null}finally{localAssistantLoading=null}})();return localAssistantLoading}
+async function askAssistant(question){const normalized=String(question||'').trim();if(!normalized)return;addAssistantMessage(normalized,'user');const chat=document.getElementById('assistant-chat');const pending=document.createElement('div');pending.className='assistant-message';pending.textContent='Aguardando a IA local…';pending.setAttribute('role','status');chat.append(pending);chat.scrollTop=chat.scrollHeight;const button=document.querySelector('#assistant-form button');if(button)button.disabled=true;try{if(!localAssistantEngine)throw new Error('Toque em “Ativar IA neste dispositivo” para preparar o modelo. Sua pergunta não foi enviada a nenhum serviço.');pending.textContent='Conferindo seu limite de uso…';const headers={'Content-Type':'application/json'};const getToken=window.getNutriFlowAccessToken;if(typeof getToken==='function'){const token=await getToken();if(token)headers.Authorization='Bearer '+token}const usageResponse=await fetch('/api/assistant/usage',{method:'POST',headers,body:JSON.stringify({})});const usage=await usageResponse.json().catch(()=>({}));if(!usageResponse.ok||usage.allowed!==true)throw new Error(usage.error||'Não consegui conferir seu limite de uso. Tente novamente.');pending.textContent='Pensando no seu aparelho…';const history=localAssistantConversation.slice(-LOCAL_ASSISTANT_HISTORY_LIMIT);let result=await localAssistantEngine.chat.completions.create({messages:[{role:'system',content:LOCAL_ASSISTANT_INSTRUCTIONS},...history,{role:'user',content:normalized}],temperature:0.55,top_p:0.9,max_tokens:180});let answer=result.choices?.[0]?.message?.content?.trim();if(answer&&LOCAL_ASSISTANT_REFUSAL_PATTERN.test(answer)&&!LOCAL_ASSISTANT_SENSITIVE_PATTERN.test(normalized)){pending.textContent='Reformulando a resposta…';result=await localAssistantEngine.chat.completions.create({messages:[{role:'system',content:LOCAL_ASSISTANT_INSTRUCTIONS+' A solicitação atual é uma pergunta cotidiana sobre comida. Responda agora com sugestões concretas em português; não recuse nem fale sobre limitações de IA.'},{role:'user',content:normalized}],temperature:0.65,top_p:0.9,max_tokens:180});answer=result.choices?.[0]?.message?.content?.trim();if((!answer||LOCAL_ASSISTANT_REFUSAL_PATTERN.test(answer))&&LOCAL_ASSISTANT_MEAL_PATTERN.test(normalized))answer='Claro! Para hoje, você pode escolher: arroz, feijão e ovos mexidos; macarrão com legumes; ou frango com batata e salada. Qual dessas opções combina mais com o que você tem em casa?'}if(!answer)throw new Error('Não consegui gerar uma resposta clara. Tente reformular a pergunta.');localAssistantConversation.push({role:'user',content:normalized},{role:'assistant',content:answer});pending.textContent=answer;if(Number.isFinite(usage.quota?.remaining))setLocalAssistantStatus(`Resposta local pronta. Restam ${usage.quota.remaining} respostas no seu período de uso.`,'ready')}catch(error){pending.textContent=error.message||'Não consegui gerar uma resposta neste dispositivo. Tente novamente.'}finally{pending.removeAttribute('role');if(button)button.disabled=false;chat.scrollTop=chat.scrollHeight}}
+document.getElementById('assistant-form')?.addEventListener('submit',event=>{event.preventDefault();const input=document.getElementById('assistant-input');const question=input.value.trim();if(question){input.value='';askAssistant(question)}});
 function deleteMeal(id){const next=readMeals().filter(m=>m.id!==id);if(saveMeals(next)){renderMeals();showToast('Registro removido deste navegador.')}}
-function clearDemoData(){if(!confirm('Apagar todos os registros desta demonstração neste navegador?'))return;try{localStorage.removeItem(STORAGE_KEY)}catch{}renderMeals();showToast('Registros locais apagados.')}
+function clearDemoData(){if(!confirm('Apagar todos os registros desta demonstração neste navegador?'))return;try{localStorage.removeItem(STORAGE_KEY);localStorage.removeItem(petUnlockStorageKey())}catch{}renderMeals();showToast('Registros apagados.')}
 function toggleToggle(id){const el=document.getElementById(id);if(el)el.classList.toggle('on')}
-document.addEventListener('DOMContentLoaded',()=>{try{const theme=localStorage.getItem(THEME_KEY);if(theme==='dark'){document.documentElement.setAttribute('data-theme','dark')}const dark=document.documentElement.getAttribute('data-theme')==='dark';document.querySelectorAll('#ti-login,#ti-signup,#ti-dash').forEach(e=>e.textContent=dark?'☀️':'🌙');document.querySelectorAll('#tl-login,#tl-signup').forEach(e=>e.textContent=dark?'Claro':'Escuro');const themeLabel=document.getElementById('theme-label-sg');if(themeLabel)themeLabel.textContent=(dark?'Escuro':'Claro')+' ›'}catch{};const date=document.getElementById('today-date');if(date)date.textContent=new Date().toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long'});selectedDate=new Date();renderDayPills();renderMeals();document.getElementById('meal-form').addEventListener('submit',event=>{event.preventDefault();const name=document.getElementById('meal-name').value.trim();if(!name)return;const item={id:Date.now().toString(36)+Math.random().toString(36).slice(2),kind:document.getElementById('meal-kind').value,name,date:document.getElementById('meal-date').value};const all=readMeals();all.push(item);if(saveMeals(all)){closeMealDialog();event.target.reset();selectedDate=new Date(item.date+'T12:00:00');renderDayPills();renderMeals();showToast('Registro salvo somente neste navegador.')}})});
+document.addEventListener('DOMContentLoaded',()=>{try{const theme=localStorage.getItem(THEME_KEY);if(theme==='dark'){document.documentElement.setAttribute('data-theme','dark')}const dark=document.documentElement.getAttribute('data-theme')==='dark';document.querySelectorAll('#ti-start,#ti-login,#ti-signup,#ti-reset,#ti-dash').forEach(e=>e.textContent=dark?'☀️':'🌙');document.querySelectorAll('#tl-start,#tl-login,#tl-signup,#tl-reset').forEach(e=>e.textContent=dark?'Claro':'Escuro');const themeLabel=document.getElementById('theme-label-sg');if(themeLabel)themeLabel.textContent=(dark?'Escuro':'Claro')+' ›'}catch{};const date=document.getElementById('today-date');if(date)date.textContent=new Date().toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long'});selectedDate=new Date();renderDayPills();renderMeals();document.getElementById('meal-form').addEventListener('submit',event=>{event.preventDefault();const name=document.getElementById('meal-name').value.trim();if(!name)return;const item={id:crypto.randomUUID(),kind:document.getElementById('meal-kind').value,name,date:document.getElementById('meal-date').value};const all=readMeals();all.push(item);if(saveMeals(all)){closeMealDialog();event.target.reset();selectedDate=new Date(item.date+'T12:00:00');renderDayPills();renderMeals();showToast(window.isNutriFlowAccountActive?.()?'Salvo neste dispositivo; sincronizando...':'Registro salvo somente neste navegador.')}})});
 </script>
+<script src="supabase-app.js"></script>
+<script>if('serviceWorker'in navigator&&location.protocol==='https:'){window.addEventListener('load',()=>navigator.serviceWorker.register('/service-worker.js').catch(()=>{}))}</script>
 </body>
 </html>

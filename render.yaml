@@ -1,0 +1,28 @@
+services:
+  - type: web
+    name: nutriflow
+    runtime: node
+    branch: codex/flow-name-assistant
+    plan: free
+    buildCommand: npm install
+    startCommand: node server.js
+    healthCheckPath: /
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: BILLING_ENABLED
+        value: "false"
+      - key: APP_URL
+        value: https://nutriflow-0yvi.onrender.com
+      - key: SUPABASE_URL
+        value: https://zjrfzcmcwbgnpbrtkqjw.supabase.co
+      - key: SUPABASE_PUBLISHABLE_KEY
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: MERCADOPAGO_ACCESS_TOKEN
+        sync: false
+      - key: MERCADOPAGO_WEBHOOK_SECRET
+        sync: false
+      - key: MERCADOPAGO_PIX_AI_PLAN_ID
+        sync: false

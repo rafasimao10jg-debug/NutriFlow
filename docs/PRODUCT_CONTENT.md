@@ -100,22 +100,30 @@ O primeiro MVP pode guardar descrições livres e horários. Não estime caloria
 ### Progresso
 
 **Título:** Seu progresso, do seu jeito.<br>
-**Texto:** Acompanhe os registros e planos que você escolheu guardar. Um dia diferente não apaga o que você já construiu.<br>
+**Texto:** Seus registros ficam no histórico. A sequência do pet recomeça se passar um dia sem registro.<br>
 **Indicadores propostos:** refeições registradas; dias em que você usou o app; planos criados e concluídos.<br>
 **Vazio:** Seu histórico começa com o primeiro registro.<br>
 **Privacidade:** Somente você pode ver este histórico na sua conta.
 
-Evite rankings, sequências punitivas, metas automáticas de peso ou alertas que pressionem a pessoa a compensar uma refeição.
+Não use rankings, culpa, metas automáticas de peso ou alertas para compensar refeições. Explique a regra da sequência do pet com clareza e sem julgamento.
 
-### Assistente NutriFlow (quando houver integração de IA)
+### Assistente NutriFlow (modo de demonstração)
 
 **Apresentação:** Posso ajudar com ideias gerais para organizar refeições e explorar opções. Você decide o que combina com sua rotina.<br>
 **Sugestões de pergunta:** Me ajude a organizar refeições para amanhã; sugira opções com os ingredientes que tenho; adapte uma ideia à minha preferência alimentar.<br>
 **Aviso contextual:** As respostas são sugestões gerais e podem conter erros. Para orientação individual ou uma condição de saúde, converse com um nutricionista ou profissional de saúde.
 
-O assistente deve pedir contexto quando necessário, indicar incerteza e não fornecer diagnóstico, tratamento, prescrição clínica ou aconselhamento em urgências. Não deve inventar nutrientes, fontes ou credenciais profissionais. Se não puder responder com segurança, explique o limite e sugira procurar um profissional qualificado.
+O assistente usa Qwen2.5-0.5B local por WebLLM/WebGPU, com histórico curto da conversa mantido só em memória nesta sessão. Após a ativação explícita e o primeiro download, a pergunta é processada no dispositivo e não é enviada ao servidor NutriFlow nem a uma API de geração. A biblioteca e os arquivos do modelo são baixados de serviços externos. O servidor recebe somente a sessão e uma chamada sem o texto da pergunta para conferir os limites de uso; explique isso na Política de Privacidade. Informar necessidade de internet no primeiro uso, espaço, memória, bateria e compatibilidade; não iniciar o download até a pessoa ativar. O assistente oferece ideias gerais de organização; não deve fornecer diagnóstico, tratamento, prescrição clínica, orientação para urgências ou garantir segurança em alergias. Se o assunto envolver doença, gravidez, transtorno alimentar, criança, medicamento ou outra decisão clínica, explique o limite e recomende procurar profissional qualificado. Não invente nutrientes, fontes ou credenciais profissionais.
 
 ## Mensagens de estado
+
+### Companheiro de jornada
+
+O app oferece o Flow como companhia visual. Um dia conta quando há pelo menos um registro com a data de hoje; vários registros no mesmo dia contam como um. Datas futuras não contam. Cinco dias seguidos liberam o pet. Se passar um dia sem registro antes de liberar, a sequência volta ao zero. Depois de liberado, o Flow permanece com a pessoa, mesmo que a sequência pare. A sequência não se relaciona a calorias, peso ou qualidade da alimentação. O pet não avalia escolhas nem substitui apoio profissional.
+
+### Guia rápido dentro do app
+
+O botão “Como usar o app” na tela inicial e o botão “?” no topo abrem o guia. Ele explica como anotar uma refeição, como funciona a sequência do pet e onde os dados ficam salvos. O botão “Abrir Refeições” do guia leva direto à lista de refeições.
 
 | Situação | Texto |
 | --- | --- |
