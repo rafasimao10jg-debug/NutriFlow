@@ -125,7 +125,7 @@ input,select{font-family:inherit}
 .auth-wrap{
   flex-direction:column;align-items:center;justify-content:center;
   min-height:100vh;padding:32px 24px;
-  background:var(--bg);position:relative;overflow:hidden;
+  background:var(--bg);position:relative;overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch;
 }
 .landing-wrap{flex-direction:column;align-items:center;min-height:100vh;padding:24px;background:var(--bg);position:relative;overflow:hidden}
 .landing-shell{width:100%;max-width:940px;position:relative;z-index:1}
@@ -207,6 +207,9 @@ input,select{font-family:inherit}
   color:var(--ink);letter-spacing:-.4px;margin-bottom:5px;
 }
 .auth-sub{font-size:14px;color:var(--ink-mid);margin-bottom:28px}
+.auth-guidance{display:grid;gap:4px;margin:-12px 0 20px;padding:12px 14px;border:1px solid var(--border);border-radius:var(--r-md);background:var(--bg-subtle);font-size:13px;line-height:1.45;color:var(--ink-mid)}
+.auth-guidance strong{color:var(--ink)}
+.auth-guidance button{justify-self:start;margin:3px 0 0;padding:2px 0;color:var(--pri);font:inherit;font-weight:700;text-decoration:underline;text-underline-offset:3px}
 
 .field{margin-bottom:16px}
 .field label{display:block;font-size:12px;font-weight:600;color:var(--ink-mid);margin-bottom:7px;letter-spacing:.03em}
@@ -916,6 +919,12 @@ input,select{font-family:inherit}
     <div class="auth-title">Bem-vindo de volta</div>
     <div class="auth-sub">Entre para ver suas refeições e continuar de onde parou.</div>
 
+    <div class="auth-guidance" role="note">
+      <strong>Esta é sua primeira vez?</strong>
+      <span>“Entrar” funciona só para quem já criou uma conta.</span>
+      <button type="button" onclick="goToSignupFromLogin()">Criar minha conta primeiro</button>
+    </div>
+
     <form id="login-form" onsubmit="return false">
       <div class="field"><label for="login-email">E-mail</label><input id="login-email" type="email" autocomplete="email" required placeholder="voce@email.com"></div>
       <div class="field"><label for="login-password">Senha</label><input id="login-password" type="password" autocomplete="current-password" required placeholder="Sua senha"></div>
@@ -1201,6 +1210,7 @@ function readMeals(){return []}
 function saveMeals(){goTo('login');showToast('Entre ou crie uma conta para salvar seus registros.');return false}
 function toggleTheme(){const dark=document.documentElement.getAttribute('data-theme')!=='dark';document.documentElement.setAttribute('data-theme',dark?'dark':'light');try{localStorage.setItem(THEME_KEY,dark?'dark':'light')}catch{};document.querySelectorAll('#ti-start,#ti-login,#ti-signup,#ti-reset,#ti-dash').forEach(e=>e.textContent=dark?'☀️':'🌙');document.querySelectorAll('#tl-start,#tl-login,#tl-signup,#tl-reset').forEach(e=>e.textContent=dark?'Claro':'Escuro');const label=document.getElementById('theme-label-sg');if(label)label.textContent=(dark?'Escuro':'Claro')+' ›'}
 function goTo(name){if(name==='dash'&&!window.isNutriFlowAccountActive?.()){goTo('login');return false}document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));const screen=document.getElementById('screen-'+name);if(screen)screen.classList.add('active');return Boolean(screen)}
+function goToSignupFromLogin(){const email=document.getElementById('login-email')?.value.trim()||'';goTo('signup');const signupEmail=document.getElementById('signup-email');if(signupEmail&&!signupEmail.value&&email)signupEmail.value=email;signupEmail?.focus()}
 function showPixPayment(result){if(typeof result.qrCode!=='string'||typeof result.qrImageBase64!=='string'||result.qrImageBase64.length>2000000){showToast('Não consegui mostrar o Pix. Tente iniciar o pagamento novamente.');return}document.getElementById('pix-qr-image').src='data:image/png;base64,'+result.qrImageBase64;document.getElementById('pix-copy-code').value=result.qrCode;const expiry=document.getElementById('pix-expiration');expiry.textContent=result.expiresAt?'Válido até '+new Date(result.expiresAt).toLocaleString('pt-BR')+'.':'O código tem prazo de validade informado pelo Mercado Pago.';document.getElementById('pix-dialog').showModal()}
 async function copyPixCode(){const field=document.getElementById('pix-copy-code');try{await navigator.clipboard.writeText(field.value);showToast('Código Pix copiado.')}catch{field.focus();field.select();const copied=document.execCommand('copy');showToast(copied?'Código Pix copiado.':'Selecione e copie o código Pix.')}}
 async function startNutriFlowCheckout(plan){if(!['base','ai'].includes(plan))return;const getToken=window.getNutriFlowAccessToken;if(typeof getToken!=='function'){showToast('O checkout Pix ainda está sendo preparado. Nenhuma cobrança foi feita.');return}const token=await getToken();if(!token){try{sessionStorage.setItem('nutriflow.pending-checkout',plan)}catch{}goTo('login');showToast('Entre ou crie sua conta para continuar com a oferta.');return}try{const response=await fetch('/api/checkout/'+plan,{method:'POST',headers:{Authorization:'Bearer '+token}});const result=await response.json().catch(()=>({}));if(!response.ok)throw new Error(result.error||'O checkout Pix ainda está sendo preparado.');if(plan==='base'&&result.qrCode&&result.qrImageBase64){showPixPayment(result);return}if(typeof result.checkoutUrl==='string'&&result.checkoutUrl.startsWith('https://')){location.assign(result.checkoutUrl);return}throw new Error('Não recebi os dados esperados para o pagamento Pix.')}catch(error){showToast(error.message||'Não consegui abrir o pagamento Pix. Nenhuma cobrança foi feita.')}}
