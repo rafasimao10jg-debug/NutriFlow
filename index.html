@@ -1160,7 +1160,7 @@ const LOCAL_ASSISTANT_INSTRUCTIONS=[
   'Não diagnostique nem prescreva tratamentos ou dietas para doenças. Em pedidos de diagnóstico, tratamento ou segurança de alergia, diga brevemente que não pode avaliar isso e recomende orientação profissional. Não invente calorias ou dados nutricionais.',
 ].join(' ');
 const LOCAL_ASSISTANT_HISTORY_LIMIT=4;
-const LOCAL_ASSISTANT_REFUSAL_PATTERN=/\b(n[aã]o posso (?:ajudar|responder|fornecer)|n[aã]o consigo (?:ajudar|responder)|n[aã]o sou capaz|como modelo de linguagem|fui projetad[oa] para|n[aã]o tenho permiss[aã]o)\b/i;
+const LOCAL_ASSISTANT_REFUSAL_PATTERN=/\b(?:n[aã]o (?:posso|consigo|tenho|possuo|sei|tem|h[aá])|n[aã]o sou capaz|sem (?:ideias?|sugest[oõ]es?)|como modelo de linguagem|fui projetad[oa] para|n[aã]o tenho permiss[aã]o)\b/i;
 const LOCAL_ASSISTANT_SENSITIVE_PATTERN=/\b(alerg(?:ia|ias)|diabet(?:es|ico)|doen[cç]a|gr[aá]vid[ae]z|rem[eé]dio|medicamento|transtorno alimentar|tratamento|diagn[oó]stico|sintoma|press[aã]o alta|colesterol|cel[ií]ac[oa])\b/i;
 const LOCAL_ASSISTANT_MEAL_PATTERN=/\b(refei[cç][aã]o|prato|almo[cç]o|jantar|lanche|receita|card[aá]pio|comida|comer|ingrediente|cafe da manh[aã]|caf[eé] da manh[aã])\b/i;
 let localAssistantEngine=null;
