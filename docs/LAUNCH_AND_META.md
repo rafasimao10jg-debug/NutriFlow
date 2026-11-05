@@ -12,6 +12,8 @@ O app tem página pública, demonstração de registros, tema claro/escuro, sequ
 
 ## Oferta paga — definição pendente
 
+O fluxo de funil e os requisitos de checkout estão documentados em [FUNNEL_AND_CHECKOUT.md](FUNNEL_AND_CHECKOUT.md). Não há cobrança ativada no app.
+
 O primeiro lançamento será uma oferta paga. O preço, condições, cobrança, período de acesso e itens incluídos ainda serão informados pelo responsável pelo produto; não publicar anúncio de venda nem ativar checkout antes dessa definição.
 
 **Promessa provisória, sujeita à validação do produto:** Mais clareza para organizar refeições e ideias do dia a dia, com apoio de um assistente de IA. Só usar essa promessa depois que o modelo real estiver integrado e testado, com limites e aviso claros de que não substitui nutricionista ou profissional de saúde.
