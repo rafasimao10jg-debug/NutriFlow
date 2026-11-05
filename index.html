@@ -596,6 +596,23 @@ input,select{font-family:inherit}
 .daily-tip-copy{color:var(--ink-mid);font-size:13px;line-height:1.5;margin:0 0 14px}
 .daily-tip-button{padding:9px 13px;border:1px solid var(--border);border-radius:var(--r-md);background:var(--bg-card);color:var(--pri);font-size:13px;font-weight:700}
 .daily-tip-button:hover{background:var(--pri);color:#fff}
+.weekly-review-card{margin:16px 0;padding:18px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-xl);box-shadow:var(--sh-sm)}
+.weekly-review-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:10px}
+.weekly-review-title{margin:0;color:var(--ink);font-size:17px;font-weight:800;line-height:1.3}
+.weekly-review-period{margin:4px 0 0;color:var(--ink-soft);font-size:12px;text-transform:capitalize}
+.weekly-review-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:12px 0}
+.weekly-review-stat{padding:11px 12px;border-radius:var(--r-md);background:var(--bg-subtle)}
+.weekly-review-stat strong{display:block;color:var(--pri);font-family:'Syne',sans-serif;font-size:20px;line-height:1.2}
+.weekly-review-stat span{display:block;margin-top:4px;color:var(--ink-soft);font-size:11px;line-height:1.3}
+.weekly-review-summary{margin:0;color:var(--ink-mid);font-size:13px;line-height:1.5}
+.weekly-review-motivation{margin:12px 0;padding:12px 13px;border-left:3px solid var(--pri);border-radius:0 var(--r-md) var(--r-md) 0;background:var(--pri-light);color:var(--ink);font-size:13px;line-height:1.5}
+.weekly-review-motivation strong{display:block;margin-bottom:4px;color:var(--pri);font-size:11px}
+.weekly-review-actions{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-top:12px}
+.weekly-review-ai-button{min-height:38px;padding:9px 12px;border:1px solid var(--border);border-radius:var(--r-md);background:var(--bg-subtle);color:var(--pri);font:inherit;font-size:12px;font-weight:700;cursor:pointer}
+.weekly-review-ai-button:hover:not(:disabled){background:var(--pri);color:#fff}
+.weekly-review-ai-button:disabled{cursor:default;opacity:.7}
+.weekly-review-status{color:var(--ink-soft);font-size:11px;line-height:1.4}
+.weekly-review-note{margin:10px 0 0;color:var(--ink-soft);font-size:10px;line-height:1.45}
 
 .gen-btn{
   display:flex;align-items:center;justify-content:center;gap:8px;
@@ -998,6 +1015,15 @@ input,select{font-family:inherit}
         <button class="daily-tip-button" type="button" onclick="saveDailyMealTip()">Guardar como ideia</button>
       </article>
 
+      <article class="weekly-review-card" aria-labelledby="weekly-review-home-title">
+        <div class="weekly-review-head"><div><div class="daily-tip-eyebrow">📊 Seu resumo semanal</div><h2 class="weekly-review-title" id="weekly-review-home-title">Como foi sua semana no app</h2><p class="weekly-review-period" id="weekly-review-home-period"></p></div></div>
+        <p class="weekly-review-summary" id="weekly-review-home-summary"></p>
+        <div class="weekly-review-stats"><div class="weekly-review-stat"><strong id="weekly-review-home-days">0 de 7</strong><span>dias com registro</span></div><div class="weekly-review-stat"><strong id="weekly-review-home-entries">0</strong><span>refeições e ideias anotadas</span></div></div>
+        <div class="weekly-review-motivation"><strong id="weekly-review-home-motivation-label">Frase para sua semana</strong><span id="weekly-review-home-motivation"></span></div>
+        <div class="weekly-review-actions"><button class="weekly-review-ai-button" type="button" onclick="generateWeeklyMotivation()">Criar frase com IA local</button><span class="weekly-review-status" id="weekly-review-home-status" role="status" aria-live="polite">Opcional · usa 1 resposta da sua cota de IA.</span></div>
+        <p class="weekly-review-note">O resumo mostra apenas seus registros; não dá nota nem avalia a qualidade da alimentação. Se pedir uma frase à IA, o modelo local recebe somente os totais da semana; os nomes das refeições não são enviados ao servidor.</p>
+      </article>
+
       <div class="quick-stats">
         <div class="qs-card"><div class="qs-top"><div class="qs-icon purple">🔥</div><div class="qs-delta neu">Flow</div></div><div class="qs-val" id="streak-count-home">0</div><div class="qs-label">Dias seguidos</div></div>
         <div class="qs-card"><div class="qs-top"><div class="qs-icon teal">🥗</div><div class="qs-delta neu">Seus registros</div></div><div class="qs-val" id="meal-count">0</div><div class="qs-label">Refeições anotadas</div></div>
@@ -1043,6 +1069,14 @@ input,select{font-family:inherit}
     <!-- PROGRESS -->
     <div class="sub" id="sub-progress">
       <div class="prog-hero"><div class="ph-row"><div class="ph-metric"><div class="ph-val" id="progress-meals">0</div><div class="ph-label">refeições e ideias</div></div><div class="ph-divider"></div><div class="ph-metric"><div class="ph-val" id="progress-days">0</div><div class="ph-label">dias com registro</div></div></div><div class="ph-delta">Acompanhe os registros que você escolheu guardar.</div></div>
+      <article class="weekly-review-card" aria-labelledby="weekly-review-progress-title">
+        <div class="weekly-review-head"><div><div class="daily-tip-eyebrow">📊 Resumo da semana encerrada</div><h2 class="weekly-review-title" id="weekly-review-progress-title">Seus registros, sem julgamentos</h2><p class="weekly-review-period" id="weekly-review-progress-period"></p></div></div>
+        <p class="weekly-review-summary" id="weekly-review-progress-summary"></p>
+        <div class="weekly-review-stats"><div class="weekly-review-stat"><strong id="weekly-review-progress-days">0 de 7</strong><span>dias com registro</span></div><div class="weekly-review-stat"><strong id="weekly-review-progress-entries">0</strong><span>refeições e ideias anotadas</span></div></div>
+        <div class="weekly-review-motivation"><strong id="weekly-review-progress-motivation-label">Frase para sua semana</strong><span id="weekly-review-progress-motivation"></span></div>
+        <div class="weekly-review-actions"><button class="weekly-review-ai-button" type="button" onclick="generateWeeklyMotivation()">Criar frase com IA local</button><span class="weekly-review-status" id="weekly-review-progress-status" role="status" aria-live="polite">Opcional · usa 1 resposta da sua cota de IA.</span></div>
+        <p class="weekly-review-note">A contagem usa a última semana completa, de segunda a domingo. A frase opcional é criada no aparelho com os totais da semana; não usamos nomes de refeições para essa avaliação.</p>
+      </article>
       <div class="chart-card"><div class="section-title" style="margin-bottom:12px">Seu histórico</div><div id="progress-empty" class="demo-empty"><strong>Seu histórico começa com a primeira anotação.</strong>Se a sequência do pet parar, os registros anteriores continuam salvos.</div></div>
       <div class="section-head"><div class="section-title">Você decide o ritmo</div></div>
       <div class="goal-list"><div class="goal-row"><div class="gr-name">🗓️ Anote refeições ou ideias</div><div class="gr-detail">Você pode mudar ou remover os registros depois.</div></div><div class="goal-row"><div class="gr-name">🥗 Veja sua lista</div><div class="gr-detail">Abra “Refeições” para consultar o que anotou em cada data.</div></div><div class="goal-row"><div class="gr-name">📅 Seu histórico continua salvo</div><div class="gr-detail">A sequência do pet reinicia se passar um dia sem registro; seus registros anteriores continuam no histórico.</div></div></div>
@@ -1053,7 +1087,7 @@ input,select{font-family:inherit}
       <div class="section-head"><div class="section-title">✨ Assistente NutriFlow</div></div>
       <div class="assistant-card">
         <div class="pet-title">Ideias para sua rotina</div>
-        <p class="assistant-intro">Peça ideias gerais para organizar refeições. Você escolhe o que combina com você.</p>
+        <p class="assistant-intro">Ideias comuns de pratos usam sugestões prontas do app e aparecem na hora. Perguntas abertas usam a IA local, quando ativada; confira as respostas.</p>
         <div class="assistant-local-controls" id="assistant-local-controls">
           <button class="btn-pri assistant-local-button" id="assistant-local-enable" type="button" onclick="enableLocalAssistant()">Ativar IA neste dispositivo</button>
           <div class="assistant-local-status" id="assistant-local-status" role="status" aria-live="polite">Para ativar, baixe cerca de 290 MB. Precisa de internet, espaço, memória, bateria e WebGPU.</div>
@@ -1232,6 +1266,49 @@ function renderSelectedDaySummary(entries=readMeals()){
   const count=entries.filter(item=>item.date===dateKey(selectedDate)).length;
   countText.textContent=count===0?'Nenhuma anotação':count===1?'1 refeição ou ideia':`${count} refeições ou ideias`;
 }
+function getLastFullWeekRange(now=new Date()){
+  const currentMonday=new Date(now.getFullYear(),now.getMonth(),now.getDate(),12);
+  currentMonday.setDate(currentMonday.getDate()-((currentMonday.getDay()+6)%7));
+  const start=new Date(currentMonday);
+  start.setDate(start.getDate()-7);
+  const end=new Date(start);
+  end.setDate(end.getDate()+6);
+  return{start,end,startKey:dateKey(start),endKey:dateKey(end)};
+}
+function getWeeklyMotivationFallback(activeDays){
+  if(activeDays===0)return'Quando quiser recomeçar, uma anotação simples já é um próximo passo.';
+  if(activeDays<=2)return'Você já começou a construir seu histórico. Continue no ritmo que funciona para você.';
+  if(activeDays<=4)return'Cada registro ajuda a deixar sua rotina mais visível. Siga um dia de cada vez.';
+  return'Reconheça o tempo que dedicou à sua rotina nesta semana. Continue com gentileza e no seu ritmo.';
+}
+function weeklyMotivationStorageKey(startKey){return'nutriflow.weekly-motivation.'+(window.getNutriFlowUserId?.()||'demo')+'.'+startKey}
+function getSavedWeeklyMotivation(startKey){try{const value=JSON.parse(localStorage.getItem(weeklyMotivationStorageKey(startKey))||'null');return value&&typeof value.phrase==='string'?value:null}catch{return null}}
+let currentWeeklyReview=null;
+function renderWeeklyReview(entries=readMeals()){
+  const range=getLastFullWeekRange();
+  const validEntries=entries.filter(item=>item&&item.entry_type!=='plan'&&/^\d{4}-\d{2}-\d{2}$/.test(item.date)&&item.date>=range.startKey&&item.date<=range.endKey);
+  const activeDays=new Set(validEntries.map(item=>item.date)).size;
+  currentWeeklyReview={...range,activeDays,entryCount:validEntries.length};
+  const period=`${range.start.toLocaleDateString('pt-BR',{day:'numeric',month:'short'})} – ${range.end.toLocaleDateString('pt-BR',{day:'numeric',month:'short',year:'numeric'})}`;
+  const summary=validEntries.length?`Você anotou em ${activeDays} de 7 dias e guardou ${validEntries.length} ${validEntries.length===1?'refeição ou ideia':'refeições e ideias'}. Este retrato mostra seus registros no app, sem nota ou julgamento.`:'Na semana encerrada, não há registros salvos. Tudo bem: você pode retomar quando quiser, no seu ritmo.';
+  const saved=getSavedWeeklyMotivation(range.startKey);
+  const motivation=saved?.phrase||getWeeklyMotivationFallback(activeDays);
+  const label=saved?.source==='ai'?'Frase criada pela IA local':'Frase para sua semana';
+  for(const location of ['home','progress']){
+    const set=(suffix,value)=>{const element=document.getElementById(`weekly-review-${location}-${suffix}`);if(element)element.textContent=value};
+    set('period',period);
+    set('summary',summary);
+    set('days',`${activeDays} de 7`);
+    set('entries',String(validEntries.length));
+    set('motivation',motivation);
+    set('motivation-label',label);
+    const root=location==='home'?'overview':'progress';
+    const status=document.getElementById(`weekly-review-${location}-status`);
+    const button=document.querySelector(`#sub-${root} .weekly-review-ai-button`);
+    if(saved){if(status)status.textContent=saved.source==='ai'?'Criada neste aparelho · nenhuma refeição foi enviada.':'A IA não formou uma frase clara; esta mensagem de incentivo foi mantida.';if(button){button.textContent=saved.source==='ai'?'Frase da semana pronta':'Mensagem de incentivo pronta';button.disabled=true}}
+    else{if(status)status.textContent='Opcional · usa 1 resposta da sua cota de IA.';if(button){button.textContent='Criar frase com IA local';button.disabled=false}}
+  }
+}
 function mealCard(meal,onDelete){const card=document.createElement('div');card.className='meal-card';const emoji=document.createElement('div');emoji.className='meal-emoji';emoji.textContent=meal.kind==='Almoço'?'🥗':meal.kind==='Jantar'?'🌙':meal.kind==='Café da manhã'?'☀️':'🍎';const info=document.createElement('div');info.className='meal-info';const name=document.createElement('div');name.className='meal-name';name.textContent=meal.name;const meta=document.createElement('div');meta.className='meal-time';meta.textContent=meal.kind+' · '+new Date(meal.date+'T12:00:00').toLocaleDateString('pt-BR');info.append(name,meta);const remove=document.createElement('button');remove.type='button';remove.className='section-link';remove.textContent='Remover';remove.setAttribute('aria-label','Remover '+meal.name);remove.addEventListener('click',onDelete);card.append(emoji,info,remove);return card}
 function renderMeals(){
   const all=readMeals();
@@ -1268,6 +1345,7 @@ function renderMeals(){
   renderSelectedDaySummary(all);
   renderMonthCalendar();
   renderPet(all);
+  renderWeeklyReview(all);
 }
 function petUnlockStorageKey(){return 'nutriflow.pet.unlocked.'+(window.getNutriFlowUserId?.()||'demo')}
 function calculatePetProgress(entries){const today=dateKey(new Date());const dayNumber=value=>Math.floor(Date.parse(value+'T00:00:00Z')/86400000);const days=[...new Set(entries.map(item=>item.date).filter(value=>/^\d{4}-\d{2}-\d{2}$/.test(value)&&value<=today))].sort();let longest=0,run=0,previous=null;for(const value of days){const number=dayNumber(value);run=previous!==null&&number===previous+1?run+1:1;longest=Math.max(longest,run);previous=number}let current=0;if(days.length&&dayNumber(days[days.length-1])>=dayNumber(today)-1){current=1;for(let i=days.length-2;i>=0;i--){if(dayNumber(days[i])===dayNumber(days[i+1])-1)current++;else break}}let savedUnlock=false;try{savedUnlock=localStorage.getItem(petUnlockStorageKey())==='1';if(longest>=5&&!savedUnlock){localStorage.setItem(petUnlockStorageKey(),'1');savedUnlock=true}}catch{}return{today,days,longest,current,unlocked:savedUnlock||longest>=5,lastDay:days[days.length-1]||null}}
@@ -1280,21 +1358,115 @@ async function installNutriFlow(){if(window.matchMedia('(display-mode: standalon
 const LOCAL_ASSISTANT_MODEL='Qwen2.5-0.5B-Instruct-q4f16_1-MLC';
 const PREVIOUS_LOCAL_ASSISTANT_MODEL='SmolLM2-360M-Instruct-q4f32_1-MLC';
 const LOCAL_ASSISTANT_INSTRUCTIONS=[
-  'Você é o assistente do NutriFlow. Ajude com ideias de pratos, receitas simples e organização das refeições do dia a dia. Esses pedidos comuns são permitidos: responda com uma sugestão útil e não diga que não pode ajudar.',
-  'Fale em português brasileiro, de forma simpática, simples e direta. Comece pela resposta. Para ideias de pratos, dê 2 ou 3 opções com ingredientes comuns e preparo curto. Use no máximo 60 palavras para responder rápido. Se faltar informação, ofereça uma opção padrão e faça no máximo uma pergunta ao final.',
-  'Exemplo: se a pessoa pedir ideias de almoço, sugira pratos concretos como arroz, feijão e ovos; macarrão com legumes; ou frango com batata. Evite respostas genéricas, introduções longas, listas de avisos e repetir a pergunta.',
-  'Não diagnostique nem prescreva tratamentos ou dietas para doenças. Em pedidos de diagnóstico, tratamento ou segurança de alergia, diga brevemente que não pode avaliar isso e recomende orientação profissional. Não invente calorias ou dados nutricionais.',
+  'Você é um assistente de organização de refeições do dia a dia, não uma nutricionista. Responda sempre em português brasileiro, com clareza e de forma curta.',
+  'Ajude diretamente com pedidos cotidianos de refeições. Use apenas ingredientes e restrições escritos pela pessoa; se faltarem detalhes, deixe claro que são opções gerais. Nunca invente dados, fontes, calorias ou nutrientes.',
+  'Não avalie a qualidade da alimentação nem prometa resultados de saúde. Para doenças, gravidez, medicamentos, transtornos alimentares ou alergias, não personalize recomendações; diga brevemente que isso exige orientação profissional.',
+  'Use até 45 palavras, comece pela resposta e faça no máximo uma pergunta quando ela for realmente necessária. Não fale sobre ser um modelo de linguagem nem recuse pedidos comuns de ideias de refeições.',
 ].join(' ');
 const LOCAL_ASSISTANT_HISTORY_LIMIT=2;
 const LOCAL_ASSISTANT_REFUSAL_PATTERN=/\b(?:n[aã]o (?:posso|consigo|tenho|possuo|sei|tem|h[aá])|n[aã]o sou capaz|sem (?:ideias?|sugest[oõ]es?)|como modelo de linguagem|fui projetad[oa] para|n[aã]o tenho permiss[aã]o)\b/i;
-const LOCAL_ASSISTANT_SENSITIVE_PATTERN=/\b(alerg(?:ia|ias)|diabet(?:es|ico)|doen[cç]a|gr[aá]vid[ae]z|rem[eé]dio|medicamento|transtorno alimentar|tratamento|diagn[oó]stico|sintoma|press[aã]o alta|colesterol|cel[ií]ac[oa])\b/i;
-const LOCAL_ASSISTANT_MEAL_PATTERN=/\b(refei[cç][aã]o|prato|almo[cç]o|jantar|lanche|receita|card[aá]pio|comida|comer|ingrediente|cafe da manh[aã]|caf[eé] da manh[aã])\b/i;
+const LOCAL_ASSISTANT_SENSITIVE_PATTERN=/\b(al[eé]rg\w*|alerg\w*|diab[eé]t\w*|doen[cç]\w*|gr[aá]vid\w*|gesta[cç][aã]o|rem[eé]dio|medicamento|transtorno alimentar|tratamento|diagn[oó]stico|sintoma|press[aã]o alta|colesterol|cel[ií]ac\w*|intoler[aâ]ncia|amamenta[cç][aã]o)\b/i;
+const LOCAL_ASSISTANT_IDEA_PATTERN=/\b(ideia\w*|sugest\w*|op[cç][aã]o\w*|prato\w*|receita\w*|card[aá]pio|o que (?:eu )?(?:como|posso comer|fa[cç]o|posso fazer|fazer)|organizar|montar)\b/i;
+const LOCAL_ASSISTANT_CONTEXT_PATTERN=/\b(hoje|amanh[aã]|almo[cç]o|jant[ae]\w*|lanch\w*|caf[eé]|refei[cç][aã]o|comida|prato\w*)\b/i;
+const LOCAL_ASSISTANT_UNSUPPORTED_OUTPUT_PATTERN=/\b(caloria\w*|nutriente\w*|emagrec\w*|cura\w*|tratamento\w*|diagn[oó]stico\w*|dose\w*|medicamento\w*|antial[eé]rg\w*)\b/i;
 let localAssistantEngine=null;
 let localAssistantLoading=null;
 const localAssistantConversation=[];
 function setLocalAssistantStatus(message,state=''){const status=document.getElementById('assistant-local-status');if(status){status.textContent=message;status.dataset.state=state}}
 async function enableLocalAssistant(){if(localAssistantEngine){document.getElementById('assistant-local-controls')?.setAttribute('hidden','');return localAssistantEngine}if(localAssistantLoading)return localAssistantLoading;if(!window.isSecureContext){setLocalAssistantStatus('A IA local precisa que você abra o NutriFlow pelo endereço HTTPS.','error');return null}if(!navigator.gpu){setLocalAssistantStatus('Este navegador ou aparelho não oferece WebGPU. Atualize o Chrome ou use outro dispositivo compatível; o app não enviará suas perguntas para uma API paga.','error');return null}const button=document.getElementById('assistant-local-enable');if(button){button.disabled=true;button.textContent='Preparando modelo…'}setLocalAssistantStatus('Conectando ao modelo local. O primeiro download pode demorar e usar espaço no aparelho…');localAssistantLoading=(async()=>{try{const webllm=await import('https://esm.run/@mlc-ai/web-llm');const appConfig={...webllm.prebuiltAppConfig,model_list:webllm.prebuiltAppConfig.model_list.map(record=>record.model_id===LOCAL_ASSISTANT_MODEL?{...record,overrides:{...record.overrides,context_window_size:2048}}:record)};localAssistantEngine=await webllm.CreateMLCEngine(LOCAL_ASSISTANT_MODEL,{appConfig,initProgressCallback:report=>{const detail=String(report?.text||'Preparando o modelo…');const progress=Number(report?.progress);setLocalAssistantStatus(Number.isFinite(progress)&&progress>0?`${detail} ${Math.round(progress*100)}%`:detail)}});try{await webllm.deleteModelAllInfoInCache(PREVIOUS_LOCAL_ASSISTANT_MODEL,webllm.prebuiltAppConfig)}catch{}document.getElementById('assistant-local-controls')?.setAttribute('hidden','');return localAssistantEngine}catch(error){console.error('Local AI initialization failed:',error?.name||'unknown');localAssistantEngine=null;setLocalAssistantStatus('Não consegui preparar a IA local. Confira sua conexão, espaço livre e compatibilidade com WebGPU e tente novamente. Nenhuma API paga foi chamada.','error');if(button){button.textContent='Tentar preparar novamente';button.disabled=false}return null}finally{localAssistantLoading=null}})();return localAssistantLoading}
-async function askAssistant(question){const normalized=String(question||'').trim();if(!normalized)return;addAssistantMessage(normalized,'user');const chat=document.getElementById('assistant-chat');const pending=document.createElement('div');pending.className='assistant-message';pending.textContent='Aguardando a IA local…';pending.setAttribute('role','status');chat.append(pending);chat.scrollTop=chat.scrollHeight;const button=document.querySelector('#assistant-form button');if(button)button.disabled=true;try{if(!localAssistantEngine)throw new Error('Toque em “Ativar IA neste dispositivo” para preparar o modelo. Sua pergunta não foi enviada a nenhum serviço.');pending.textContent='Conferindo seu limite de uso…';const headers={'Content-Type':'application/json'};const getToken=window.getNutriFlowAccessToken;if(typeof getToken==='function'){const token=await getToken();if(token)headers.Authorization='Bearer '+token}const usageResponse=await fetch('/api/assistant/usage',{method:'POST',headers,body:JSON.stringify({})});const usage=await usageResponse.json().catch(()=>({}));if(!usageResponse.ok||usage.allowed!==true)throw new Error(usage.error||'Não consegui conferir seu limite de uso. Tente novamente.');pending.textContent='Pensando no seu aparelho…';const history=localAssistantConversation.slice(-LOCAL_ASSISTANT_HISTORY_LIMIT);let result=await localAssistantEngine.chat.completions.create({messages:[{role:'system',content:LOCAL_ASSISTANT_INSTRUCTIONS},...history,{role:'user',content:normalized}],temperature:0.55,top_p:0.9,max_tokens:110});let answer=result.choices?.[0]?.message?.content?.trim();if(answer&&LOCAL_ASSISTANT_REFUSAL_PATTERN.test(answer)&&!LOCAL_ASSISTANT_SENSITIVE_PATTERN.test(normalized)){pending.textContent='Reformulando a resposta…';result=await localAssistantEngine.chat.completions.create({messages:[{role:'system',content:LOCAL_ASSISTANT_INSTRUCTIONS+' A solicitação atual é uma pergunta cotidiana sobre comida. Responda agora com sugestões concretas em português; não recuse nem fale sobre limitações de IA.'},{role:'user',content:normalized}],temperature:0.65,top_p:0.9,max_tokens:110});answer=result.choices?.[0]?.message?.content?.trim();if((!answer||LOCAL_ASSISTANT_REFUSAL_PATTERN.test(answer))&&LOCAL_ASSISTANT_MEAL_PATTERN.test(normalized))answer='Claro! Para hoje, você pode escolher: arroz, feijão e ovos mexidos; macarrão com legumes; ou frango com batata e salada. Qual dessas opções combina mais com o que você tem em casa?'}if(!answer)throw new Error('Não consegui gerar uma resposta clara. Tente reformular a pergunta.');localAssistantConversation.push({role:'user',content:normalized},{role:'assistant',content:answer});pending.textContent=answer;if(Number.isFinite(usage.quota?.remaining))setLocalAssistantStatus(`Resposta local pronta. Restam ${usage.quota.remaining} respostas no seu período de uso.`,'ready')}catch(error){pending.textContent=error.message||'Não consegui gerar uma resposta neste dispositivo. Tente novamente.'}finally{pending.removeAttribute('role');if(button)button.disabled=false;chat.scrollTop=chat.scrollHeight}}
+function getReliableMealIdea(question){
+  const normalized=String(question||'').toLocaleLowerCase('pt-BR');
+  if(!LOCAL_ASSISTANT_IDEA_PATTERN.test(normalized)||!LOCAL_ASSISTANT_CONTEXT_PATTERN.test(normalized))return null;
+  if(/\b(com (?:o )?que (?:tenho|tem|sobrou)|com os ingredientes|usando (?:apenas )?os ingredientes|sem (?:leite|gl[uú]ten|carne|ovo|ovos|lactose))\b/i.test(normalized))return null;
+  let preferredKind='';
+  if(/\bcaf[eé]\b/.test(normalized))preferredKind='Café da manhã';
+  else if(/\blanch\w*\b/.test(normalized))preferredKind='Lanche';
+  else if(/\bjant[ae]\b/.test(normalized))preferredKind='Jantar';
+  else if(/\balmo[cç]o\b/.test(normalized))preferredKind='Almoço';
+  let ideas=preferredKind?DAILY_MEAL_TIPS.filter(item=>item.kind===preferredKind):[];
+  ideas=[...ideas,...DAILY_MEAL_TIPS.filter(item=>!ideas.some(existing=>existing.name===item.name))];
+  const dayNumber=Math.floor(Date.now()/86400000);
+  const offset=dayNumber%ideas.length;
+  ideas=[...ideas.slice(offset),...ideas.slice(0,offset)].slice(0,3);
+  return`Claro! Aqui vão algumas ideias simples para adaptar ao que você tem em casa:\n${ideas.map(item=>`• ${item.name} — ${item.copy}`).join('\n')}`;
+}
+function getAssistantSafetyReply(question){
+  if(!LOCAL_ASSISTANT_SENSITIVE_PATTERN.test(question))return null;
+  return'Para doença, gravidez, medicamentos, transtornos alimentares ou alergias, não é seguro personalizar sugestões por aqui. Converse com nutricionista ou profissional de saúde que conheça seu caso.';
+}
+async function reserveAssistantUsage(){
+  const headers={'Content-Type':'application/json'};
+  const getToken=window.getNutriFlowAccessToken;
+  if(typeof getToken==='function'){const token=await getToken();if(token)headers.Authorization='Bearer '+token}
+  const response=await fetch('/api/assistant/usage',{method:'POST',headers,body:JSON.stringify({})});
+  const usage=await response.json().catch(()=>({}));
+  if(!response.ok||usage.allowed!==true)throw new Error(usage.error||'Não consegui conferir seu limite de uso. Tente novamente.');
+  return usage;
+}
+function cleanWeeklyMotivation(value){
+  const phrase=String(value||'').replace(/\s+/g,' ').replace(/^[\s"'“”‘’•*-]+|[\s"'“”‘’]+$/g,'').replace(/^(?:frase(?: de incentivo| motivacional)?|motiva[cç][aã]o)\s*:\s*/i,'').trim();
+  if(phrase.length<18||phrase.length>160||/\d/.test(phrase)||LOCAL_ASSISTANT_REFUSAL_PATTERN.test(phrase)||LOCAL_ASSISTANT_SENSITIVE_PATTERN.test(phrase)||LOCAL_ASSISTANT_UNSUPPORTED_OUTPUT_PATTERN.test(phrase)||/\b(dieta|nutri[cç][aã]o|peso|corpo|sa[uú]de|emagrec\w*)\b/i.test(phrase))return'';
+  return phrase;
+}
+async function generateWeeklyMotivation(){
+  const report=currentWeeklyReview;
+  if(!report)return;
+  const key=weeklyMotivationStorageKey(report.startKey);
+  if(getSavedWeeklyMotivation(report.startKey))return;
+  if(!localAssistantEngine){navTo('ai');showToast('Ative a IA neste dispositivo para criar uma frase personalizada. O resumo semanal continua disponível.');return}
+  const buttons=[...document.querySelectorAll('.weekly-review-ai-button')];
+  const statuses=[...document.querySelectorAll('.weekly-review-status')];
+  buttons.forEach(button=>{button.disabled=true;button.textContent='Criando frase…'});
+  statuses.forEach(status=>status.textContent='Gerando no seu aparelho; esta ação usa 1 resposta da cota de IA.');
+  try{
+    const usage=await reserveAssistantUsage();
+    const result=await localAssistantEngine.chat.completions.create({messages:[
+      {role:'system',content:'Escreva uma única frase curta e acolhedora em português brasileiro para incentivar alguém a continuar registrando sua rotina no próprio ritmo. Você não é nutricionista. Receberá apenas totais de registros. Não avalie alimentos, não dê conselhos de saúde, não prometa resultados, não use números nem mencione dieta ou peso. Não acrescente explicações.'},
+      {role:'user',content:`Na última semana a pessoa registrou em ${report.activeDays} de 7 dias e guardou ${report.entryCount} refeições ou ideias. Escreva apenas uma frase motivacional.`},
+    ],temperature:0.2,top_p:0.8,max_tokens:48});
+    const phrase=cleanWeeklyMotivation(result.choices?.[0]?.message?.content);
+    const saved={phrase:phrase||getWeeklyMotivationFallback(report.activeDays),source:phrase?'ai':'fallback',week:report.startKey};
+    try{localStorage.setItem(key,JSON.stringify(saved))}catch{}
+    renderWeeklyReview(readMeals());
+    const remaining=usage.quota?.remaining;
+    statuses.forEach(status=>status.textContent=phrase?(Number.isFinite(remaining)?`Criada no aparelho · restam ${remaining} respostas de IA.`:'Criada no aparelho; nenhuma refeição foi enviada.'):'A IA não formou uma frase clara. Mantive uma mensagem segura para você.');
+  }catch(error){
+    statuses.forEach(status=>status.textContent=error.message||'Não consegui gerar agora. Sua mensagem de incentivo continua disponível.');
+    buttons.forEach(button=>{button.disabled=false;button.textContent='Tentar frase com IA local'});
+  }
+}
+async function askAssistant(question){
+  const normalized=String(question||'').trim();
+  if(!normalized)return;
+  addAssistantMessage(normalized,'user');
+  const chat=document.getElementById('assistant-chat');
+  const pending=document.createElement('div');
+  pending.className='assistant-message';
+  pending.textContent='Preparando uma resposta…';
+  pending.setAttribute('role','status');
+  chat.append(pending);
+  chat.scrollTop=chat.scrollHeight;
+  const button=document.querySelector('#assistant-form button');
+  if(button)button.disabled=true;
+  try{
+    const safeReply=getAssistantSafetyReply(normalized);
+    const reliableReply=safeReply||getReliableMealIdea(normalized);
+    if(reliableReply){pending.textContent=reliableReply;return}
+    if(!localAssistantEngine)throw new Error('Ative a IA local para responder perguntas abertas. Ideias comuns de pratos continuam disponíveis sem preparar o modelo.');
+    pending.textContent='Conferindo seu limite de uso…';
+    const usage=await reserveAssistantUsage();
+    pending.textContent='Pensando no seu aparelho…';
+    const history=localAssistantConversation.slice(-LOCAL_ASSISTANT_HISTORY_LIMIT);
+    const result=await localAssistantEngine.chat.completions.create({messages:[{role:'system',content:LOCAL_ASSISTANT_INSTRUCTIONS},...history,{role:'user',content:normalized}],temperature:0.2,top_p:0.8,max_tokens:90});
+    let answer=result.choices?.[0]?.message?.content?.trim();
+    const invalid=!answer||answer.length>420||LOCAL_ASSISTANT_REFUSAL_PATTERN.test(answer)||LOCAL_ASSISTANT_UNSUPPORTED_OUTPUT_PATTERN.test(answer)||/\b(?:as an ai|language model|i cannot help)\b/i.test(answer);
+    if(invalid){answer=getReliableMealIdea(normalized)||'Não consegui montar uma resposta confiável agora. Tente perguntar por uma ideia simples de refeição ou reformule sua dúvida.'}
+    else localAssistantConversation.push({role:'user',content:normalized},{role:'assistant',content:answer});
+    pending.textContent=answer;
+    if(Number.isFinite(usage.quota?.remaining))setLocalAssistantStatus(`Resposta local pronta. Restam ${usage.quota.remaining} respostas no seu período de uso.`,'ready');
+  }catch(error){pending.textContent=error.message||'Não consegui gerar uma resposta neste dispositivo. Tente novamente.'}
+  finally{pending.removeAttribute('role');if(button)button.disabled=false;chat.scrollTop=chat.scrollHeight}
+}
 document.getElementById('assistant-form')?.addEventListener('submit',event=>{event.preventDefault();const input=document.getElementById('assistant-input');const question=input.value.trim();if(question){input.value='';askAssistant(question)}});
 function deleteMeal(id){const next=readMeals().filter(m=>m.id!==id);if(saveMeals(next)){renderMeals();showToast('Registro removido deste navegador.')}}
 function clearDemoData(){if(!confirm('Apagar todos os registros desta demonstração neste navegador?'))return;try{localStorage.removeItem(STORAGE_KEY);localStorage.removeItem(petUnlockStorageKey())}catch{}renderMeals();showToast('Registros apagados.')}

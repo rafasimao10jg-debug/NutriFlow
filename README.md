@@ -9,7 +9,8 @@ Aplicação web em português para registrar refeições e ideias, acompanhar a 
 - Registro de refeições e ideias, com salvamento local na demonstração e sincronização com o Supabase quando a pessoa entra na conta.
 - Sugestão diária de refeição que pode ser salva na agenda mensal, com indicação de registros por dia e acesso rápido à data de hoje.
 - Indicadores de histórico e sequência de 5 dias para liberar o Flow.
-- Assistente local opcional com WebLLM e WebGPU usando Qwen2.5-0.5B: o modelo roda no navegador do dispositivo; o texto das perguntas não é enviado ao servidor NutriFlow nem a uma API paga. Quando a cobrança for ativada, o servidor recebe somente a sessão e uma chamada de controle de limite, sem o texto da pergunta.
+- Resumo automático da última semana completa, com dias e registros anotados. O resumo não dá nota nem avalia qualidade nutricional. Uma frase opcional usa a IA local e conta como uma resposta da cota.
+- Assistente com sugestões comuns predefinidas para respostas rápidas e modelo local opcional com WebLLM/WebGPU e Qwen2.5-0.5B para perguntas abertas. O texto das perguntas e as descrições das refeições não são enviados ao servidor NutriFlow nem a uma API paga. Quando a pessoa pede uma frase semanal ou usa uma pergunta aberta, o servidor recebe somente a sessão e uma solicitação vazia para verificar a cota.
 - Página pública de apresentação com atalhos para demonstração, cadastro e login.
 - PWA instalável no Android e iPhone, com ícone NutriFlow, atalho no perfil e cache da tela principal.
 
@@ -38,7 +39,7 @@ Consulte [docs/SUPABASE_SETUP.md](docs/SUPABASE_SETUP.md). A migration em `supab
 
 ## Limites conhecidos antes de lançar
 
-- A IA local depende de WebGPU e hardware compatível; precisa baixar o modelo no primeiro uso. Ainda é necessário validar o download, a geração e o consumo no Android real do usuário.
+- A IA local depende de WebGPU e hardware compatível; precisa baixar o modelo no primeiro uso. Respostas abertas ainda podem conter erros; as ideias comuns usam opções predefinidas e o resumo semanal conta somente registros. Ainda é necessário validar o download, a geração e o consumo no Android real do usuário.
 - O modelo e a biblioteca são baixados de serviços externos no primeiro uso; as perguntas são processadas localmente. O servidor pode receber a sessão e uma solicitação sem o texto para conferir limites. A Política de Privacidade deve explicar esses fluxos e o armazenamento local antes da abertura ao público.
 - O fluxo de refeições registra itens por data; um planejador semanal completo ainda precisa ser construído.
 - Login, cadastro, recuperação e sincronização precisam de validação ponta a ponta com contas de teste.
