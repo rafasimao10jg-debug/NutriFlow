@@ -21,7 +21,7 @@ Aplicação web em português para registrar refeições e ideias, acompanhar a 
 
 ## Executar
 
-Use Node.js 20 ou superior. Para rodar localmente, execute `node server.js` (não precisa instalar dependências). No Replit, o comando de execução usa `npm start`. Não configure `OPENAI_API_KEY`: o servidor não chama a OpenAI. Para usar a IA local, abra o app por HTTPS em um navegador com WebGPU e toque em **Ativar IA neste dispositivo**. O app usa Qwen2.5-0.5B quantizado; a configuração listada pelo WebLLM pede cerca de 1,06 GB de memória gráfica e os arquivos do modelo têm cerca de 290 MB. O uso depende do hardware e pode consumir memória e bateria.
+Use Node.js 20 ou superior. Para rodar localmente, execute `node server.js` (não precisa instalar dependências). No Replit, o comando de execução usa `npm start`. Não configure `OPENAI_API_KEY`: o servidor não chama a OpenAI. Para usar a IA local, abra o app por HTTPS em um navegador com WebGPU e toque em **Ativar IA neste dispositivo**. O app usa Qwen2.5-0.5B quantizado; a configuração q4f16 pede cerca de 945 MB de memória gráfica e limita o contexto a 2.048 tokens. Os arquivos ainda têm cerca de 290 MB para baixar. O uso depende do hardware e pode consumir memória e bateria.
 
 ## Publicar sem Replit
 
