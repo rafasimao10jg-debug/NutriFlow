@@ -4,7 +4,7 @@ Atualizado em 4 de novembro de 2026. Este plano é um rascunho operacional, não
 
 ## Estado do produto
 
-O app tem página pública, demonstração de registros, tema claro/escuro e sequência para liberar o Flow. O assistente agora chama a API da OpenAI pelo servidor Node, com a chave lida de `OPENAI_API_KEY` no ambiente, limite temporário por endereço e aviso de privacidade no chat. Há um Blueprint preparado para Render, mas nenhum serviço público foi criado e a IA ainda não foi validada em produção. Cadastro, login, confirmação de senha e recuperação pelo Supabase precisam de validação ponta a ponta.
+O app tem página pública, demonstração de registros, tema claro/escuro, sequência para liberar o Flow e PWA instalável. O Web Service `nutriflow` está publicado no Render em `https://nutriflow-0yvi.onrender.com`. O assistente chama a API da OpenAI pelo servidor, usa `gpt-6-luna` como padrão econômico no código, limita o uso a 10 pedidos por endereço/hora e 100 por instância/dia e exibe um aviso de privacidade. O endpoint público foi verificado, mas uma resposta válida do modelo ainda precisa ser testada após definir `OPENAI_MODEL` nos Secrets do Render e confirmar saldo/limites da API. O Supabase Auth está acessível com e-mail/senha habilitados; cadastro, login, confirmação, recuperação e sincronização ainda precisam de validação ponta a ponta.
 
 **Posicionamento que o produto atual sustenta:** NutriFlow ajuda adultos a organizar ideias e registros de refeições no próprio ritmo. O Flow é uma companhia visual liberada após cinco dias seguidos de registro.
 
@@ -55,10 +55,10 @@ Na criação do anúncio, evitar texto que afirme ou sugira que a pessoa tem uma
 
 | Prioridade | Pendência | Estado |
 | --- | --- | --- |
-| P0 | Criar serviço no Render a partir de `render.yaml`, configurar a chave diretamente nos Secrets e confirmar endereço público estável | Blueprint pronto; depende de conectar a conta GitHub ao Render e preencher o segredo |
+| P0 | Manter o serviço Render ativo, configurar `OPENAI_MODEL=gpt-6-luna` e confirmar uma resposta real com os limites de uso ativos | Serviço publicado; a alteração de modelo e a resposta ainda precisam ser confirmadas em produção |
 | P0 | Executar/confirmar a migration no Supabase; testar cadastro, confirmação, login, recuperação e sincronização com contas de teste | Não verificado |
 | P0 | Publicar Termos e Política de Privacidade com responsável, dados coletados, retenção, contato e exclusão de conta | Não existe no app |
-| P0 | Configurar `OPENAI_API_KEY` nos Secrets do Render e validar uma resposta real, limites de uso, erros e custo | Código integrado; falta serviço publicado, segredo no Render e teste real |
+| P0 | Confirmar que `OPENAI_API_KEY` nos Secrets do Render é válida e testar uma resposta real, limites de uso, erros e custo | Variável configurada anteriormente; uma resposta real não foi testada nesta revisão |
 | P1 | Decidir se o beta inclui somente registros ou também um planejador semanal; a tela atual não separa planos de registros | Funcionalidade parcial |
 | P1 | Revisar navegação por teclado, leitores de tela, contraste, erros de rede e telas pequenas | Revisão incompleta |
 | P1 | Criar roteiro de suporte e resposta a falhas de login/sincronização | Pendente |

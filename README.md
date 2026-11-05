@@ -8,7 +8,7 @@ Aplicação web em português para registrar refeições e ideias, acompanhar a 
 - Cadastro, login por e-mail e senha e recuperação de senha pelo Supabase Auth.
 - Registro de refeições e ideias, com salvamento local na demonstração e sincronização com o Supabase quando a pessoa entra na conta.
 - Indicadores de histórico e sequência de 5 dias para liberar o Flow.
-- Assistente conectado à OpenAI pelo servidor Node. A chave é lida da variável `OPENAI_API_KEY` no servidor e nunca vai ao navegador.
+- Assistente conectado à OpenAI pelo servidor Node com `gpt-6-luna` como padrão econômico. A chave é lida da variável `OPENAI_API_KEY` no servidor e nunca vai ao navegador.
 - Página pública de apresentação com atalhos para demonstração, cadastro e login.
 - PWA instalável no Android e iPhone, com ícone NutriFlow, atalho no perfil e cache da tela principal.
 
@@ -21,7 +21,7 @@ Aplicação web em português para registrar refeições e ideias, acompanhar a 
 
 ## Executar
 
-Use Node.js 20 ou superior. Para rodar localmente, execute `node server.js` (não precisa instalar dependências). No Replit, o comando de execução usa `npm start`; crie lá um segredo chamado exatamente `OPENAI_API_KEY`. Para ativar a IA localmente, configure essa variável no ambiente antes de iniciar; não coloque a chave em arquivos versionados. Sem ela, a aplicação abre e o assistente informa que não está configurado.
+Use Node.js 20 ou superior. Para rodar localmente, execute `node server.js` (não precisa instalar dependências). No Replit, o comando de execução usa `npm start`; crie lá um segredo chamado exatamente `OPENAI_API_KEY`. Para ativar a IA localmente, configure essa variável no ambiente antes de iniciar; não coloque a chave em arquivos versionados. `OPENAI_MODEL` é opcional e, sem valor, usa `gpt-6-luna`. Sem a chave, a aplicação abre e o assistente informa que não está configurado.
 
 ## Publicar sem Replit
 
@@ -38,7 +38,7 @@ Consulte [docs/SUPABASE_SETUP.md](docs/SUPABASE_SETUP.md). A migration em `supab
 ## Limites conhecidos antes de lançar
 
 - A IA real depende de configurar `OPENAI_API_KEY` nos Secrets do ambiente publicado e confirmar uma chamada real nesse ambiente. A validação local não usou nem revelou credencial.
-- O limite de frequência do assistente é mantido em memória por instância; para oferta paga com tráfego, adotar cotas por conta e proteção de abuso compartilhada entre instâncias.
+- O limite inicial do assistente é de 10 solicitações por endereço a cada hora e 100 por dia por instância; os contadores ficam em memória e reiniciam junto com o serviço. Para oferta paga com tráfego, adotar cotas por conta e proteção de abuso compartilhada entre instâncias.
 - A pergunta digitada no assistente é enviada à OpenAI para gerar uma resposta; o app orienta a pessoa a não incluir dados pessoais ou de saúde. Atualizar a Política de Privacidade para explicar o fornecedor e o tratamento antes de abrir ao público.
 - O fluxo de refeições registra itens por data; um planejador semanal completo ainda precisa ser construído.
 - Login, cadastro, recuperação e sincronização precisam de validação ponta a ponta com contas de teste.

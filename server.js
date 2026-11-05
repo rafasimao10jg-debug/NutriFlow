@@ -5,10 +5,13 @@ import { fileURLToPath } from 'node:url';
 
 const root = path.dirname(fileURLToPath(import.meta.url));
 const port = Number(process.env.PORT || 5000);
-const model = process.env.OPENAI_MODEL || 'gpt-4.1-mini';
-const WINDOW_MS = 10 * 60 * 1000;
-const MAX_REQUESTS = 20;
+const model = process.env.OPENAI_MODEL || 'gpt-6-luna';
+const WINDOW_MS = 60 * 60 * 1000;
+const MAX_REQUESTS_PER_ADDRESS = 10;
+const MAX_REQUESTS_PER_DAY = 100;
 const requestLog = new Map();
+let requestDay = new Date().toISOString().slice(0, 10);
+let dailyRequests = 0;
 
 const contentTypes = {
   '.css': 'text/css; charset=utf-8',
@@ -30,16 +33,26 @@ function sendJson(response, status, body) {
 }
 
 function allowedByRateLimit(request) {
+  const today = new Date().toISOString().slice(0, 10);
+  if (today !== requestDay) { requestDay = today; dailyRequests = 0; }
+  if (dailyRequests >= MAX_REQUESTS_PER_DAY) return false;
+
   const forwarded = request.headers['x-forwarded-for'];
   const address = (typeof forwarded === 'string' ? forwarded.split(',')[0] : request.socket.remoteAddress) || 'unknown';
   const now = Date.now();
   const recent = (requestLog.get(address) || []).filter((timestamp) => now - timestamp < WINDOW_MS);
-  if (recent.length >= MAX_REQUESTS) {
+  if (recent.length >= MAX_REQUESTS_PER_ADDRESS) {
     requestLog.set(address, recent);
     return false;
   }
   recent.push(now);
   requestLog.set(address, recent);
+  dailyRequests += 1;
+  for (const [key, timestamps] of requestLog) {
+    const active = timestamps.filter((timestamp) => now - timestamp < WINDOW_MS);
+    if (active.length) requestLog.set(key, active);
+    else requestLog.delete(key);
+  }
   return true;
 }
 
@@ -68,7 +81,8 @@ async function askOpenAI(question) {
       body: JSON.stringify({
         model,
         store: false,
-        max_output_tokens: 350,
+        reasoning: { effort: 'none' },
+        max_output_tokens: 250,
         instructions: [
           'Você é o assistente de organização alimentar do NutriFlow. Responda em português brasileiro, com linguagem simples, cordial e objetiva.',
           'Ajude com ideias gerais de refeições e organização. Não diagnostique, não prescreva dietas, não calcule necessidades clínicas e não prometa resultados de saúde ou peso.',
@@ -134,14 +148,14 @@ const server = createServer(async (request, response) => {
       return;
     }
     if (!allowedByRateLimit(request)) {
-      sendJson(response, 429, { error: 'Você chegou ao limite temporário. Tente novamente em alguns minutos.' });
+      sendJson(response, 429, { error: 'O limite de uso do assistente foi atingido. Tente novamente mais tarde.' });
       return;
     }
     try {
       const body = await readBody(request);
       const question = typeof body.question === 'string' ? body.question.trim() : '';
-      if (!question || question.length > 600) {
-        sendJson(response, 400, { error: 'Escreva uma pergunta de até 600 caracteres.' });
+      if (!question || question.length > 500) {
+        sendJson(response, 400, { error: 'Escreva uma pergunta de até 500 caracteres.' });
         return;
       }
       const answer = await askOpenAI(question);
