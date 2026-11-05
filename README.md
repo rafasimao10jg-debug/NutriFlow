@@ -7,6 +7,7 @@ Aplicação web em português para registrar refeições e ideias, acompanhar a 
 - Interface responsiva com tema claro e escuro.
 - Cadastro, login por e-mail e senha e recuperação de senha pelo Supabase Auth.
 - Registro de refeições e ideias, com salvamento local na demonstração e sincronização com o Supabase quando a pessoa entra na conta.
+- Sugestão diária de refeição que pode ser salva na agenda semanal, com indicação de registros por dia e acesso rápido à data de hoje.
 - Indicadores de histórico e sequência de 5 dias para liberar o Flow.
 - Assistente local opcional com WebLLM e WebGPU usando Qwen2.5-0.5B: o modelo roda no navegador do dispositivo; o texto das perguntas não é enviado ao servidor NutriFlow nem a uma API paga. Quando a cobrança for ativada, o servidor recebe somente a sessão e uma chamada de controle de limite, sem o texto da pergunta.
 - Página pública de apresentação com atalhos para demonstração, cadastro e login.
