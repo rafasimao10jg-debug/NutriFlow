@@ -4,7 +4,7 @@ Atualizado em 4 de novembro de 2026. Este plano é um rascunho operacional, não
 
 ## Estado do produto
 
-O app tem página pública, demonstração de registros, tema claro/escuro, sequência para liberar o Flow e PWA instalável. O Web Service `nutriflow` está publicado no Render em `https://nutriflow-0yvi.onrender.com`. O assistente foi alterado para WebLLM local por WebGPU, com ativação explícita e sem endpoint de geração no servidor. Ainda precisa validar download, geração e uso de recursos em Android compatível. O Supabase Auth está acessível com e-mail/senha habilitados; cadastro, login, confirmação, recuperação e sincronização ainda precisam de validação ponta a ponta.
+O app tem página pública, acesso por conta, tema claro/escuro, sequência para liberar o Flow e PWA instalável. O Web Service `nutriflow` está publicado no Render em `https://nutriflow-0yvi.onrender.com`. O assistente foi alterado para WebLLM local por WebGPU, com ativação explícita e sem endpoint de geração no servidor. Ainda precisa validar download, geração e uso de recursos em Android compatível. O Supabase Auth está configurado para e-mail/senha; cadastro, confirmação, recuperação e sincronização ainda precisam de validação ponta a ponta com conta de teste.
 
 **Posicionamento que o produto atual sustenta:** NutriFlow ajuda adultos a organizar ideias e registros de refeições no próprio ritmo. O Flow é uma companhia visual liberada após cinco dias seguidos de registro.
 
@@ -20,7 +20,7 @@ Oferta definida: acesso base por R$ 29,90 em pagamento único via Pix, incluindo
 
 **Preço aprovado:** R$ 29,90 uma vez via Pix pelo acesso base; R$ 14,90 por mês via Pix pela assinatura opcional de IA, com até 100 respostas por mês civil (reinicia no dia 1). O checkout precisa informar claramente renovação, cancelamento, suporte e condições aplicáveis antes da compra. Não inventar descontos, garantia ou período de teste.
 
-**O que existe hoje:** registro por data, histórico simples, tema claro/escuro, guia dentro do app e sequência para liberar o Flow. A demonstração salva os dados no navegador. Cadastro e sincronização Supabase precisam de validação real antes de prometer esses recursos como confiáveis em uma oferta paga.
+**O que existe hoje:** registro por data, histórico simples, tema claro/escuro, guia dentro do app e sequência para liberar o Flow. Os registros ficam associados à conta autenticada. Cadastro e sincronização Supabase ainda precisam de validação real antes de prometer esses recursos como confiáveis em uma oferta paga.
 
 ### Texto de anúncio — rascunho para oferta paga
 
@@ -58,7 +58,7 @@ Na criação do anúncio, evitar texto que afirme ou sugira que a pessoa tem uma
 | Prioridade | Pendência | Estado |
 | --- | --- | --- |
 | P0 | Validar ativação, download e resposta do modelo local em Android com WebGPU; confirmar que perguntas não chegam ao servidor | Implementado no app; validação em aparelho físico ainda pendente |
-| P0 | Executar/confirmar a migration no Supabase; testar cadastro, confirmação, login, recuperação e sincronização com contas de teste | Não verificado |
+| P0 | Executar/confirmar a migration no Supabase; testar cadastro, confirmação, login, recuperação e sincronização com contas de teste | Código atualizado; validação ponta a ponta pendente |
 | P0 | Publicar Termos e Política de Privacidade com responsável, dados coletados, retenção, contato e exclusão de conta | Não existe no app |
 | P1 | Decidir se o beta inclui somente registros ou também um planejador semanal; a tela atual não separa planos de registros | Funcionalidade parcial |
 | P1 | Revisar navegação por teclado, leitores de tela, contraste, erros de rede e telas pequenas | Revisão incompleta |

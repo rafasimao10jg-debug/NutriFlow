@@ -44,6 +44,7 @@ Adultos que querem planejar refeições e criar uma rotina alimentar mais organi
 **Ação:** Criar conta<br>
 **Link:** Já tem conta? Entrar<br>
 **Ajuda de senha:** Use pelo menos 8 caracteres. Não reutilize uma senha importante de outro serviço.<br>
+**Confirmação:** Se a confirmação de e-mail estiver ativa, mostre um estado de sucesso com instrução para conferir a caixa de entrada e o spam, e permita reenviar o link.<br>
 **Consentimento:** Ao continuar, você concorda com os Termos de Uso e a Política de Privacidade. Os links precisam existir antes de ativar o cadastro público.
 
 ### Login e recuperação
@@ -112,7 +113,7 @@ Não use rankings, culpa, metas automáticas de peso ou alertas para compensar r
 
 No início da semana, exibir um resumo da última semana completa (segunda a domingo): quantidade de dias com registros e quantidade de refeições ou ideias anotadas. Excluir planos futuros. O resumo é descritivo: não dá nota, não avalia a qualidade da alimentação e não infere saúde, nutrientes ou resultados. Incluir uma frase curta de incentivo; a pessoa pode pedir uma variação à IA local. Essa ação usa uma resposta da cota e envia ao modelo apenas totais agregados. A geração só começa depois de ação explícita. Não prometer notificação push: o resumo fica disponível dentro do app quando a pessoa o abre.
 
-### Assistente NutriFlow (modo de demonstração)
+### Assistente NutriFlow
 
 **Apresentação:** Posso ajudar com ideias gerais para organizar refeições e explorar opções. Você decide o que combina com sua rotina.<br>
 **Sugestões de pergunta:** Me ajude a organizar refeições para amanhã; sugira opções com os ingredientes que tenho; adapte uma ideia à minha preferência alimentar.<br>
@@ -148,6 +149,7 @@ O botão “Como usar o app” na tela inicial e o botão “?” no topo abrem 
 ## Requisitos de conteúdo para o primeiro MVP
 
 - Oferecer cadastro, login, recuperação de senha e saída da conta com mensagens claras.
+- Exigir uma conta autenticada antes de abrir o painel ou salvar registros.
 - Permitir que a pessoa escolha preferências básicas e altere ou remova essas escolhas.
 - Salvar planos, registros e progresso associados à conta; mostrar quando o salvamento ainda não sincronizou.
 - Explicar o que será salvo e como pedir exclusão da conta e dos dados antes do lançamento.

@@ -5,13 +5,13 @@ Aplicação web em português para registrar refeições e ideias, acompanhar a 
 ## Como está hoje
 
 - Interface responsiva com tema claro e escuro.
-- Cadastro, login por e-mail e senha e recuperação de senha pelo Supabase Auth.
-- Registro de refeições e ideias, com salvamento local na demonstração e sincronização com o Supabase quando a pessoa entra na conta.
+- Cadastro, confirmação de e-mail, login e recuperação de senha pelo Supabase Auth. É necessário entrar para usar o app.
+- Registro de refeições e ideias associados à conta, com cache local por usuário e sincronização com o Supabase.
 - Sugestão diária de refeição que pode ser salva na agenda mensal, com indicação de registros por dia e acesso rápido à data de hoje.
 - Indicadores de histórico e sequência de 5 dias para liberar o Flow.
 - Resumo automático da última semana completa, com dias e registros anotados. O resumo não dá nota nem avalia qualidade nutricional. Uma frase opcional usa a IA local e conta como uma resposta da cota.
 - Assistente com sugestões comuns predefinidas para respostas rápidas e modelo local opcional com WebLLM/WebGPU e Qwen2.5-0.5B para perguntas abertas. O texto das perguntas e as descrições das refeições não são enviados ao servidor NutriFlow nem a uma API paga. Quando a pessoa pede uma frase semanal ou usa uma pergunta aberta, o servidor recebe somente a sessão e uma solicitação vazia para verificar a cota.
-- Página pública de apresentação com atalhos para demonstração, cadastro e login.
+- Página pública de apresentação com atalhos para criar conta e entrar; não há acesso de demonstração.
 - PWA instalável no Android e iPhone, com ícone NutriFlow, atalho no perfil e cache da tela principal.
 
 ## Tecnologias
@@ -24,6 +24,8 @@ Aplicação web em português para registrar refeições e ideias, acompanhar a 
 ## Executar
 
 Use Node.js 20 ou superior. Para rodar localmente, execute `node server.js` (não precisa instalar dependências). No Replit, o comando de execução usa `npm start`. Não configure `OPENAI_API_KEY`: o servidor não chama a OpenAI. Para usar a IA local, abra o app por HTTPS em um navegador com WebGPU e toque em **Ativar IA neste dispositivo**. O app usa Qwen2.5-0.5B quantizado; a configuração q4f16 pede cerca de 945 MB de memória gráfica e limita o contexto a 2.048 tokens. Os arquivos ainda têm cerca de 290 MB para baixar. O uso depende do hardware e pode consumir memória e bateria.
+
+Para executar os testes de cadastro e sessão simulados, rode `npm test`. Eles não criam usuários reais.
 
 ## Publicar sem Replit
 
@@ -45,9 +47,9 @@ Consulte [docs/SUPABASE_SETUP.md](docs/SUPABASE_SETUP.md). A migration em `supab
 - Login, cadastro, recuperação e sincronização precisam de validação ponta a ponta com contas de teste.
 - O app ainda precisa de política de privacidade e termos, processo de exclusão de conta, acessibilidade revisada e uma publicação estável.
 - Checkout e cobrança da oferta paga ainda não estão implementados.
-- Não há suíte automatizada de testes, lint ou build configurados.
+- Há testes automatizados simulados para os fluxos de cadastro e sessão; o cadastro, a confirmação por e-mail e a sincronização ainda precisam de validação ponta a ponta com uma conta de teste.
 
-Use apenas informações fictícias na demonstração local. O produto ajuda a organizar registros; não oferece diagnóstico, tratamento ou prescrição nutricional.
+O produto ajuda a organizar registros; não oferece diagnóstico, tratamento ou prescrição nutricional. O cadastro exige confirmação de e-mail quando essa opção estiver habilitada no Supabase.
 
 ## Colaboração
 

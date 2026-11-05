@@ -1,12 +1,61 @@
 (() => {
-  const cfg = window.NUTRIFLOW_SUPABASE;
-  if (!cfg?.url || !cfg?.publishableKey || !window.supabase?.createClient) return;
+  const showAuthFeedback = (form, message, state = 'info') => {
+    const feedback = document.getElementById(`${form}-feedback`);
+    if (!feedback) return;
+    feedback.textContent = message;
+    feedback.dataset.state = state;
+    feedback.hidden = !message;
+  };
+  const setButtonBusy = (id, busy, busyText, idleText) => {
+    const button = document.getElementById(id);
+    if (!button) return;
+    button.disabled = busy;
+    button.textContent = busy ? busyText : idleText;
+  };
+  const bindAuthForms = () => {
+    document.getElementById('login-form')?.addEventListener('submit', event => {
+      event.preventDefault();
+      window.loginWithSupabase();
+    });
+    document.getElementById('signup-form')?.addEventListener('submit', event => {
+      event.preventDefault();
+      window.registerWithSupabase();
+    });
+  };
+  const installUnavailableAuth = () => {
+    const message = 'O serviço de contas não carregou. Confira sua conexão e atualize o app para tentar novamente.';
+    window.getNutriFlowUserId = () => null;
+    window.isNutriFlowAccountActive = () => false;
+    window.getNutriFlowAccessToken = async () => null;
+    window.readMeals = () => [];
+    window.saveMeals = () => { showAuthFeedback('login', message, 'error'); goTo('login'); return false; };
+    window.loginWithSupabase = async () => showAuthFeedback('login', message, 'error');
+    window.registerWithSupabase = async () => showAuthFeedback('signup', message, 'error');
+    window.resendSignupConfirmation = async () => showAuthFeedback('signup', message, 'error');
+    window.resendLoginConfirmation = async () => showAuthFeedback('login', message, 'error');
+    window.recoverSupabasePassword = async () => showAuthFeedback('login', message, 'error');
+    window.saveNewPassword = async () => showAuthFeedback('login', message, 'error');
+    window.signOutNutriFlow = async () => { goTo('login'); };
+    window.clearAccountData = async () => showAuthFeedback('login', message, 'error');
+    bindAuthForms();
+  };
 
-  const client = window.supabase.createClient(cfg.url, cfg.publishableKey, {
-    auth: { autoRefreshToken: true, persistSession: true, detectSessionInUrl: true },
-  });
-  const demoKey = 'nutriflow.demo.meals';
-  const legacyDemoKey = 'nutriflow.meals.demo';
+  const cfg = window.NUTRIFLOW_SUPABASE;
+  if (!cfg?.url || !cfg?.publishableKey || !window.supabase?.createClient) {
+    installUnavailableAuth();
+    return;
+  }
+
+  let client;
+  try {
+    client = window.supabase.createClient(cfg.url, cfg.publishableKey, {
+      auth: { autoRefreshToken: true, persistSession: true, detectSessionInUrl: true },
+    });
+  } catch {
+    installUnavailableAuth();
+    return;
+  }
+  const legacyLocalMealKeys = ['nutriflow.demo.meals', 'nutriflow.meals.demo'];
   let activeUser = null;
   let passwordRecovery = location.hash.includes('type=recovery');
   let currentLoad = 0;
@@ -15,7 +64,7 @@
     const status = document.getElementById('sync-status-home');
     if (status) status.textContent = value;
   };
-  const accountKey = userId => userId ? `nutriflow.meals.${userId}` : demoKey;
+  const accountKey = userId => userId ? `nutriflow.meals.${userId}` : null;
   const pendingKey = userId => `nutriflow.pending.${userId}`;
   const getPendingIds = userId => {
     try {
@@ -58,16 +107,52 @@
     } catch { return null; }
   };
 
+  const resendConfirmation = async (form, buttonId) => {
+    const emailInput = document.getElementById(`${form}-email`);
+    const email = emailInput?.value.trim() || '';
+    if (!emailInput?.checkValidity()) return showAuthFeedback(form, 'Confira o e-mail antes de pedir outro link de confirmação.', 'error');
+    const button = document.getElementById(buttonId);
+    if (button) button.disabled = true;
+    try {
+      const { error } = await client.auth.resend({ type: 'signup', email, options: { emailRedirectTo: location.origin } });
+      showAuthFeedback(form, error
+        ? 'Não consegui reenviar agora. Aguarde um pouco e confira o e-mail informado.'
+        : 'Se este endereço puder ser confirmado, um novo link chegará em instantes. Confira também o spam.', error ? 'error' : 'success');
+    } catch {
+      showAuthFeedback(form, 'Não foi possível conectar para reenviar. Verifique a internet e tente novamente.', 'error');
+    } finally {
+      if (button) button.disabled = false;
+    }
+  };
   window.loginWithSupabase = async () => {
     const emailInput = document.getElementById('login-email');
     const email = emailInput.value.trim();
     const password = document.getElementById('login-password').value;
-    if (!emailInput.checkValidity()) return showToast('Confira o formato do seu e-mail.');
-    if (!password) return showToast('Informe sua senha.');
+    if (!emailInput.checkValidity()) return showAuthFeedback('login', 'Confira o formato do seu e-mail.', 'error');
+    if (!password) return showAuthFeedback('login', 'Digite sua senha para entrar.', 'error');
+    showAuthFeedback('login', 'Conectando à sua conta…');
+    setButtonBusy('login-submit', true, 'Entrando…', 'Entrar');
     try {
-      const { error } = await client.auth.signInWithPassword({ email, password });
-      if (error) showToast('Não foi possível entrar. Confira seus dados e tente novamente.');
-    } catch { showToast('Não foi possível conectar agora. Verifique a internet e tente novamente.'); }
+      const { data, error } = await client.auth.signInWithPassword({ email, password });
+      if (error) {
+        const needsConfirmation = error.code === 'email_not_confirmed';
+        const message = needsConfirmation
+          ? 'Confirme seu e-mail pelo link enviado antes de entrar.'
+          : 'Não foi possível entrar. Confira o e-mail e a senha ou use “Esqueci minha senha”.';
+        if (needsConfirmation) {
+          document.getElementById('login-resend').hidden = false;
+        }
+        showAuthFeedback('login', message, 'error');
+      } else if (!data.session) {
+        showAuthFeedback('login', 'Sua sessão não foi iniciada. Confirme seu e-mail e tente novamente.', 'error');
+      } else {
+        document.getElementById('login-resend').hidden = true;
+      }
+    } catch {
+      showAuthFeedback('login', 'Não foi possível conectar agora. Verifique a internet e tente novamente.', 'error');
+    } finally {
+      setButtonBusy('login-submit', false, '', 'Entrar');
+    }
   };
 
   window.registerWithSupabase = async () => {
@@ -76,25 +161,50 @@
     const email = emailInput.value.trim();
     const password = document.getElementById('signup-password').value;
     const confirmation = document.getElementById('signup-password-confirm').value;
-    if (!name) return showToast('Informe como podemos chamar você.');
-    if (!emailInput.checkValidity()) return showToast('Confira o formato do seu e-mail.');
-    if (password.length < 8) return showToast('Sua senha precisa ter pelo menos 8 caracteres.');
-    if (password !== confirmation) return showToast('As senhas não correspondem.');
+    if (!name) return showAuthFeedback('signup', 'Informe como podemos chamar você.', 'error');
+    if (!emailInput.checkValidity()) return showAuthFeedback('signup', 'Confira o formato do seu e-mail.', 'error');
+    if (password.length < 8) return showAuthFeedback('signup', 'Sua senha precisa ter pelo menos 8 caracteres.', 'error');
+    if (password !== confirmation) return showAuthFeedback('signup', 'As senhas não correspondem.', 'error');
+    showAuthFeedback('signup', 'Criando sua conta…');
+    document.getElementById('signup-resend').hidden = true;
+    setButtonBusy('signup-submit', true, 'Criando conta…', 'Criar minha conta');
     try {
       const { data, error } = await client.auth.signUp({ email, password, options: { data: { display_name: name }, emailRedirectTo: location.origin } });
-      if (error) return showToast('Não foi possível criar a conta. Confira os campos e tente novamente.');
-      if (!data.session) showToast('Conta criada. Confira seu e-mail para confirmar o cadastro.');
-    } catch { showToast('Não foi possível conectar agora. Verifique a internet e tente novamente.'); }
+      if (error) {
+        const message = error.code === 'over_email_send_rate_limit'
+          ? 'Muitos pedidos de confirmação. Aguarde alguns minutos e tente novamente.'
+          : error.code === 'weak_password'
+            ? 'Escolha uma senha mais forte, com pelo menos 8 caracteres.'
+            : 'Não foi possível criar a conta. Tente entrar ou recuperar a senha se já tiver cadastro.';
+        showAuthFeedback('signup', message, 'error');
+        return;
+      }
+      if (data.session) {
+        showAuthFeedback('signup', 'Conta criada. Abrindo seu espaço…', 'success');
+      } else {
+        document.getElementById('signup-resend').hidden = false;
+        showAuthFeedback('signup', 'Quase pronto: confira sua caixa de entrada e o spam para confirmar o e-mail. Depois, volte e entre na conta.', 'success');
+      }
+    } catch {
+      showAuthFeedback('signup', 'Não foi possível conectar agora. Verifique a internet e tente novamente.', 'error');
+    } finally {
+      setButtonBusy('signup-submit', false, '', 'Criar minha conta');
+    }
   };
+
+  window.resendSignupConfirmation = async () => {
+    return resendConfirmation('signup', 'signup-resend');
+  };
+  window.resendLoginConfirmation = async () => resendConfirmation('login', 'login-resend');
 
   window.recoverSupabasePassword = async () => {
     const emailInput = document.getElementById('login-email');
     const email = emailInput.value.trim();
-    if (!emailInput.checkValidity()) return showToast('Confira o formato do seu e-mail.');
+    if (!emailInput.checkValidity()) return showAuthFeedback('login', 'Digite um e-mail válido para receber a recuperação.', 'error');
     try {
       const { error } = await client.auth.resetPasswordForEmail(email, { redirectTo: location.origin });
-      showToast(error ? 'Não foi possível enviar as instruções agora.' : 'Se houver uma conta, você receberá instruções por e-mail.');
-    } catch { showToast('Não foi possível conectar agora. Tente novamente mais tarde.'); }
+      showAuthFeedback('login', error ? 'Não foi possível enviar as instruções agora. Tente novamente em instantes.' : 'Se houver uma conta com esse e-mail, você receberá instruções para redefinir a senha.', error ? 'error' : 'success');
+    } catch { showAuthFeedback('login', 'Não foi possível conectar agora. Tente novamente mais tarde.', 'error'); }
   };
 
   window.saveNewPassword = async () => {
@@ -114,17 +224,20 @@
   };
 
   window.readMeals = () => {
-    if (activeUser) return readLocal(accountKey(activeUser.id));
-    const merged = new Map([...readLocal(demoKey), ...readLocal(legacyDemoKey)].map(item => [item.id, item]));
-    return [...merged.values()];
+    if (!activeUser) return [];
+    return readLocal(accountKey(activeUser.id));
   };
   window.saveMeals = items => {
     const user = activeUser;
+    if (!user) {
+      showAuthFeedback('login', 'Entre ou crie uma conta para salvar seus registros.', 'error');
+      goTo('login');
+      return false;
+    }
     const storageKey = accountKey(user?.id);
     const previousItems = window.readMeals();
     try { localStorage.setItem(storageKey, JSON.stringify(items)); }
     catch { showToast('O armazenamento deste dispositivo está cheio. Libere espaço e tente novamente.'); return false; }
-    if (!user) { try { localStorage.removeItem(legacyDemoKey); } catch {} }
     const previousById = new Map(previousItems.map(item => [item.id, JSON.stringify(item)]));
     const changedItems = items.filter(item => previousById.get(item.id) !== JSON.stringify(item));
     if (user && changedItems.length) {
@@ -173,24 +286,20 @@
 
   window.deleteMeal = async id => {
     const user = activeUser;
-    if (user) {
-      try {
-        const { error } = await client.from('meal_entries').delete().eq('id', id).eq('user_id', user.id);
-        if (error) return showToast('Não foi possível remover o registro. Tente novamente.');
-      } catch { return showToast('Sem conexão. O registro continua salvo; tente remover novamente quando voltar à internet.'); }
-    }
-    const storageKey = accountKey(user?.id);
-    const currentItems = user ? readLocal(storageKey) : window.readMeals();
+    if (!user) { goTo('login'); return showAuthFeedback('login', 'Entre na sua conta para gerenciar seus registros.', 'error'); }
+    try {
+      const { error } = await client.from('meal_entries').delete().eq('id', id).eq('user_id', user.id);
+      if (error) return showToast('Não foi possível remover o registro. Tente novamente.');
+    } catch { return showToast('Sem conexão. O registro continua salvo; tente remover novamente quando voltar à internet.'); }
+    const storageKey = accountKey(user.id);
+    const currentItems = readLocal(storageKey);
     const next = currentItems.filter(meal => meal.id !== id);
     try { localStorage.setItem(storageKey, JSON.stringify(next)); }
     catch { return showToast('Não foi possível atualizar os dados neste dispositivo.'); }
-    if (!user) { try { localStorage.removeItem(legacyDemoKey); } catch {} }
-    if (user) {
-      const pendingIds = getPendingIds(user.id);
-      pendingIds.delete(id);
-      savePendingIds(user.id, pendingIds);
-    }
-    if (user && activeUser?.id === user.id) setSyncStatus('Atualizado');
+    const pendingIds = getPendingIds(user.id);
+    pendingIds.delete(id);
+    savePendingIds(user.id, pendingIds);
+    if (activeUser?.id === user.id) setSyncStatus('Atualizado');
     renderMeals();
     showToast('Registro removido.');
   };
@@ -232,16 +341,16 @@
     savePendingIds(user.id, pendingIds);
     const pendingItems = cachedItems.filter(item => pendingIds.has(item.id) && !remoteIds.has(item.id));
 
-    // Offer a one-time, explicit transfer of demo records to this account.
-    const demoItems = [...new Map([...readLocal(demoKey), ...readLocal(legacyDemoKey)].map(item => [item.id, item])).values()];
-    let transferDemo = false;
+    // Preserve older device-only records by offering a one-time, explicit import.
+    const legacyItems = [...new Map(legacyLocalMealKeys.flatMap(readLocal).map(item => [item.id, item])).values()];
+    let transferLegacy = false;
     let transferAsked = false;
-    try { transferAsked = sessionStorage.getItem(`nutriflow.demo-transfer.${user.id}`) === '1'; } catch {}
-    if (demoItems.length && !transferAsked) {
-      transferDemo = confirm(`Encontramos ${demoItems.length} registro(s) da demonstração neste navegador. Deseja copiá-los para a conta ${user.email || 'conectada'}?`);
-      try { sessionStorage.setItem(`nutriflow.demo-transfer.${user.id}`, '1'); } catch {}
+    try { transferAsked = sessionStorage.getItem(`nutriflow.legacy-import.${user.id}`) === '1'; } catch {}
+    if (legacyItems.length && !transferAsked) {
+      transferLegacy = confirm(`Encontramos ${legacyItems.length} registro(s) salvos neste aparelho sem uma conta. Deseja copiá-los para a conta ${user.email || 'conectada'}?`);
+      try { sessionStorage.setItem(`nutriflow.legacy-import.${user.id}`, '1'); } catch {}
     }
-    const importItems = transferDemo ? demoItems.filter(item => !remoteIds.has(item.id) && !pendingItems.some(pending => pending.id === item.id)) : [];
+    const importItems = transferLegacy ? legacyItems.filter(item => !remoteIds.has(item.id) && !pendingItems.some(pending => pending.id === item.id)) : [];
     const syncItems = [...pendingItems, ...importItems];
     let syncFailed = false;
     if (syncItems.length) {
@@ -254,6 +363,9 @@
         remoteItems = [...remoteItems, ...syncItems];
         syncItems.forEach(item => pendingIds.delete(item.id));
         savePendingIds(user.id, pendingIds);
+      } else if (importItems.length) {
+        importItems.forEach(item => pendingIds.add(item.id));
+        savePendingIds(user.id, pendingIds);
       }
     }
 
@@ -263,8 +375,8 @@
       if (!mergedIds.has(item.id)) { merged.push(item); mergedIds.add(item.id); }
     }
     try { localStorage.setItem(localKey, JSON.stringify(merged)); } catch {}
-    if (transferDemo && !syncFailed) {
-      try { localStorage.removeItem(demoKey); localStorage.removeItem(legacyDemoKey); localStorage.removeItem('nutriflow.pet.unlocked.demo'); } catch {}
+    if (transferLegacy && !syncFailed) {
+      try { legacyLocalMealKeys.forEach(key => localStorage.removeItem(key)); localStorage.removeItem('nutriflow.pet.unlocked.demo'); } catch {}
     }
 
     let profile = { data: null };
@@ -295,14 +407,17 @@
       if (error) return showToast('Não foi possível sair da conta.');
       currentLoad++;
       activeUser = null;
-      setSyncStatus('Local');
+      renderMeals();
+      setSyncStatus('Sessão encerrada');
       goTo('login');
+      showAuthFeedback('login', 'Você saiu da conta. Entre novamente para continuar.', 'success');
     } catch { showToast('Não foi possível sair agora. Tente novamente.'); }
   };
 
-  window.clearDemoData = async () => {
-    if (!confirm(activeUser ? 'Apagar todos os seus registros da conta e deste dispositivo? Esta ação não pode ser desfeita.' : 'Apagar todos os registros desta demonstração neste dispositivo?')) return;
+  window.clearAccountData = async () => {
     const user = activeUser;
+    if (!user) { goTo('login'); return showAuthFeedback('login', 'Entre na sua conta para gerenciar seus registros.', 'error'); }
+    if (!confirm('Apagar todos os seus registros da conta e deste aparelho? Esta ação não pode ser desfeita.')) return;
     if (user) {
       try {
         const { error } = await client.from('meal_entries').delete().eq('user_id', user.id);
@@ -310,15 +425,15 @@
       } catch { return showToast('Sem conexão. Seus registros não foram apagados. Tente novamente mais tarde.'); }
     }
     try {
-      localStorage.removeItem(accountKey(user?.id));
-      localStorage.removeItem(`nutriflow.pet.unlocked.${user?.id || 'demo'}`);
-      if (!user) { localStorage.removeItem(demoKey); localStorage.removeItem(legacyDemoKey); localStorage.removeItem('nutriflow.pet.unlocked.demo'); }
+      localStorage.removeItem(accountKey(user.id));
+      localStorage.removeItem(`nutriflow.pet.unlocked.${user.id}`);
     } catch { return showToast('Não foi possível apagar os dados deste dispositivo.'); }
     setSyncStatus(user ? 'Atualizado' : 'Local');
     renderMeals();
     showToast('Registros apagados.');
   };
 
+  bindAuthForms();
   client.auth.onAuthStateChange((event, session) => {
     if (event === 'PASSWORD_RECOVERY') { passwordRecovery = true; goTo('reset'); return; }
     if (session?.user) {
@@ -332,8 +447,14 @@
         }
       } catch {}
     } else {
+      const hadActiveUser = Boolean(activeUser);
       currentLoad++;
       activeUser = null;
+      if (hadActiveUser) {
+        renderMeals();
+        goTo('login');
+        showAuthFeedback('login', 'Sua sessão terminou. Entre novamente para acessar seus registros.', 'error');
+      }
     }
   });
   client.auth.getSession().then(({ data, error }) => {
