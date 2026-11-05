@@ -10,6 +10,7 @@ Aplicação web em português para registrar refeições e ideias, acompanhar a 
 - Indicadores de histórico e sequência de 5 dias para liberar o Flow.
 - Assistente conectado à OpenAI pelo servidor Node. A chave é lida da variável `OPENAI_API_KEY` no servidor e nunca vai ao navegador.
 - Página pública de apresentação com atalhos para demonstração, cadastro e login.
+- PWA instalável no Android e iPhone, com ícone NutriFlow, atalho no perfil e cache da tela principal.
 
 ## Tecnologias
 
@@ -25,6 +26,10 @@ Use Node.js 20 ou superior. Para rodar localmente, execute `node server.js` (nã
 ## Publicar sem Replit
 
 O arquivo `render.yaml` prepara um Web Service do Render conectado à branch `codex/flow-name-assistant`. No Render, crie um Blueprint a partir deste repositório e preencha `OPENAI_API_KEY` diretamente no formulário de ambiente. Nunca coloque a chave no Git. O Blueprint está no plano grátis para teste; o plano grátis não é adequado para produção e pode levar cerca de um minuto para acordar após inatividade. Escolha um plano pago só depois de revisar o custo atual e antes de anunciar para clientes.
+
+## Instalar no celular
+
+Abra o endereço HTTPS público do NutriFlow. No Android, use o menu do Chrome e escolha **Instalar app** ou **Adicionar à tela inicial**. No iPhone, abra no Safari, toque em **Compartilhar** e escolha **Adicionar à Tela de Início**. O app instalado é um PWA; não é um APK nem um aplicativo publicado na Play Store/App Store.
 
 ## Supabase
 
