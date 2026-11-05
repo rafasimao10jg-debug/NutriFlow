@@ -1381,7 +1381,7 @@ function getReliableMealIdea(question){
   let preferredKind='';
   if(/\bcaf[eé]\b/.test(normalized))preferredKind='Café da manhã';
   else if(/\blanch\w*\b/.test(normalized))preferredKind='Lanche';
-  else if(/\bjant[ae]\b/.test(normalized))preferredKind='Jantar';
+  else if(/\bjant(?:a|ar(?:es)?)\b/.test(normalized))preferredKind='Jantar';
   else if(/\balmo[cç]o\b/.test(normalized))preferredKind='Almoço';
   let ideas=preferredKind?DAILY_MEAL_TIPS.filter(item=>item.kind===preferredKind):[];
   ideas=[...ideas,...DAILY_MEAL_TIPS.filter(item=>!ideas.some(existing=>existing.name===item.name))];
