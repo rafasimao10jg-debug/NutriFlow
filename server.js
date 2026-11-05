@@ -2,13 +2,16 @@ import { createServer } from 'node:http';
 import { readFile, stat } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { getAuthenticatedUser, handleBillingRequest, reserveAiUsage } from './billing.js';
 
 const root = path.dirname(fileURLToPath(import.meta.url));
 const port = Number(process.env.PORT || 5000);
-const model = process.env.OPENAI_MODEL || 'gpt-4.1-mini';
-const WINDOW_MS = 10 * 60 * 1000;
-const MAX_REQUESTS = 20;
+const WINDOW_MS = 60 * 60 * 1000;
+const MAX_REQUESTS_PER_ADDRESS = 10;
+const MAX_REQUESTS_PER_DAY = 100;
 const requestLog = new Map();
+let requestDay = new Date().toISOString().slice(0, 10);
+let dailyRequests = 0;
 
 const contentTypes = {
   '.css': 'text/css; charset=utf-8',
@@ -30,16 +33,26 @@ function sendJson(response, status, body) {
 }
 
 function allowedByRateLimit(request) {
+  const today = new Date().toISOString().slice(0, 10);
+  if (today !== requestDay) { requestDay = today; dailyRequests = 0; }
+  if (dailyRequests >= MAX_REQUESTS_PER_DAY) return false;
+
   const forwarded = request.headers['x-forwarded-for'];
   const address = (typeof forwarded === 'string' ? forwarded.split(',')[0] : request.socket.remoteAddress) || 'unknown';
   const now = Date.now();
   const recent = (requestLog.get(address) || []).filter((timestamp) => now - timestamp < WINDOW_MS);
-  if (recent.length >= MAX_REQUESTS) {
+  if (recent.length >= MAX_REQUESTS_PER_ADDRESS) {
     requestLog.set(address, recent);
     return false;
   }
   recent.push(now);
   requestLog.set(address, recent);
+  dailyRequests += 1;
+  for (const [key, timestamps] of requestLog) {
+    const active = timestamps.filter((timestamp) => now - timestamp < WINDOW_MS);
+    if (active.length) requestLog.set(key, active);
+    else requestLog.delete(key);
+  }
   return true;
 }
 
@@ -52,57 +65,6 @@ async function readBody(request) {
     chunks.push(chunk);
   }
   return JSON.parse(Buffer.concat(chunks).toString('utf8'));
-}
-
-async function askOpenAI(question) {
-  const abort = new AbortController();
-  const timeout = setTimeout(() => abort.abort(), 25_000);
-  try {
-    const result = await fetch('https://api.openai.com/v1/responses', {
-      method: 'POST',
-      signal: abort.signal,
-      headers: {
-        Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model,
-        store: false,
-        max_output_tokens: 350,
-        instructions: [
-          'Você é o assistente de organização alimentar do NutriFlow. Responda em português brasileiro, com linguagem simples, cordial e objetiva.',
-          'Ajude com ideias gerais de refeições e organização. Não diagnostique, não prescreva dietas, não calcule necessidades clínicas e não prometa resultados de saúde ou peso.',
-          'Não solicite dados pessoais. Se a pergunta envolver doença, gravidez, transtorno alimentar, alergia grave, criança, medicamento ou orientação clínica, explique brevemente que a pessoa deve procurar nutricionista ou profissional de saúde qualificado e ofereça apenas ajuda geral segura.',
-          'Não afirme que uma refeição é segura para alergias ou condições individuais. Sugira conferir rótulos e buscar orientação profissional quando relevante.',
-          'Faça sugestões acessíveis e flexíveis, sem julgamento, vergonha ou linguagem restritiva. Se faltar contexto, pergunte uma coisa simples.',
-        ].join(' '),
-        input: question,
-      }),
-    });
-    const payload = await result.json().catch(() => ({}));
-    if (!result.ok) {
-      const error = new Error('OPENAI_REQUEST_FAILED');
-      error.status = result.status;
-      const errorCode = payload?.error?.code;
-      error.code = typeof errorCode === 'string' && /^[a-z0-9_-]{1,60}$/i.test(errorCode)
-        ? errorCode
-        : 'unknown';
-      throw error;
-    }
-    const answer = Array.isArray(payload.output)
-      ? payload.output
-          .filter((item) => item.type === 'message')
-          .flatMap((item) => Array.isArray(item.content) ? item.content : [])
-          .filter((item) => item.type === 'output_text' && typeof item.text === 'string')
-          .map((item) => item.text)
-          .join('\n')
-          .trim()
-      : '';
-    if (!answer) throw new Error('EMPTY_MODEL_RESPONSE');
-    return answer.slice(0, 5000);
-  } finally {
-    clearTimeout(timeout);
-  }
 }
 
 async function serveStatic(request, response) {
@@ -128,49 +90,51 @@ async function serveStatic(request, response) {
 }
 
 const server = createServer(async (request, response) => {
-  if (request.method === 'POST' && request.url === '/api/assistant') {
-    if (!process.env.OPENAI_API_KEY) {
-      sendJson(response, 503, { error: 'O assistente ainda não está configurado neste ambiente.' });
+  if (request.url === '/api/assistant/usage') {
+    if (request.method !== 'POST') {
+      response.writeHead(405, { Allow: 'POST' }).end();
       return;
     }
     if (!allowedByRateLimit(request)) {
-      sendJson(response, 429, { error: 'Você chegou ao limite temporário. Tente novamente em alguns minutos.' });
+      sendJson(response, 429, { error: 'Muitas solicitações. Aguarde um pouco e tente novamente.' });
+      return;
+    }
+    if (process.env.BILLING_ENABLED !== 'true') {
+      sendJson(response, 200, { allowed: true, quota: null });
       return;
     }
     try {
-      const body = await readBody(request);
-      const question = typeof body.question === 'string' ? body.question.trim() : '';
-      if (!question || question.length > 600) {
-        sendJson(response, 400, { error: 'Escreva uma pergunta de até 600 caracteres.' });
+      const user = await getAuthenticatedUser(request);
+      if (!user) {
+        sendJson(response, 401, { error: 'Entre na sua conta para usar o assistente.' });
         return;
       }
-      const answer = await askOpenAI(question);
-      sendJson(response, 200, { answer });
-    } catch (error) {
-      if (error.message === 'BODY_TOO_LARGE') {
-        sendJson(response, 413, { error: 'A mensagem ficou grande demais. Envie uma pergunta mais curta.' });
-      } else if (error.name === 'AbortError') {
-        sendJson(response, 504, { error: 'O assistente demorou para responder. Tente novamente.' });
-      } else if (error.status === 401) {
-        console.error('OpenAI request rejected: status=401 code=' + (error.code || 'unknown'));
-        sendJson(response, 503, { error: 'A chave da OpenAI configurada no servidor não foi aceita. Confira o valor de OPENAI_API_KEY nos Secrets do Render.' });
-      } else if (error.status === 403) {
-        console.error('OpenAI request rejected: status=403 code=' + (error.code || 'unknown'));
-        sendJson(response, 503, { error: 'A conta da OpenAI não autorizou esta solicitação. Confira o acesso à API e o modelo configurado.' });
-      } else if (error.status === 404) {
-        console.error('OpenAI request rejected: status=404 code=' + (error.code || 'unknown'));
-        sendJson(response, 503, { error: 'O modelo configurado não está disponível para esta conta. Confira OPENAI_MODEL nos Secrets do Render.' });
-      } else if (error.status === 429) {
-        console.error('OpenAI request limited: status=429 code=' + (error.code || 'unknown'));
-        const quotaMessage = error.code === 'insufficient_quota'
-          ? 'A conta da API OpenAI está sem saldo disponível ou atingiu seu limite. Confira Billing e Limits na OpenAI Platform.'
-          : 'O limite de solicitações da API foi atingido. Aguarde um pouco e tente novamente.';
-        sendJson(response, 503, { error: quotaMessage });
-      } else {
-        console.error('OpenAI request failed: status=' + (error.status || 'network') + ' code=' + (error.code || 'unknown'));
-        sendJson(response, 502, { error: 'Não consegui gerar uma resposta agora. Tente novamente em instantes.' });
+      const quota = await reserveAiUsage(user.id);
+      if (!quota?.allowed) {
+        const message = quota?.reason === 'base_access_required'
+          ? 'Adquira primeiro o acesso base do NutriFlow.'
+          : quota?.reason === 'monthly_limit'
+            ? 'Você chegou ao limite de 100 respostas deste mês.'
+            : 'Você usou as 5 respostas incluídas. Assine a IA para continuar.';
+        sendJson(response, 403, { error: message });
+        return;
       }
+      sendJson(response, 200, { allowed: true, quota });
+    } catch {
+      sendJson(response, 503, { error: 'Não consegui conferir o limite da sua conta agora. Tente novamente.' });
     }
+    return;
+  }
+  if (request.url.startsWith('/api/checkout/') || request.url.startsWith('/api/mercadopago/webhook')) {
+    if (request.method !== 'POST') {
+      response.writeHead(405, { Allow: 'POST' }).end();
+      return;
+    }
+    if (request.url.startsWith('/api/checkout/') && !allowedByRateLimit(request)) {
+      sendJson(response, 429, { error: 'Muitas tentativas. Aguarde um pouco e tente novamente.' });
+      return;
+    }
+    await handleBillingRequest(request, response, sendJson, readBody);
     return;
   }
   if (request.method !== 'GET' && request.method !== 'HEAD') {

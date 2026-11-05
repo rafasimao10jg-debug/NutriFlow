@@ -8,24 +8,24 @@ Aplicação web em português para registrar refeições e ideias, acompanhar a 
 - Cadastro, login por e-mail e senha e recuperação de senha pelo Supabase Auth.
 - Registro de refeições e ideias, com salvamento local na demonstração e sincronização com o Supabase quando a pessoa entra na conta.
 - Indicadores de histórico e sequência de 5 dias para liberar o Flow.
-- Assistente conectado à OpenAI pelo servidor Node. A chave é lida da variável `OPENAI_API_KEY` no servidor e nunca vai ao navegador.
+- Assistente local opcional com WebLLM e WebGPU: o modelo roda no navegador do dispositivo; o texto das perguntas não é enviado ao servidor NutriFlow nem a uma API paga. Quando a cobrança for ativada, o servidor recebe somente a sessão e uma chamada de controle de limite, sem o texto da pergunta.
 - Página pública de apresentação com atalhos para demonstração, cadastro e login.
 - PWA instalável no Android e iPhone, com ícone NutriFlow, atalho no perfil e cache da tela principal.
 
 ## Tecnologias
 
-- HTML, CSS e JavaScript sem framework, servidos por um servidor Node.js integrado à API da OpenAI.
+- HTML, CSS e JavaScript sem framework, servidos por um servidor Node.js. O WebLLM é carregado sob demanda pelo navegador.
 - Supabase JS v2 carregado pelo CDN.
 - Supabase Auth e Postgres com Row Level Security (RLS).
-- Replit inicia `server.js` pela porta 5000; o endpoint `/api/assistant` aplica validação, limite de frequência e timeout.
+- Replit inicia `server.js` pela porta 5000; o assistente não possui endpoint de geração no servidor.
 
 ## Executar
 
-Use Node.js 20 ou superior. Para rodar localmente, execute `node server.js` (não precisa instalar dependências). No Replit, o comando de execução usa `npm start`; crie lá um segredo chamado exatamente `OPENAI_API_KEY`. Para ativar a IA localmente, configure essa variável no ambiente antes de iniciar; não coloque a chave em arquivos versionados. Sem ela, a aplicação abre e o assistente informa que não está configurado.
+Use Node.js 20 ou superior. Para rodar localmente, execute `node server.js` (não precisa instalar dependências). No Replit, o comando de execução usa `npm start`. Não configure `OPENAI_API_KEY`: o servidor não chama a OpenAI. Para usar a IA local, abra o app por HTTPS em um navegador com WebGPU e toque em **Ativar IA neste dispositivo**. No primeiro uso, o navegador baixa a biblioteca e o modelo; isso exige internet e espaço. As perguntas são processadas no aparelho. O uso depende do hardware e pode consumir memória e bateria.
 
 ## Publicar sem Replit
 
-O arquivo `render.yaml` prepara um Web Service do Render conectado à branch `codex/flow-name-assistant`. No Render, crie um Blueprint a partir deste repositório e preencha `OPENAI_API_KEY` diretamente no formulário de ambiente. Nunca coloque a chave no Git. O Blueprint está no plano grátis para teste; o plano grátis não é adequado para produção e pode levar cerca de um minuto para acordar após inatividade. Escolha um plano pago só depois de revisar o custo atual e antes de anunciar para clientes.
+O arquivo `render.yaml` prepara um Web Service do Render conectado à branch `codex/flow-name-assistant`. O servidor não precisa de chave de API de IA. O Blueprint está no plano grátis para teste; o plano grátis não é adequado para produção e pode levar cerca de um minuto para acordar após inatividade. Escolha um plano pago só depois de revisar o custo atual e antes de anunciar para clientes.
 
 ## Instalar no celular
 
@@ -37,9 +37,8 @@ Consulte [docs/SUPABASE_SETUP.md](docs/SUPABASE_SETUP.md). A migration em `supab
 
 ## Limites conhecidos antes de lançar
 
-- A IA real depende de configurar `OPENAI_API_KEY` nos Secrets do ambiente publicado e confirmar uma chamada real nesse ambiente. A validação local não usou nem revelou credencial.
-- O limite de frequência do assistente é mantido em memória por instância; para oferta paga com tráfego, adotar cotas por conta e proteção de abuso compartilhada entre instâncias.
-- A pergunta digitada no assistente é enviada à OpenAI para gerar uma resposta; o app orienta a pessoa a não incluir dados pessoais ou de saúde. Atualizar a Política de Privacidade para explicar o fornecedor e o tratamento antes de abrir ao público.
+- A IA local depende de WebGPU e hardware compatível; precisa baixar o modelo no primeiro uso. Ainda é necessário validar o download, a geração e o consumo no Android real do usuário.
+- O modelo e a biblioteca são baixados de serviços externos no primeiro uso; as perguntas são processadas localmente. O servidor pode receber a sessão e uma solicitação sem o texto para conferir limites. A Política de Privacidade deve explicar esses fluxos e o armazenamento local antes da abertura ao público.
 - O fluxo de refeições registra itens por data; um planejador semanal completo ainda precisa ser construído.
 - Login, cadastro, recuperação e sincronização precisam de validação ponta a ponta com contas de teste.
 - O app ainda precisa de política de privacidade e termos, processo de exclusão de conta, acessibilidade revisada e uma publicação estável.

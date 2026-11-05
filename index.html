@@ -146,8 +146,32 @@ input,select{font-family:inherit}
 .landing-feature{padding:18px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-lg)}
 .landing-feature strong{display:block;color:var(--ink);font-size:14px;margin:8px 0 4px}
 .landing-feature span{font-size:12px;line-height:1.5;color:var(--ink-mid)}
+.offer-section{margin:30px 0 22px}
+.offer-heading{text-align:center;margin:0 0 18px}
+.offer-heading h2{font-family:'Syne',sans-serif;font-size:clamp(22px,4vw,30px);color:var(--ink);margin:0 0 6px}
+.offer-heading p{font-size:14px;color:var(--ink-mid);margin:0}
+.offer-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.offer-card{display:flex;flex-direction:column;padding:22px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:var(--sh-sm)}
+.offer-card.featured{border-color:var(--pri);box-shadow:0 0 0 2px var(--pri-light),var(--sh-sm)}
+.offer-tag{font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-weight:800;color:var(--pri);margin-bottom:8px}
+.offer-title{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--ink)}
+.offer-price{font-family:'Syne',sans-serif;font-size:30px;font-weight:800;color:var(--ink);margin:10px 0 2px}
+.offer-frequency{font-size:12px;color:var(--ink-mid);margin-bottom:14px}
+.offer-list{display:grid;gap:9px;padding:0;margin:0 0 18px;list-style:none;color:var(--ink-mid);font-size:13px;line-height:1.45}
+.offer-list li::before{content:'✓';color:var(--teal);font-weight:800;margin-right:8px}
+.offer-card .btn-pri,.offer-card .btn-social{width:100%;margin-top:auto}
+.offer-status{font-size:11px;line-height:1.45;color:var(--ink-soft);text-align:center;margin:10px 0 0}
+.offer-terms{font-size:11px;line-height:1.5;color:var(--ink-soft);text-align:center;margin:14px auto 0;max-width:720px}
+.pix-dialog{width:min(420px,calc(100% - 28px));max-height:88vh;overflow:auto;margin:auto;padding:24px;background:var(--bg-card);color:var(--ink);border:1px solid var(--border);border-radius:var(--r-xl);box-shadow:var(--sh-lg)}
+.pix-dialog::backdrop{background:rgba(15,19,51,.62);backdrop-filter:blur(4px)}
+.pix-dialog h2{font-family:'Syne',sans-serif;font-size:22px;margin:0 0 8px}
+.pix-dialog p{font-size:13px;line-height:1.5;color:var(--ink-mid)}
+.pix-qr{display:block;width:min(240px,100%);aspect-ratio:1;object-fit:contain;margin:14px auto;border:1px solid var(--border);border-radius:12px;background:#fff}
+.pix-code{width:100%;min-height:74px;resize:vertical;border:1px solid var(--border);border-radius:10px;padding:10px;background:var(--bg-subtle);color:var(--ink);font:12px/1.45 monospace}
+.pix-actions{display:flex;gap:10px;margin-top:12px}
+.pix-actions button{width:100%}
 .landing-disclaimer{font-size:12px;line-height:1.55;color:var(--ink-mid);text-align:center;padding:0 12px 20px}
-@media(max-width:680px){.landing-wrap{padding:18px}.landing-header{margin:12px 0 24px}.landing-hero{grid-template-columns:1fr;gap:18px;padding:24px}.landing-mascot{min-height:125px;font-size:64px;grid-row:1}.landing-features{grid-template-columns:1fr;gap:10px}.landing-feature{padding:14px}.landing-header .auth-logo-name{font-size:19px}.landing-cta{align-items:stretch;flex-direction:column}.landing-cta .btn-pri,.landing-cta .btn-social,.landing-demo-link{width:100%;text-align:center;justify-content:center}}
+@media(max-width:680px){.landing-wrap{padding:18px}.landing-header{margin:12px 0 24px}.landing-hero{grid-template-columns:1fr;gap:18px;padding:24px}.landing-mascot{min-height:125px;font-size:64px;grid-row:1}.landing-features{grid-template-columns:1fr;gap:10px}.landing-feature{padding:14px}.offer-cards{grid-template-columns:1fr}.offer-card{padding:18px}.landing-header .auth-logo-name{font-size:19px}.landing-cta{align-items:stretch;flex-direction:column}.landing-cta .btn-pri,.landing-cta .btn-social,.landing-demo-link{width:100%;text-align:center;justify-content:center}}
 /* decorative blobs */
 .auth-blob{
   position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;opacity:.35;
@@ -489,6 +513,11 @@ input,select{font-family:inherit}
 .assistant-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-lg);padding:18px;margin:14px 0}
 .assistant-intro{font-size:14px;line-height:1.55;color:var(--ink-mid);margin:8px 0 14px}
 .assistant-demo{font-size:12px;line-height:1.5;color:var(--ink-mid);background:var(--amber-light);border-radius:12px;padding:10px 12px;margin:12px 0}
+.assistant-local-controls{display:grid;gap:8px;margin:12px 0}
+.assistant-local-status{font-size:12px;line-height:1.45;color:var(--ink-mid);min-height:18px}
+.assistant-local-status[data-state="error"]{color:#b42318}
+.assistant-local-status[data-state="ready"]{color:#16804a}
+.assistant-local-button{width:100%;min-height:42px}
 .assistant-chips{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
 .assistant-chip{border:1px solid var(--border);border-radius:999px;background:var(--bg-subtle);color:var(--ink);padding:9px 12px;font:inherit;font-size:12px;cursor:pointer}
 .assistant-chat{display:grid;gap:10px;max-height:260px;overflow:auto;margin:14px 0}
@@ -766,6 +795,15 @@ input,select{font-family:inherit}
 <body>
 
 <div class="toast" id="toast"></div>
+<dialog class="pix-dialog" id="pix-dialog" aria-labelledby="pix-dialog-title">
+  <h2 id="pix-dialog-title">Pague com Pix</h2>
+  <p><strong>Valor: R$ 29,90.</strong> Escaneie o QR Code ou copie o código Pix no app do seu banco. O acesso será liberado após o Mercado Pago confirmar o pagamento.</p>
+  <img class="pix-qr" id="pix-qr-image" alt="QR Code Pix para pagamento">
+  <label for="pix-copy-code" style="display:block;font-size:12px;font-weight:700;margin:8px 0">Pix copia e cola</label>
+  <textarea class="pix-code" id="pix-copy-code" readonly></textarea>
+  <p id="pix-expiration"></p>
+  <div class="pix-actions"><button class="btn-pri" type="button" onclick="copyPixCode()">Copiar código Pix</button><button class="btn-social" type="button" onclick="document.getElementById('pix-dialog').close()">Fechar</button></div>
+</dialog>
 
 <!-- PUBLIC INTRO / CAMPAIGN DESTINATION -->
 <main class="screen landing-wrap active" id="screen-start">
@@ -792,7 +830,39 @@ input,select{font-family:inherit}
       <article class="landing-feature"><span aria-hidden="true">📈</span><strong>Acompanhe sua sequência</strong><span>Veja seus dias com registro e avance no seu ritmo.</span></article>
       <article class="landing-feature"><span aria-hidden="true">🌱</span><strong>Conheça o Flow</strong><span>Registre algo por cinco dias seguidos para liberar seu pet de companhia.</span></article>
     </section>
-    <p class="landing-disclaimer">Na demonstração, os registros ficam neste navegador. O assistente envia sua pergunta à OpenAI para gerar uma resposta; não inclua dados pessoais ou de saúde. O NutriFlow não substitui orientação profissional.</p>
+    <section class="offer-section" id="oferta" aria-labelledby="offer-title">
+      <div class="offer-heading"><h2 id="offer-title">Escolha como quer usar o NutriFlow</h2><p>Comece organizando sua rotina e adicione mais apoio de IA quando quiser.</p></div>
+      <div class="offer-cards">
+        <article class="offer-card">
+          <div class="offer-tag">Acesso ao app · somente Pix</div>
+          <div class="offer-title">NutriFlow</div>
+          <div class="offer-price">R$ 29,90</div>
+          <div class="offer-frequency">pagamento único</div>
+          <ul class="offer-list">
+            <li>Acesso às ferramentas do app</li>
+            <li>Registros e acompanhamento do Flow</li>
+            <li>5 respostas da IA incluídas no acesso</li>
+          </ul>
+          <button class="btn-pri" type="button" onclick="startNutriFlowCheckout('base')">Continuar para o acesso</button>
+          <p class="offer-status">Pagamento somente via Pix. Acesso após confirmação.</p>
+        </article>
+        <article class="offer-card featured">
+          <div class="offer-tag">IA opcional · somente Pix</div>
+          <div class="offer-title">NutriFlow + IA</div>
+          <div class="offer-price">R$ 14,90</div>
+          <div class="offer-frequency">assinatura mensal via Pix · até 100 respostas por mês civil</div>
+          <ul class="offer-list">
+            <li>Respostas de IA para ideias e organização</li>
+            <li>Até 100 respostas por mês civil; limite reinicia no dia 1</li>
+            <li>Assinatura separada do acesso ao app</li>
+          </ul>
+          <button class="btn-social" type="button" onclick="startNutriFlowCheckout('ai')">Ativar assinatura de IA</button>
+          <p class="offer-status">Renovação mensal via Pix; ativa após confirmação de cada cobrança.</p>
+        </article>
+      </div>
+      <p class="offer-terms">O valor e os limites estão definidos para a oferta planejada. Antes de iniciar qualquer pagamento, o checkout mostrará renovação, cancelamento, suporte e condições aplicáveis. A IA oferece ideias gerais e não substitui orientação profissional.</p>
+    </section>
+    <p class="landing-disclaimer">Na demonstração, os registros ficam neste navegador. O assistente pode funcionar com um modelo baixado e executado no próprio dispositivo; as perguntas não são enviadas ao servidor do NutriFlow. O NutriFlow não substitui orientação profissional.</p>
   </div>
 </main>
 
@@ -957,7 +1027,11 @@ input,select{font-family:inherit}
       <div class="assistant-card">
         <div class="pet-title">Ideias para sua rotina</div>
         <p class="assistant-intro">Peça ideias gerais para organizar refeições. Você escolhe o que combina com você.</p>
-        <div class="assistant-demo">As perguntas são enviadas à OpenAI para gerar respostas. Não inclua dados pessoais, informações de saúde ou detalhes que identifiquem você. O assistente oferece ideias gerais e não substitui um nutricionista.</div>
+        <div class="assistant-demo">Modo local: depois do download inicial, as respostas são geradas no seu aparelho. As perguntas não são enviadas à OpenAI nem ao servidor do NutriFlow. O modelo precisa de internet no primeiro download, ocupa espaço e usa memória, bateria e cerca de 580 MB de memória gráfica. Prefira Wi-Fi.</div>
+        <div class="assistant-local-controls">
+          <button class="btn-pri assistant-local-button" id="assistant-local-enable" type="button" onclick="enableLocalAssistant()">Ativar IA neste dispositivo</button>
+          <div class="assistant-local-status" id="assistant-local-status" role="status" aria-live="polite">Toque para baixar e preparar o modelo local. Não há cobrança por pergunta.</div>
+        </div>
         <div class="assistant-chips" aria-label="Sugestões de perguntas">
           <button class="assistant-chip" type="button" onclick="askAssistant('Me ajude a organizar refeições para amanhã')">Organizar amanhã</button>
           <button class="assistant-chip" type="button" onclick="askAssistant('Quero ideias simples para minhas refeições')">Ideias simples</button>
@@ -986,7 +1060,7 @@ input,select{font-family:inherit}
         <div class="sg-row" id="install-app-row" role="button" tabindex="0" onclick="installNutriFlow()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();installNutriFlow()}"><div class="sg-left"><div class="sg-icon" style="background:var(--pri-light)">📲</div><div class="sg-label">Instalar NutriFlow</div></div><div class="sg-right">Adicionar ao celular ›</div></div>
         <div class="sg-row"><div class="sg-left"><div class="sg-icon" style="background:var(--pri-light)">🔔</div><div class="sg-label">Lembretes de refeição</div></div><div class="sg-right">Ainda não disponíveis</div></div>
       </div></div>
-      <div class="settings-group"><div class="sg-title">Dados da demonstração</div><div class="sg-card"><div class="sg-row" onclick="clearDemoData()"><div class="sg-left"><div class="sg-icon" style="background:var(--rose-light)">🗑️</div><div class="sg-label" style="color:var(--rose)">Apagar registros locais</div></div><div class="sg-right">Remover ›</div></div><div class="sg-row" onclick="signOutNutriFlow()"><div class="sg-left"><div class="sg-icon" style="background:var(--bg-subtle)">↩️</div><div class="sg-label">Sair da conta</div></div><div class="sg-right">›</div></div></div></div>
+      <div class="settings-group"><div class="sg-title" id="data-settings-title">Dados deste dispositivo</div><div class="sg-card"><div class="sg-row" onclick="clearDemoData()"><div class="sg-left"><div class="sg-icon" style="background:var(--rose-light)">🗑️</div><div class="sg-label" id="clear-data-label" style="color:var(--rose)">Apagar registros locais</div></div><div class="sg-right">Remover ›</div></div><div class="sg-row" onclick="signOutNutriFlow()"><div class="sg-left"><div class="sg-icon" style="background:var(--bg-subtle)">↩️</div><div class="sg-label">Sair da conta</div></div><div class="sg-right">›</div></div></div></div>
     </div>
 
     </div><!-- /page-area -->
@@ -1052,6 +1126,9 @@ function saveMeals(items){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(it
 function toggleTheme(){const dark=document.documentElement.getAttribute('data-theme')!=='dark';document.documentElement.setAttribute('data-theme',dark?'dark':'light');try{localStorage.setItem(THEME_KEY,dark?'dark':'light')}catch{};document.querySelectorAll('#ti-start,#ti-login,#ti-signup,#ti-reset,#ti-dash').forEach(e=>e.textContent=dark?'☀️':'🌙');document.querySelectorAll('#tl-start,#tl-login,#tl-signup,#tl-reset').forEach(e=>e.textContent=dark?'Claro':'Escuro');const label=document.getElementById('theme-label-sg');if(label)label.textContent=(dark?'Escuro':'Claro')+' ›'}
 function goTo(name){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));const screen=document.getElementById('screen-'+name);if(screen)screen.classList.add('active')}
 function goToDash(){goTo('dash');renderMeals();showToast('Demonstração aberta. Seus dados ficam neste navegador.')}
+function showPixPayment(result){if(typeof result.qrCode!=='string'||typeof result.qrImageBase64!=='string'||result.qrImageBase64.length>2000000){showToast('Não consegui mostrar o Pix. Tente iniciar o pagamento novamente.');return}document.getElementById('pix-qr-image').src='data:image/png;base64,'+result.qrImageBase64;document.getElementById('pix-copy-code').value=result.qrCode;const expiry=document.getElementById('pix-expiration');expiry.textContent=result.expiresAt?'Válido até '+new Date(result.expiresAt).toLocaleString('pt-BR')+'.':'O código tem prazo de validade informado pelo Mercado Pago.';document.getElementById('pix-dialog').showModal()}
+async function copyPixCode(){const field=document.getElementById('pix-copy-code');try{await navigator.clipboard.writeText(field.value);showToast('Código Pix copiado.')}catch{field.focus();field.select();const copied=document.execCommand('copy');showToast(copied?'Código Pix copiado.':'Selecione e copie o código Pix.')}}
+async function startNutriFlowCheckout(plan){if(!['base','ai'].includes(plan))return;const getToken=window.getNutriFlowAccessToken;if(typeof getToken!=='function'){showToast('O checkout Pix ainda está sendo preparado. Nenhuma cobrança foi feita.');return}const token=await getToken();if(!token){try{sessionStorage.setItem('nutriflow.pending-checkout',plan)}catch{}goTo('login');showToast('Entre ou crie sua conta para continuar com a oferta.');return}try{const response=await fetch('/api/checkout/'+plan,{method:'POST',headers:{Authorization:'Bearer '+token}});const result=await response.json().catch(()=>({}));if(!response.ok)throw new Error(result.error||'O checkout Pix ainda está sendo preparado.');if(plan==='base'&&result.qrCode&&result.qrImageBase64){showPixPayment(result);return}if(typeof result.checkoutUrl==='string'&&result.checkoutUrl.startsWith('https://')){location.assign(result.checkoutUrl);return}throw new Error('Não recebi os dados esperados para o pagamento Pix.')}catch(error){showToast(error.message||'Não consegui abrir o pagamento Pix. Nenhuma cobrança foi feita.')}}
 const tabs=['overview','meals','progress','ai','profile'];
 function navTo(name){tabs.forEach(t=>{const sub=document.getElementById('sub-'+t),bn=document.getElementById('bn-'+t);if(sub)sub.classList.toggle('active',t===name);if(bn){bn.classList.toggle('active',t===name);if(t===name)bn.setAttribute('aria-current','page');else bn.removeAttribute('aria-current')}});if(name==='meals')renderDayPills();if(name==='progress')renderMeals()}
 function openTutorial(){document.getElementById('tutorial-dialog').showModal()}
@@ -1074,7 +1151,12 @@ let nutriFlowInstallPrompt=null;
 window.addEventListener('beforeinstallprompt',event=>{event.preventDefault();nutriFlowInstallPrompt=event});
 window.addEventListener('appinstalled',()=>{nutriFlowInstallPrompt=null;showToast('NutriFlow instalado no celular.')});
 async function installNutriFlow(){if(window.matchMedia('(display-mode: standalone)').matches){showToast('NutriFlow já está instalado.');return}if(nutriFlowInstallPrompt){nutriFlowInstallPrompt.prompt();await nutriFlowInstallPrompt.userChoice;nutriFlowInstallPrompt=null;return}const isApple=/iPhone|iPad|iPod/.test(navigator.userAgent);alert(isApple?'Para instalar: toque em Compartilhar no Safari e escolha “Adicionar à Tela de Início”.':'Para instalar: abra o menu ⋮ do Chrome e toque em “Instalar app” ou “Adicionar à tela inicial”.')}
-async function askAssistant(question){const normalized=String(question||'').trim();if(!normalized)return;addAssistantMessage(normalized,'user');const chat=document.getElementById('assistant-chat');const pending=document.createElement('div');pending.className='assistant-message';pending.textContent='Pensando em uma resposta…';pending.setAttribute('role','status');chat.append(pending);chat.scrollTop=chat.scrollHeight;const button=document.querySelector('#assistant-form button');if(button)button.disabled=true;try{const response=await fetch('/api/assistant',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({question:normalized})});const result=await response.json().catch(()=>({}));if(!response.ok)throw new Error(result.error||'Não consegui responder agora. Tente novamente.');pending.textContent=result.answer||'Não consegui gerar uma resposta agora. Tente novamente.'}catch(error){pending.textContent=error.message||'Não consegui conectar ao assistente. Tente novamente.'}finally{pending.removeAttribute('role');if(button)button.disabled=false;chat.scrollTop=chat.scrollHeight}}
+const LOCAL_ASSISTANT_MODEL='SmolLM2-360M-Instruct-q4f32_1-MLC';
+let localAssistantEngine=null;
+let localAssistantLoading=null;
+function setLocalAssistantStatus(message,state=''){const status=document.getElementById('assistant-local-status');if(status){status.textContent=message;status.dataset.state=state}}
+async function enableLocalAssistant(){if(localAssistantEngine){setLocalAssistantStatus('IA local pronta. Suas perguntas ficam neste dispositivo.','ready');return localAssistantEngine}if(localAssistantLoading)return localAssistantLoading;if(!window.isSecureContext){setLocalAssistantStatus('A IA local precisa que você abra o NutriFlow pelo endereço HTTPS.','error');return null}if(!navigator.gpu){setLocalAssistantStatus('Este navegador ou aparelho não oferece WebGPU. Atualize o Chrome ou use outro dispositivo compatível; o app não enviará suas perguntas para uma API paga.','error');return null}const button=document.getElementById('assistant-local-enable');if(button){button.disabled=true;button.textContent='Preparando modelo…'}setLocalAssistantStatus('Conectando ao modelo local. O primeiro download pode demorar e usar espaço no aparelho…');localAssistantLoading=(async()=>{try{const webllm=await import('https://esm.run/@mlc-ai/web-llm');localAssistantEngine=await webllm.CreateMLCEngine(LOCAL_ASSISTANT_MODEL,{initProgressCallback:report=>{const detail=String(report?.text||'Preparando o modelo…');const progress=Number(report?.progress);setLocalAssistantStatus(Number.isFinite(progress)&&progress>0?`${detail} ${Math.round(progress*100)}%`:detail)}});setLocalAssistantStatus('IA local pronta. Suas perguntas ficam neste dispositivo.','ready');if(button){button.textContent='IA local ativada';button.disabled=false}return localAssistantEngine}catch(error){console.error('Local AI initialization failed:',error?.name||'unknown');localAssistantEngine=null;setLocalAssistantStatus('Não consegui preparar a IA local. Confira sua conexão, espaço livre e compatibilidade com WebGPU e tente novamente. Nenhuma API paga foi chamada.','error');if(button){button.textContent='Tentar preparar novamente';button.disabled=false}return null}finally{localAssistantLoading=null}})();return localAssistantLoading}
+async function askAssistant(question){const normalized=String(question||'').trim();if(!normalized)return;addAssistantMessage(normalized,'user');const chat=document.getElementById('assistant-chat');const pending=document.createElement('div');pending.className='assistant-message';pending.textContent='Aguardando a IA local…';pending.setAttribute('role','status');chat.append(pending);chat.scrollTop=chat.scrollHeight;const button=document.querySelector('#assistant-form button');if(button)button.disabled=true;try{if(!localAssistantEngine)throw new Error('Toque em “Ativar IA neste dispositivo” para preparar o modelo. Sua pergunta não foi enviada a nenhum serviço.');pending.textContent='Conferindo seu limite de uso…';const headers={'Content-Type':'application/json'};const getToken=window.getNutriFlowAccessToken;if(typeof getToken==='function'){const token=await getToken();if(token)headers.Authorization='Bearer '+token}const usageResponse=await fetch('/api/assistant/usage',{method:'POST',headers,body:JSON.stringify({})});const usage=await usageResponse.json().catch(()=>({}));if(!usageResponse.ok||usage.allowed!==true)throw new Error(usage.error||'Não consegui conferir seu limite de uso. Tente novamente.');pending.textContent='Pensando no seu aparelho…';const result=await localAssistantEngine.chat.completions.create({messages:[{role:'system',content:'Você é o assistente local do NutriFlow. Responda em português brasileiro, de forma simples, cordial, curta e sem julgamento. Ajude apenas com ideias gerais e organização de refeições. Não diagnostique, não prescreva dietas, não estime calorias ou nutrientes e não prometa resultados. Para doença, gravidez, transtorno alimentar, criança, medicamento, alergia grave ou outra questão clínica, explique que não pode orientar individualmente e recomende um profissional qualificado; ofereça apenas ajuda geral segura. Não afirme que alimentos são seguros para alergias. Não peça nem revele dados pessoais. Se faltar contexto, faça uma pergunta breve.'},{role:'user',content:normalized}],temperature:0.5,max_tokens:180});pending.textContent=result.choices?.[0]?.message?.content?.trim()||'Não consegui gerar uma resposta agora. Tente novamente.';if(Number.isFinite(usage.quota?.remaining))setLocalAssistantStatus(`Resposta local pronta. Restam ${usage.quota.remaining} respostas no seu período de uso.`,'ready')}catch(error){pending.textContent=error.message||'Não consegui gerar uma resposta neste dispositivo. Tente novamente.'}finally{pending.removeAttribute('role');if(button)button.disabled=false;chat.scrollTop=chat.scrollHeight}}
 document.getElementById('assistant-form')?.addEventListener('submit',event=>{event.preventDefault();const input=document.getElementById('assistant-input');const question=input.value.trim();if(question){input.value='';askAssistant(question)}});
 function deleteMeal(id){const next=readMeals().filter(m=>m.id!==id);if(saveMeals(next)){renderMeals();showToast('Registro removido deste navegador.')}}
 function clearDemoData(){if(!confirm('Apagar todos os registros desta demonstração neste navegador?'))return;try{localStorage.removeItem(STORAGE_KEY);localStorage.removeItem(petUnlockStorageKey())}catch{}renderMeals();showToast('Registros apagados.')}

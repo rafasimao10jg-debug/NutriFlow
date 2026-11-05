@@ -37,6 +37,8 @@ Mantenha responsabilidades separadas, componentes e módulos pequenos, interface
 - Valide e trate a saída do modelo como entrada não confiável; não a execute nem a use como autorização.
 - Defina limites, tratamento de falhas e comportamento quando o modelo estiver indisponível.
 - Não invente credenciais nem registre valores secretos em `.env.example`.
+- Assistente NutriFlow usa WebLLM no navegador com inferência local por WebGPU; perguntas não devem ir ao servidor nem a um provedor de modelos. Não adicionar fallback remoto automático ou integração que gere cobrança sem autorização explícita.
+- Só iniciar o download do modelo depois de ação explícita da pessoa; informar espaço, memória, bateria, uso de dados e compatibilidade antes de ativar.
 
 ## Testes e validação
 
