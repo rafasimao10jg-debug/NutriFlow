@@ -512,7 +512,6 @@ input,select{font-family:inherit}
 }
 .assistant-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-lg);padding:18px;margin:14px 0}
 .assistant-intro{font-size:14px;line-height:1.55;color:var(--ink-mid);margin:8px 0 14px}
-.assistant-demo{font-size:12px;line-height:1.5;color:var(--ink-mid);background:var(--amber-light);border-radius:12px;padding:10px 12px;margin:12px 0}
 .assistant-local-controls{display:grid;gap:8px;margin:12px 0}
 .assistant-local-controls[hidden]{display:none}
 .assistant-local-status{font-size:12px;line-height:1.45;color:var(--ink-mid);min-height:18px}
@@ -559,7 +558,8 @@ input,select{font-family:inherit}
   border-radius:var(--r-xl);padding:18px;margin-bottom:16px;
   box-shadow:var(--sh-sm);
 }
-.week-nav{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
+.month-header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
+.month-nav{display:grid;grid-template-columns:36px minmax(0,1fr) 36px;align-items:center;gap:8px;flex:1;min-width:0}
 .wn-btn{
   width:36px;height:36px;border-radius:50%;
   background:var(--bg-subtle);border:1.5px solid var(--border);
@@ -567,33 +567,27 @@ input,select{font-family:inherit}
   font-size:17px;color:var(--ink-mid);transition:all .12s;
 }
 .wn-btn:hover{background:var(--bg-hover);color:var(--ink)}
-.week-label{font-size:14px;font-weight:700;color:var(--ink);text-align:center;line-height:1.35}
-.week-actions{display:flex;justify-content:center;margin-bottom:12px}
-.week-today{padding:7px 13px;border:1px solid var(--border);border-radius:999px;background:var(--bg-subtle);color:var(--pri);font-size:12px;font-weight:700}
-.week-today:hover{background:var(--pri-light)}
-
-.day-pills{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px;padding:2px 1px 5px}
-.day-pill{
-  flex-shrink:0;display:flex;flex-direction:column;align-items:center;
-  gap:3px;min-width:0;padding:8px 2px;border-radius:var(--r-md);
-  border:1.5px solid var(--border);background:var(--bg-subtle);
-  cursor:pointer;transition:all .15s;min-height:70px;
-}
-.day-pill.today:not(.active){border-color:var(--pri)}
-.day-pill.active{
-  background:var(--pri);border-color:var(--pri);
-  box-shadow:0 4px 12px var(--pri-glow);
-}
-.dp-name{font-size:10px;font-weight:700;letter-spacing:.05em;color:var(--ink-soft)}
-.dp-num{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:var(--ink)}
-.dp-count{min-height:12px;font-size:10px;font-weight:700;line-height:1;color:var(--pri)}
-.day-pill.active .dp-name,.day-pill.active .dp-num{color:#fff}
-.day-pill.active .dp-count{color:#fff}
+.month-label{font-size:16px;font-weight:800;color:var(--ink);text-align:center;line-height:1.25;text-transform:capitalize}
+.month-today{flex-shrink:0;padding:8px 12px;border:1px solid var(--border);border-radius:var(--r-md);background:var(--bg-subtle);color:var(--pri);font-size:12px;font-weight:700}
+.month-today:hover{background:var(--pri-light)}
+.calendar-weekdays,.month-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px}
+.calendar-weekdays{margin-bottom:6px;text-align:center}
+.calendar-weekdays span{padding:4px 0;color:var(--ink-soft);font-size:10px;font-weight:700;text-transform:uppercase}
+.month-grid{grid-template-rows:repeat(6,minmax(44px,1fr))}
+.calendar-day{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-width:0;padding:4px 1px;border:1px solid transparent;border-radius:var(--r-md);background:var(--bg-subtle);color:var(--ink);cursor:pointer;transition:background .15s,border-color .15s,transform .15s}
+.calendar-day:hover{border-color:var(--border-mid);background:var(--bg-hover)}
+.calendar-day.today:not(.active){border-color:var(--pri)}
+.calendar-day.outside{background:transparent;color:var(--ink-soft);opacity:.48}
+.calendar-day-number{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;line-height:1.1}
+.calendar-day-count{display:flex;align-items:center;justify-content:center;min-width:12px;min-height:12px;padding:0 3px;border-radius:999px;color:transparent;font-size:9px;font-weight:700;line-height:1}
+.calendar-day.has-entries .calendar-day-count{background:var(--pri-light);color:var(--pri)}
+.calendar-day.active{background:var(--pri);color:#fff;box-shadow:0 4px 12px var(--pri-glow)}
+.calendar-day.active .calendar-day-count{background:rgba(255,255,255,.2);color:#fff}
 .selected-day-summary{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:12px;padding:12px 14px;background:var(--bg-subtle);border-radius:var(--r-md)}
 .selected-day-label{display:block;margin-bottom:3px;color:var(--ink-soft);font-size:11px}
 .selected-day-date{color:var(--ink);font-size:14px;font-weight:700}
 .selected-day-count{flex-shrink:0;color:var(--pri);font-size:12px;font-weight:700;text-align:right}
-.calendar-hint{margin:7px 2px 0;color:var(--ink-soft);font-size:11px;text-align:center}
+.calendar-hint{margin:10px 2px 0;color:var(--ink-soft);font-size:11px;text-align:center;line-height:1.4}
 .section-description{margin-top:4px;color:var(--ink-soft);font-size:13px;line-height:1.45}
 
 .daily-tip-card{margin:16px 0;padding:18px;background:linear-gradient(135deg,var(--pri-light),var(--bg-card));border:1px solid var(--border);border-radius:var(--r-xl);box-shadow:var(--sh-sm)}
@@ -1031,10 +1025,13 @@ input,select{font-family:inherit}
     <div class="sub" id="sub-meals">
       <div class="section-head"><div><div class="section-title">Planeje suas refeições</div><p class="section-description">Escolha uma data para ver o que anotou ou guardar uma nova ideia.</p></div></div>
       <div class="plan-header">
-        <div class="week-nav"><button class="wn-btn" type="button" onclick="shiftWeek(-1)" aria-label="Semana anterior">‹</button><div class="week-label" id="week-label" aria-live="polite"></div><button class="wn-btn" type="button" onclick="shiftWeek(1)" aria-label="Próxima semana">›</button></div>
-        <div class="week-actions"><button class="week-today" type="button" onclick="goToToday()">Ir para hoje</button></div>
-        <div class="day-pills" id="day-pills" role="group" aria-label="Escolha o dia para ver as refeições"></div>
-        <p class="calendar-hint">O número abaixo de cada dia mostra quantas anotações você salvou.</p>
+        <div class="month-header">
+          <div class="month-nav"><button class="wn-btn" type="button" onclick="shiftMonth(-1)" aria-label="Mês anterior">‹</button><div class="month-label" id="month-label" aria-live="polite"></div><button class="wn-btn" type="button" onclick="shiftMonth(1)" aria-label="Próximo mês">›</button></div>
+          <button class="month-today" type="button" onclick="goToToday()">Hoje</button>
+        </div>
+        <div class="calendar-weekdays" aria-hidden="true"><span>Seg</span><span>Ter</span><span>Qua</span><span>Qui</span><span>Sex</span><span>Sáb</span><span>Dom</span></div>
+        <div class="month-grid" id="month-grid" role="group" aria-label="Escolha uma data"></div>
+        <p class="calendar-hint">Toque em uma data para ver ou anotar refeições. O número indica quantos registros há no dia.</p>
         <div class="selected-day-summary" aria-live="polite"><div><span class="selected-day-label">Data selecionada</span><strong class="selected-day-date" id="selected-day-date"></strong></div><div class="selected-day-count" id="selected-day-count"></div></div>
       </div>
       <div class="demo-banner">Seus registros aparecem no dia escolhido. Você pode anotar uma refeição ou salvar uma ideia para consultar depois.</div>
@@ -1057,10 +1054,9 @@ input,select{font-family:inherit}
       <div class="assistant-card">
         <div class="pet-title">Ideias para sua rotina</div>
         <p class="assistant-intro">Peça ideias gerais para organizar refeições. Você escolhe o que combina com você.</p>
-        <div class="assistant-demo">O modelo ocupa cerca de 290 MB para baixar. A preparação usa internet, espaço, memória e bateria. Use Wi-Fi e um aparelho compatível com WebGPU.</div>
         <div class="assistant-local-controls" id="assistant-local-controls">
           <button class="btn-pri assistant-local-button" id="assistant-local-enable" type="button" onclick="enableLocalAssistant()">Ativar IA neste dispositivo</button>
-          <div class="assistant-local-status" id="assistant-local-status" role="status" aria-live="polite">O modelo é compacto para usar menos memória; ainda assim, o download tem cerca de 290 MB.</div>
+          <div class="assistant-local-status" id="assistant-local-status" role="status" aria-live="polite">Para ativar, baixe cerca de 290 MB. Precisa de internet, espaço, memória, bateria e WebGPU.</div>
         </div>
         <div class="assistant-chips" aria-label="Sugestões de perguntas">
           <button class="assistant-chip" type="button" onclick="askAssistant('Me ajude a organizar refeições para amanhã')">Organizar amanhã</button>
@@ -1181,44 +1177,52 @@ function renderDailyMealTip(){const tip=getDailyMealTip();const title=document.g
 function saveDailyMealTip(){const tip=getDailyMealTip();const today=new Date();const todayKey=dateKey(today);const all=readMeals();const exists=all.some(item=>item.date===todayKey&&item.name===tip.name);selectedDate=new Date(todayKey+'T12:00:00');if(exists){navTo('meals');showToast('A ideia de hoje já está salva nas suas refeições.');return}const entry={id:crypto.randomUUID(),kind:tip.kind,name:tip.name,date:todayKey};if(saveMeals([...all,entry])){navTo('meals');showToast('Ideia de hoje guardada nas suas refeições.')}}
 function openMealDialog(){const dialog=document.getElementById('meal-dialog');document.getElementById('meal-date').value=dateKey(selectedDate);dialog.showModal();document.getElementById('meal-name').focus()}
 function closeMealDialog(){document.getElementById('meal-dialog').close()}
-function renderDayPills(){
-  const wrap=document.getElementById('day-pills');
-  if(!wrap)return;
-  wrap.replaceChildren();
-  const monday=new Date(selectedDate);
-  monday.setDate(monday.getDate()-(monday.getDay()+6)%7);
-  const last=new Date(monday);
-  last.setDate(monday.getDate()+6);
-  const sameMonth=monday.getMonth()===last.getMonth()&&monday.getFullYear()===last.getFullYear();
-  const weekText=sameMonth
-    ? `${monday.getDate()}–${last.getDate()} de ${last.toLocaleDateString('pt-BR',{month:'long',year:'numeric'})}`
-    : `${monday.toLocaleDateString('pt-BR',{day:'numeric',month:'short'})} – ${last.toLocaleDateString('pt-BR',{day:'numeric',month:'short',year:'numeric'})}`;
-  document.getElementById('week-label').textContent=weekText;
+function renderMonthCalendar(){
+  const grid=document.getElementById('month-grid');
+  if(!grid)return;
+  grid.replaceChildren();
+  const year=selectedDate.getFullYear();
+  const month=selectedDate.getMonth();
+  const monthStart=new Date(year,month,1,12);
+  document.getElementById('month-label').textContent=monthStart.toLocaleDateString('pt-BR',{month:'long',year:'numeric'});
+  const offset=(monthStart.getDay()+6)%7;
+  const gridStart=new Date(year,month,1-offset,12);
   const counts=new Map();
   readMeals().forEach(item=>counts.set(item.date,(counts.get(item.date)||0)+1));
-  const short=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
   const todayKey=dateKey(new Date());
-  for(let i=0;i<7;i++){
-    const d=new Date(monday);
-    d.setDate(monday.getDate()+i);
-    const key=dateKey(d);
+  for(let i=0;i<42;i++){
+    const date=new Date(gridStart);
+    date.setDate(gridStart.getDate()+i);
+    const key=dateKey(date);
     const count=counts.get(key)||0;
+    const isCurrentMonth=date.getMonth()===month;
     const isSelected=key===dateKey(selectedDate);
     const isToday=key===todayKey;
-    const b=document.createElement('button');
-    b.type='button';
-    b.className='day-pill'+(isSelected?' active':'')+(isToday?' today':'');
-    b.setAttribute('aria-pressed',isSelected?'true':'false');
-    b.setAttribute('aria-label',`${d.toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long'})}${isToday?', hoje':''}. ${count?`${count} anotações`:'Sem anotações'}${isSelected?', selecionado':''}`);
-    const name=document.createElement('span');name.className='dp-name';name.textContent=short[d.getDay()];
-    const number=document.createElement('span');number.className='dp-num';number.textContent=String(d.getDate());
-    const total=document.createElement('span');total.className='dp-count';total.textContent=String(count);
-    b.append(name,number,total);
-    b.addEventListener('click',()=>{selectedDate=d;renderMeals()});
-    wrap.append(b);
+    const button=document.createElement('button');
+    button.type='button';
+    button.className='calendar-day'+(!isCurrentMonth?' outside':'')+(isToday?' today':'')+(isSelected?' active':'')+(count?' has-entries':'');
+    button.setAttribute('aria-pressed',isSelected?'true':'false');
+    button.setAttribute('aria-label',`${date.toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}${isToday?', hoje':''}. ${count?`${count} registros`:'Sem registros'}${isSelected?', selecionado':''}`);
+    const number=document.createElement('span');
+    number.className='calendar-day-number';
+    number.textContent=String(date.getDate());
+    const total=document.createElement('span');
+    total.className='calendar-day-count';
+    total.textContent=count?(count>9?'9+':String(count)):'';
+    total.setAttribute('aria-hidden','true');
+    button.append(number,total);
+    button.addEventListener('click',()=>{selectedDate=date;renderMeals()});
+    grid.append(button);
   }
 }
-function shiftWeek(amount){selectedDate.setDate(selectedDate.getDate()+amount*7);renderMeals()}
+function shiftMonth(amount){
+  const day=selectedDate.getDate();
+  const target=new Date(selectedDate.getFullYear(),selectedDate.getMonth()+amount,1,12);
+  const finalDay=new Date(target.getFullYear(),target.getMonth()+1,0).getDate();
+  target.setDate(Math.min(day,finalDay));
+  selectedDate=target;
+  renderMeals();
+}
 function goToToday(){selectedDate=new Date();renderMeals()}
 function renderSelectedDaySummary(entries=readMeals()){
   const dateText=document.getElementById('selected-day-date');
@@ -1262,7 +1266,7 @@ function renderMeals(){
   const nav=document.getElementById('nav-meal-count');
   if(nav)nav.textContent=String(all.length);
   renderSelectedDaySummary(all);
-  renderDayPills();
+  renderMonthCalendar();
   renderPet(all);
 }
 function petUnlockStorageKey(){return 'nutriflow.pet.unlocked.'+(window.getNutriFlowUserId?.()||'demo')}
