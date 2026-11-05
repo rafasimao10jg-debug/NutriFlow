@@ -14,7 +14,7 @@ O app tem página pública, demonstração de registros, tema claro/escuro, sequ
 
 O fluxo de funil e os requisitos de checkout estão documentados em [FUNNEL_AND_CHECKOUT.md](FUNNEL_AND_CHECKOUT.md). Não há cobrança ativada no app.
 
-O primeiro lançamento terá acesso base por pagamento único e uma assinatura mensal separada para ampliar o uso da IA. O Mercado Pago foi escolhido como provedor. Preços, limite da IA incluído no acesso base, demais itens do acesso base e condições ainda precisam ser definidos; não publicar anúncio de venda nem ativar checkout antes disso.
+O primeiro lançamento terá acesso base por pagamento único de R$ 29,99 e uma assinatura mensal separada para ampliar o uso da IA. O Mercado Pago foi escolhido como provedor. O preço da mensalidade, o limite da IA incluído no acesso base, os demais itens do acesso base e as condições ainda precisam ser definidos; não publicar anúncio de venda nem ativar checkout antes disso.
 
 **Promessa provisória, sujeita à validação do produto:** Mais clareza para organizar refeições e ideias do dia a dia, com apoio de um assistente de IA. Só usar essa promessa depois que o modelo real estiver integrado e testado, com limites e aviso claros de que não substitui nutricionista ou profissional de saúde.
 
@@ -64,7 +64,7 @@ Na criação do anúncio, evitar texto que afirme ou sugira que a pessoa tem uma
 | P1 | Decidir se o beta inclui somente registros ou também um planejador semanal; a tela atual não separa planos de registros | Funcionalidade parcial |
 | P1 | Revisar navegação por teclado, leitores de tela, contraste, erros de rede e telas pequenas | Revisão incompleta |
 | P1 | Criar roteiro de suporte e resposta a falhas de login/sincronização | Pendente |
-| P0 | Definir os dois preços, limite de IA do acesso base e benefícios incluídos; implementar e validar compra única e assinatura mensal via Mercado Pago antes de vender | Provedor e estrutura da oferta escolhidos; valores e limites pendentes; não há cobrança implementada |
+| P0 | Definir mensalidade da IA, limite de IA do acesso base e benefícios incluídos; implementar e validar compra única e assinatura mensal via Mercado Pago antes de vender | R$ 29,99 único definido; mensalidade, limite e itens ainda pendentes; não há cobrança implementada |
 | P1 | Definir limites de uso da IA e estimar custo por pessoa pagante para calcular margem e CAC máximo | Pendente da integração e do preço |
 | P2 | Revisar no Events Manager se a Meta permite qualquer evento não sensível para este domínio; manter dados de refeições fora da medição | Pendente |
 

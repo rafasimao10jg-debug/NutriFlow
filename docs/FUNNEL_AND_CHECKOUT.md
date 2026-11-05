@@ -31,7 +31,7 @@ Usar UTMs e contagens agregadas próprias para visitas, cadastro, checkout inici
 ## Bloqueios para ativar cobrança
 
 - Provedor: Mercado Pago.
-- Preço do acesso base único: a definir.
+- Preço do acesso base único: R$ 29,99.
 - Preço da assinatura mensal da IA: a definir.
 - Itens incluídos no acesso base: a definir.
 - Limite de uso da IA incluído no acesso base: a definir.
