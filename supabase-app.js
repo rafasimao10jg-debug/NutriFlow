@@ -51,6 +51,12 @@
 
   window.getNutriFlowUserId = () => activeUser?.id || null;
   window.isNutriFlowAccountActive = () => Boolean(activeUser);
+  window.getNutriFlowAccessToken = async () => {
+    try {
+      const { data, error } = await client.auth.getSession();
+      return error ? null : data.session?.access_token || null;
+    } catch { return null; }
+  };
 
   window.loginWithSupabase = async () => {
     const emailInput = document.getElementById('login-email');
@@ -318,6 +324,13 @@
     if (session?.user) {
       if (passwordRecovery) goTo('reset');
       else if (activeUser?.id !== session.user.id) setTimeout(() => load(session.user), 0);
+      try {
+        const pendingCheckout = sessionStorage.getItem('nutriflow.pending-checkout');
+        if (pendingCheckout === 'base' || pendingCheckout === 'ai') {
+          sessionStorage.removeItem('nutriflow.pending-checkout');
+          setTimeout(() => window.startNutriFlowCheckout?.(pendingCheckout), 700);
+        }
+      } catch {}
     } else {
       currentLoad++;
       activeUser = null;
