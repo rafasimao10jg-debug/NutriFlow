@@ -17,6 +17,7 @@ Codex
 - `service-worker.js`
 - `docs/SUPABASE_SETUP.md`
 - `docs/tasks/2026-11-05-account-signup-guidance.md`
+- `tests/auth.test.js`
 
 ## Arquivos que não devem ser modificados
 - Segredos, dados de usuários, configuração de produção no Render ou Supabase Dashboard.
@@ -32,17 +33,17 @@ Codex
 - [x] A revisão da interface invalida a versão anterior do cache da PWA.
 
 ## Testes obrigatórios
-- Não executados nesta tarefa; o usuário não pediu testes. Uma confirmação real por e-mail exige um SMTP configurado e não deve ser repetida para evitar consumir a cota.
+- Executar `node --test` para validar mensagens e o fluxo local simulado. Não criar conta real nem repetir envio até configurar SMTP e preparar endereço de teste.
 
 ## Resultado esperado
 O app ajuda quem ainda não tem conta a começar pelo cadastro e identifica claramente quando o problema está na configuração de envio de e-mail do projeto.
 
 ## Relatório final do agente
 - Resumo: além de orientar primeiro acesso e erros de envio, a interface explica que a confirmação é por link e não declara que enviou um e-mail quando o Supabase não confirma esse envio.
-- Arquivos alterados: `index.html`, `supabase-app.js`, `service-worker.js`, `docs/SUPABASE_SETUP.md` e este arquivo.
-- Testes/comandos executados e resultados: `node --check supabase-app.js`, `node --check service-worker.js` e `git diff --check` passaram. Nenhum cadastro ou e-mail real foi testado.
+- Arquivos alterados: `index.html`, `supabase-app.js`, `service-worker.js`, `tests/auth.test.js`, `docs/SUPABASE_SETUP.md` e este arquivo.
+- Testes/comandos executados e resultados: `node --test` passou (7/7); `node --check supabase-app.js`, `node --check service-worker.js` e `git diff --check` passaram. A interface pública de cadastro abre no Render; não foi enviada uma solicitação real porque o SMTP próprio está desligado.
 - Limitações ou riscos: SMTP próprio continua desligado no Supabase e precisa ser configurado para entregar mensagens a pessoas fora da equipe; o app não consegue alterar isso sem credenciais do provedor.
-- Branch/pull request: `codex/account-signup-guidance`; PR pendente.
+- Branch/pull request: `codex/account-signup-guidance`; PR #12 aberto para revisão.
 
 ## Revisão do outro agente
 - Comentários: não solicitada.
