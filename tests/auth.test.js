@@ -115,12 +115,10 @@ test('cadastro valida a confirmação da senha sem chamar Supabase', async () =>
   assert.match(elements.get('signup-feedback').textContent, /senhas não correspondem/i);
 });
 
-test('cadastro envia nome, senha e redirect da aplicação; oferece reenvio de confirmação', async () => {
+test('cadastro envia nome, senha e redirect; não promete envio nem oferece reenvio repetido', async () => {
   let signupArgs;
-  let resendArgs;
   const { window, elements } = bootAuth({
     signUp: async args => { signupArgs = args; return { data: { user: { id: 'test-user' }, session: null }, error: null }; },
-    resend: async args => { resendArgs = args; return { error: null }; },
   });
   elements.get('signup-name').value = 'Rafa';
   elements.get('signup-email').value = 'rafa@example.com';
@@ -131,12 +129,23 @@ test('cadastro envia nome, senha e redirect da aplicação; oferece reenvio de c
   assert.equal(signupArgs.password, 'senha-segura');
   assert.equal(signupArgs.options.data.display_name, 'Rafa');
   assert.equal(signupArgs.options.emailRedirectTo, 'https://nutriflow-0yvi.onrender.com');
-  assert.equal(elements.get('signup-resend').hidden, false);
-  assert.match(elements.get('signup-feedback').textContent, /confira sua caixa de entrada/i);
-  await window.resendSignupConfirmation();
-  assert.equal(resendArgs.type, 'signup');
-  assert.equal(resendArgs.email, 'rafa@example.com');
-  assert.match(elements.get('signup-feedback').textContent, /novo link/i);
+  assert.equal(elements.get('signup-resend').hidden, true);
+  assert.match(elements.get('signup-feedback').textContent, /não consigo confirmar que um link foi enviado/i);
+  assert.match(elements.get('signup-feedback').textContent, /link, não por código/i);
+  assert.match(elements.get('signup-feedback').textContent, /evitar bloqueio por excesso de tentativas/i);
+});
+
+test('cadastro explica quando o Supabase bloqueia e-mail externo sem SMTP próprio', async () => {
+  const { window, elements } = bootAuth({
+    signUp: async () => ({ data: { user: null, session: null }, error: { code: 'email_address_not_authorized' } }),
+  });
+  elements.get('signup-name').value = 'Pessoa de teste';
+  elements.get('signup-email').value = 'teste@cliente.example';
+  elements.get('signup-password').value = 'senha-segura';
+  elements.get('signup-password-confirm').value = 'senha-segura';
+  await window.registerWithSupabase();
+  assert.match(elements.get('signup-feedback').textContent, /precisa ser configurado pela equipe do NutriFlow/i);
+  assert.match(elements.get('signup-feedback').textContent, /não fique repetindo/i);
 });
 
 test('login informa quando falta confirmar o e-mail', async () => {

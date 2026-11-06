@@ -6,6 +6,27 @@
     feedback.dataset.state = state;
     feedback.hidden = !message;
   };
+  const emailServiceError = (error, purpose = 'confirmation') => {
+    const code = String(error?.code || '').toLowerCase();
+    const serverMessage = String(error?.message || '').toLowerCase();
+    const action = purpose === 'password' ? 'enviar a recuperação de senha' : purpose === 'resend' ? 'reenviar o link' : 'enviar o link de confirmação';
+    if (code === 'email_address_not_authorized' || serverMessage.includes('email address not authorized')) {
+      return `O app ainda não pode ${action} para este endereço. O envio de e-mails do projeto precisa ser configurado pela equipe do NutriFlow antes de concluir. Não fique repetindo a tentativa.`;
+    }
+    if (code === 'over_email_send_rate_limit') {
+      return `O limite de envio de e-mails do projeto foi atingido. Aguarde antes de tentar novamente; para liberar cadastros e confirmações com segurança, a equipe do NutriFlow precisa configurar SMTP próprio.`;
+    }
+    if (code === 'over_request_rate_limit') {
+      return 'Muitas tentativas foram feitas em pouco tempo. Aguarde alguns minutos antes de tentar de novo.';
+    }
+    if (code === 'email_provider_disabled' || code === 'signup_disabled') {
+      return 'O cadastro por e-mail está desativado na configuração do app. A equipe do NutriFlow precisa habilitá-lo.';
+    }
+    if (code === 'email_address_invalid') {
+      return 'Esse endereço não pode receber mensagens de confirmação. Confira se digitou um e-mail válido.';
+    }
+    return null;
+  };
   const setButtonBusy = (id, busy, busyText, idleText) => {
     const button = document.getElementById(id);
     if (!button) return;
@@ -116,7 +137,7 @@
     try {
       const { error } = await client.auth.resend({ type: 'signup', email, options: { emailRedirectTo: location.origin } });
       showAuthFeedback(form, error
-        ? 'Não consegui reenviar agora. Aguarde um pouco e confira o e-mail informado.'
+        ? (emailServiceError(error, 'resend') || 'Não consegui reenviar agora. Aguarde um pouco e confira o e-mail informado.')
         : 'Se este endereço puder ser confirmado, um novo link chegará em instantes. Confira também o spam.', error ? 'error' : 'success');
     } catch {
       showAuthFeedback(form, 'Não foi possível conectar para reenviar. Verifique a internet e tente novamente.', 'error');
@@ -138,7 +159,9 @@
         const needsConfirmation = error.code === 'email_not_confirmed';
         const message = needsConfirmation
           ? 'Confirme seu e-mail pelo link enviado antes de entrar.'
-          : 'Não foi possível entrar. Confira o e-mail e a senha ou use “Esqueci minha senha”.';
+          : error.code === 'invalid_credentials'
+            ? 'Não foi possível entrar com esses dados. Se você ainda não criou uma conta, use “Criar minha conta primeiro” acima; entrar não cria cadastro. Se já tem conta, confira a senha ou recupere-a.'
+            : 'Não foi possível entrar agora. Confira o e-mail e a senha ou use “Esqueci minha senha”.';
         if (needsConfirmation) {
           document.getElementById('login-resend').hidden = false;
         }
@@ -171,19 +194,20 @@
     try {
       const { data, error } = await client.auth.signUp({ email, password, options: { data: { display_name: name }, emailRedirectTo: location.origin } });
       if (error) {
-        const message = error.code === 'over_email_send_rate_limit'
-          ? 'Muitos pedidos de confirmação. Aguarde alguns minutos e tente novamente.'
-          : error.code === 'weak_password'
+        const message = emailServiceError(error)
+          || (error.code === 'weak_password'
             ? 'Escolha uma senha mais forte, com pelo menos 8 caracteres.'
-            : 'Não foi possível criar a conta. Tente entrar ou recuperar a senha se já tiver cadastro.';
+            : error.code === 'email_exists' || error.code === 'user_already_exists'
+              ? 'Não foi possível concluir. Tente entrar com esse e-mail ou use “Esqueci minha senha” se já tiver uma conta.'
+              : 'Não foi possível criar a conta. Confira os dados e tente novamente.');
         showAuthFeedback('signup', message, 'error');
         return;
       }
       if (data.session) {
         showAuthFeedback('signup', 'Conta criada. Abrindo seu espaço…', 'success');
       } else {
-        document.getElementById('signup-resend').hidden = false;
-        showAuthFeedback('signup', 'Quase pronto: confira sua caixa de entrada e o spam para confirmar o e-mail. Depois, volte e entre na conta.', 'success');
+        document.getElementById('signup-resend').hidden = true;
+        showAuthFeedback('signup', 'Não consigo confirmar que um link foi enviado. Se você já tem conta, vá para “Entrar”; se esqueceu a senha, use “Esqueci minha senha”. A confirmação é por link, não por código. Se este é seu primeiro cadastro e o link não chegar, o serviço de envio do app ainda precisa ser configurado. Aguarde antes de repetir para evitar bloqueio por excesso de tentativas.', 'info');
       }
     } catch {
       showAuthFeedback('signup', 'Não foi possível conectar agora. Verifique a internet e tente novamente.', 'error');
@@ -203,7 +227,7 @@
     if (!emailInput.checkValidity()) return showAuthFeedback('login', 'Digite um e-mail válido para receber a recuperação.', 'error');
     try {
       const { error } = await client.auth.resetPasswordForEmail(email, { redirectTo: location.origin });
-      showAuthFeedback('login', error ? 'Não foi possível enviar as instruções agora. Tente novamente em instantes.' : 'Se houver uma conta com esse e-mail, você receberá instruções para redefinir a senha.', error ? 'error' : 'success');
+      showAuthFeedback('login', error ? (emailServiceError(error, 'password') || 'Não foi possível enviar as instruções agora. Tente novamente em instantes.') : 'Se houver uma conta com esse e-mail, você receberá instruções para redefinir a senha.', error ? 'error' : 'success');
     } catch { showAuthFeedback('login', 'Não foi possível conectar agora. Tente novamente mais tarde.', 'error'); }
   };
 
