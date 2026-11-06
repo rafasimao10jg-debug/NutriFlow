@@ -14,6 +14,10 @@ O app usa Supabase Auth e Postgres para contas e registros de refeições. A mig
 
 Antes de publicar cadastro aberto, publique os Termos de Uso e a Política de Privacidade e informe como pedir exclusão de conta. SMTP próprio é requisito para permitir confirmações e recuperações de pessoas fora da equipe; o remetente padrão não atende cadastro público.
 
+## Backups e produção
+
+O projeto verificado está no plano Free e não tem backups agendados. Antes de guardar dados reais, escolha entre configurar backups automáticos em um plano pago ou exportar manualmente com o Supabase CLI, manter a cópia em local privado externo e testar a restauração em outro projeto. Exporte arquivos do Storage separadamente se o app passar a armazená-los. Consulte [Preparação de produção — hospedagem e backups](PRODUCTION_READINESS.md) para a sequência completa.
+
 Uma publishable key pode aparecer no cliente; a secret/service_role key nunca pode. Não coloque dados médicos ou outros dados sensíveis neste MVP.
 
 ## Billing — ainda desativado

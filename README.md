@@ -46,7 +46,8 @@ Consulte [docs/SUPABASE_SETUP.md](docs/SUPABASE_SETUP.md). A migration em `supab
 - O fluxo de refeições registra itens por data; um planejador semanal completo ainda precisa ser construído.
 - Login, cadastro, recuperação e sincronização precisam de validação ponta a ponta com contas de teste.
 - O app ainda precisa de política de privacidade e termos, processo de exclusão de conta, acessibilidade revisada e uma publicação estável.
-- Checkout e cobrança da oferta paga ainda não estão implementados.
+- O Render e o Supabase ainda estão no plano gratuito. O painel Supabase não mostra backups agendados; antes de guardar dados reais, seguir [Preparação de produção — hospedagem e backups](docs/PRODUCTION_READINESS.md) e testar uma restauração.
+- As rotas do checkout existem no servidor, mas a cobrança segue desativada e sem validação completa em sandbox.
 - Há testes automatizados simulados para os fluxos de cadastro e sessão; o cadastro, a confirmação por e-mail e a sincronização ainda precisam de validação ponta a ponta com uma conta de teste.
 
 O produto ajuda a organizar registros; não oferece diagnóstico, tratamento ou prescrição nutricional. O cadastro exige confirmação de e-mail quando essa opção estiver habilitada no Supabase.
