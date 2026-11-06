@@ -206,8 +206,8 @@
       if (data.session) {
         showAuthFeedback('signup', 'Conta criada. Abrindo seu espaço…', 'success');
       } else {
-        document.getElementById('signup-resend').hidden = false;
-        showAuthFeedback('signup', 'Quase pronto: confira sua caixa de entrada e o spam para confirmar o e-mail. Depois, volte e entre na conta.', 'success');
+        document.getElementById('signup-resend').hidden = true;
+        showAuthFeedback('signup', 'Não consigo confirmar que um link foi enviado. Se você já tem conta, vá para “Entrar”; se esqueceu a senha, use “Esqueci minha senha”. A confirmação é por link, não por código. Se este é seu primeiro cadastro e o link não chegar, o serviço de envio do app ainda precisa ser configurado. Aguarde antes de repetir para evitar bloqueio por excesso de tentativas.', 'info');
       }
     } catch {
       showAuthFeedback('signup', 'Não foi possível conectar agora. Verifique a internet e tente novamente.', 'error');
