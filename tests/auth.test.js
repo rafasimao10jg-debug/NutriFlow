@@ -115,7 +115,7 @@ test('cadastro valida a confirmação da senha sem chamar Supabase', async () =>
   assert.match(elements.get('signup-feedback').textContent, /senhas não correspondem/i);
 });
 
-test('cadastro envia nome, senha e redirect; não promete envio nem oferece reenvio repetido', async () => {
+test('cadastro orienta a conferir o e-mail sem afirmar que o envio chegou', async () => {
   let signupArgs;
   const { window, elements } = bootAuth({
     signUp: async args => { signupArgs = args; return { data: { user: { id: 'test-user' }, session: null }, error: null }; },
@@ -130,9 +130,10 @@ test('cadastro envia nome, senha e redirect; não promete envio nem oferece reen
   assert.equal(signupArgs.options.data.display_name, 'Rafa');
   assert.equal(signupArgs.options.emailRedirectTo, 'https://nutriflow-0yvi.onrender.com');
   assert.equal(elements.get('signup-resend').hidden, true);
-  assert.match(elements.get('signup-feedback').textContent, /não consigo confirmar que um link foi enviado/i);
-  assert.match(elements.get('signup-feedback').textContent, /link, não por código/i);
-  assert.match(elements.get('signup-feedback').textContent, /evitar bloqueio por excesso de tentativas/i);
+  assert.match(elements.get('signup-feedback').textContent, /não consigo confirmar se o e-mail chegou/i);
+  assert.match(elements.get('signup-feedback').textContent, /caixa de entrada e o spam/i);
+  assert.match(elements.get('signup-feedback').textContent, /aguarde alguns minutos/i);
+  assert.doesNotMatch(elements.get('signup-feedback').textContent, /serviço de envio.*precisa ser configurado/i);
 });
 
 test('cadastro explica quando o Supabase bloqueia e-mail externo sem SMTP próprio', async () => {
