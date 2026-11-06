@@ -4,3 +4,9 @@ window.NUTRIFLOW_SUPABASE = {
   url: 'https://zjrfzcmcwbgnpbrtkqjw.supabase.co',
   publishableKey: 'sb_publishable_-tjB1lvx9yFERbhPNG8twA_-xkdwkoV'
 };
+
+// Public frontend switches for the free static deployment.
+window.NUTRIFLOW_RUNTIME = {
+  billingEnabled: false,
+  apiBaseUrl: 'https://nutriflow-0yvi.onrender.com'
+};

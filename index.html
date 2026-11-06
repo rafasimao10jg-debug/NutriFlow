@@ -1213,7 +1213,7 @@ function goTo(name){if(name==='dash'&&!window.isNutriFlowAccountActive?.()){goTo
 function goToSignupFromLogin(){const email=document.getElementById('login-email')?.value.trim()||'';goTo('signup');const signupEmail=document.getElementById('signup-email');if(signupEmail&&!signupEmail.value&&email)signupEmail.value=email;signupEmail?.focus()}
 function showPixPayment(result){if(typeof result.qrCode!=='string'||typeof result.qrImageBase64!=='string'||result.qrImageBase64.length>2000000){showToast('Não consegui mostrar o Pix. Tente iniciar o pagamento novamente.');return}document.getElementById('pix-qr-image').src='data:image/png;base64,'+result.qrImageBase64;document.getElementById('pix-copy-code').value=result.qrCode;const expiry=document.getElementById('pix-expiration');expiry.textContent=result.expiresAt?'Válido até '+new Date(result.expiresAt).toLocaleString('pt-BR')+'.':'O código tem prazo de validade informado pelo Mercado Pago.';document.getElementById('pix-dialog').showModal()}
 async function copyPixCode(){const field=document.getElementById('pix-copy-code');try{await navigator.clipboard.writeText(field.value);showToast('Código Pix copiado.')}catch{field.focus();field.select();const copied=document.execCommand('copy');showToast(copied?'Código Pix copiado.':'Selecione e copie o código Pix.')}}
-async function startNutriFlowCheckout(plan){if(!['base','ai'].includes(plan))return;const getToken=window.getNutriFlowAccessToken;if(typeof getToken!=='function'){showToast('O checkout Pix ainda está sendo preparado. Nenhuma cobrança foi feita.');return}const token=await getToken();if(!token){try{sessionStorage.setItem('nutriflow.pending-checkout',plan)}catch{}goTo('login');showToast('Entre ou crie sua conta para continuar com a oferta.');return}try{const response=await fetch('/api/checkout/'+plan,{method:'POST',headers:{Authorization:'Bearer '+token}});const result=await response.json().catch(()=>({}));if(!response.ok)throw new Error(result.error||'O checkout Pix ainda está sendo preparado.');if(plan==='base'&&result.qrCode&&result.qrImageBase64){showPixPayment(result);return}if(typeof result.checkoutUrl==='string'&&result.checkoutUrl.startsWith('https://')){location.assign(result.checkoutUrl);return}throw new Error('Não recebi os dados esperados para o pagamento Pix.')}catch(error){showToast(error.message||'Não consegui abrir o pagamento Pix. Nenhuma cobrança foi feita.')}}
+async function startNutriFlowCheckout(plan){if(!['base','ai'].includes(plan))return;const runtime=window.NUTRIFLOW_RUNTIME||{};if(runtime.billingEnabled!==true){showToast('O checkout ainda não está disponível. Nenhuma cobrança foi feita.');return}const getToken=window.getNutriFlowAccessToken;if(typeof getToken!=='function'){showToast('O checkout Pix ainda está sendo preparado. Nenhuma cobrança foi feita.');return}const token=await getToken();if(!token){try{sessionStorage.setItem('nutriflow.pending-checkout',plan)}catch{}goTo('login');showToast('Entre ou crie sua conta para continuar com a oferta.');return}const apiBase=String(runtime.apiBaseUrl||location.origin).replace(/\/$/,'');try{const response=await fetch(apiBase+'/api/checkout/'+plan,{method:'POST',headers:{Authorization:'Bearer '+token}});const result=await response.json().catch(()=>({}));if(!response.ok)throw new Error(result.error||'O checkout Pix ainda está sendo preparado.');if(plan==='base'&&result.qrCode&&result.qrImageBase64){showPixPayment(result);return}if(typeof result.checkoutUrl==='string'&&result.checkoutUrl.startsWith('https://')){location.assign(result.checkoutUrl);return}throw new Error('Não recebi os dados esperados para o pagamento Pix.')}catch(error){showToast(error.message||'Não consegui abrir o pagamento Pix. Nenhuma cobrança foi feita.')}}
 const tabs=['overview','meals','progress','ai','profile'];
 function navTo(name){if(!window.isNutriFlowAccountActive?.()){goTo('login');showToast('Entre ou crie uma conta para acessar o app.');return}tabs.forEach(t=>{const sub=document.getElementById('sub-'+t),bn=document.getElementById('bn-'+t);if(sub)sub.classList.toggle('active',t===name);if(bn){bn.classList.toggle('active',t===name);if(t===name)bn.setAttribute('aria-current','page');else bn.removeAttribute('aria-current')}});if(name==='meals'||name==='progress')renderMeals()}
 function openTutorial(){document.getElementById('tutorial-dialog').showModal()}
@@ -1411,10 +1411,12 @@ function getAssistantSafetyReply(question){
   return'Para doença, gravidez, medicamentos, transtornos alimentares ou alergias, não é seguro personalizar sugestões por aqui. Converse com nutricionista ou profissional de saúde que conheça seu caso.';
 }
 async function reserveAssistantUsage(){
+  if(window.NUTRIFLOW_RUNTIME?.billingEnabled!==true)return{allowed:true,quota:null};
   const headers={'Content-Type':'application/json'};
   const getToken=window.getNutriFlowAccessToken;
   if(typeof getToken==='function'){const token=await getToken();if(token)headers.Authorization='Bearer '+token}
-  const response=await fetch('/api/assistant/usage',{method:'POST',headers,body:JSON.stringify({})});
+  const apiBase=String(window.NUTRIFLOW_RUNTIME?.apiBaseUrl||location.origin).replace(/\/$/,'');
+  const response=await fetch(apiBase+'/api/assistant/usage',{method:'POST',headers,body:JSON.stringify({})});
   const usage=await response.json().catch(()=>({}));
   if(!response.ok||usage.allowed!==true)throw new Error(usage.error||'Não consegui conferir seu limite de uso. Tente novamente.');
   return usage;
@@ -1433,7 +1435,7 @@ async function generateWeeklyMotivation(){
   const buttons=[...document.querySelectorAll('.weekly-review-ai-button')];
   const statuses=[...document.querySelectorAll('.weekly-review-status')];
   buttons.forEach(button=>{button.disabled=true;button.textContent='Criando frase…'});
-  statuses.forEach(status=>status.textContent='Gerando no seu aparelho; esta ação usa 1 resposta da cota de IA.');
+  statuses.forEach(status=>status.textContent='Gerando no seu aparelho. Nenhuma refeição foi enviada.');
   try{
     const usage=await reserveAssistantUsage();
     const result=await localAssistantEngine.chat.completions.create({messages:[
@@ -1469,7 +1471,7 @@ async function askAssistant(question){
     const reliableReply=safeReply||getReliableMealIdea(normalized);
     if(reliableReply){pending.textContent=reliableReply;return}
     if(!localAssistantEngine)throw new Error('Ative a IA local para responder perguntas abertas. Ideias comuns de pratos continuam disponíveis sem preparar o modelo.');
-    pending.textContent='Conferindo seu limite de uso…';
+    pending.textContent='Preparando resposta no seu aparelho…';
     const usage=await reserveAssistantUsage();
     pending.textContent='Pensando no seu aparelho…';
     const history=localAssistantConversation.slice(-LOCAL_ASSISTANT_HISTORY_LIMIT);

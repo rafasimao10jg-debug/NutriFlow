@@ -31,6 +31,10 @@ Para executar os testes de cadastro e sessão simulados, rode `npm test`. Eles n
 
 O arquivo `render.yaml` prepara um Web Service do Render conectado à branch `codex/flow-name-assistant`. O servidor não precisa de chave de API de IA. O Blueprint está no plano grátis para teste; o plano grátis não é adequado para produção e pode levar cerca de um minuto para acordar após inatividade. Escolha um plano pago só depois de revisar o custo atual e antes de anunciar para clientes.
 
+O arquivo `render.static.yaml` prepara uma segunda versão como Render Static Site. Ela publica apenas os arquivos do PWA em `dist`, usa o mesmo projeto Supabase e não depende de iniciar o servidor Node para abrir a interface. A IA continua sendo processada no próprio aparelho; com a cobrança desligada, perguntas abertas e a frase semanal não chamam a API Node. O checkout está bloqueado com uma mensagem clara até sua configuração e validação. O Static Site não remove os limites gratuitos do Supabase; quando o checkout for habilitado, a API Node ainda pode levar tempo para acordar no plano Free.
+
+Para preparar os arquivos estáticos localmente, execute `node scripts/build-static.mjs`. No Render, crie um Blueprint separado apontando para `render.static.yaml`; não substitua o Blueprint do Web Service existente.
+
 ## Instalar no celular
 
 Abra o endereço HTTPS público do NutriFlow. No Android, use o menu do Chrome e escolha **Instalar app** ou **Adicionar à tela inicial**. No iPhone, abra no Safari, toque em **Compartilhar** e escolha **Adicionar à Tela de Início**. O app instalado é um PWA; não é um APK nem um aplicativo publicado na Play Store/App Store.
