@@ -1,10 +1,12 @@
 # Plano de lançamento e Meta — NutriFlow
 
-Atualizado em 4 de novembro de 2026. Este plano é um rascunho operacional, não uma autorização para publicar anúncios ou investir orçamento.
+Atualizado em 6 de novembro de 2026. Este plano é um rascunho operacional, não uma autorização para publicar anúncios ou investir orçamento.
 
 ## Estado do produto
 
 O app tem página pública, acesso por conta, tema claro/escuro, sequência para liberar o Flow e PWA instalável. O Web Service `nutriflow` está publicado no Render em `https://nutriflow-0yvi.onrender.com`. O assistente foi alterado para WebLLM local por WebGPU, com ativação explícita e sem endpoint de geração no servidor. Ainda precisa validar download, geração e uso de recursos em Android compatível. O Supabase Auth está configurado para e-mail/senha; cadastro, confirmação, recuperação e sincronização ainda precisam de validação ponta a ponta com conta de teste.
+
+**Hospedagem conferida em 6 de novembro:** Render está no plano Free e pode adormecer; o painel Supabase mostra o projeto Healthy no plano Free/Nano, sem backups agendados. Ver [Preparação de produção — hospedagem e backups](PRODUCTION_READINESS.md). Não anunciar disponibilidade ou recuperação de dados enquanto esses bloqueios não forem resolvidos.
 
 **Posicionamento que o produto atual sustenta:** NutriFlow ajuda adultos a organizar ideias e registros de refeições no próprio ritmo. O Flow é uma companhia visual liberada após cinco dias seguidos de registro.
 
@@ -57,6 +59,7 @@ Na criação do anúncio, evitar texto que afirme ou sugira que a pessoa tem uma
 
 | Prioridade | Pendência | Estado |
 | --- | --- | --- |
+| P0 | Definir hospedagem e recuperação antes de dados reais: Render não adormecido; backup Supabase configurado e restauração ensaiada | Render Free; Supabase Free sem backups; ver [plano de produção](PRODUCTION_READINESS.md) |
 | P0 | Validar ativação, download e resposta do modelo local em Android com WebGPU; confirmar que perguntas não chegam ao servidor | Implementado no app; validação em aparelho físico ainda pendente |
 | P0 | Executar/confirmar a migration no Supabase; testar cadastro, confirmação, login, recuperação e sincronização com contas de teste | Código atualizado; validação ponta a ponta pendente |
 | P0 | Publicar Termos e Política de Privacidade com responsável, dados coletados, retenção, contato e exclusão de conta | Não existe no app |
