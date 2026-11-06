@@ -40,7 +40,7 @@ Uma checklist realista que não trate Render Free ou Supabase Free sem backup co
 - Arquivos alterados: `README.md`, `docs/LAUNCH_AND_META.md`, `docs/SUPABASE_SETUP.md`, `docs/PRODUCTION_READINESS.md` e este arquivo.
 - Testes/comandos executados e resultados: tarefa somente documental; nenhum teste de aplicação foi executado. `git diff --check` passou; o Git exibiu apenas avisos de conversão LF/CRLF do ambiente Windows.
 - Limitações ou riscos: não foi feita exportação do banco nem teste de restauração; exigem acesso seguro à conexão do banco e ambiente separado. Não foram alterados planos, pois isso gera custos. A cobrança continua desligada e sem teste sandbox.
-- Branch/pull request: `codex/production-readiness-plan`; branch local, ainda não publicada.
+- Branch/pull request: branch `codex/production-readiness-plan`, publicada no GitHub; PR aberto: https://github.com/rafasimao10jg-debug/NutriFlow/pull/14.
 
 ## Revisão do outro agente
 - Comentários: não solicitada.
