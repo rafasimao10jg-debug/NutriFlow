@@ -5,3 +5,7 @@ services:
     branch: codex/flow-name-assistant
     buildCommand: node scripts/build-static.mjs
     staticPublishPath: ./dist
+    headers:
+      - path: /service-worker.js
+        name: Cache-Control
+        value: no-cache, no-store, must-revalidate
