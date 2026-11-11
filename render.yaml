@@ -16,6 +16,8 @@ services:
         value: "false"
       - key: PHOTO_ANALYSIS_DAILY_LIMIT
         value: "30"
+      - key: PHOTO_ANALYSIS_MONTHLY_LIMIT
+        value: "800"
       - key: OPENAI_VISION_MODEL
         value: gpt-6-luna
       - key: OPENAI_API_KEY
