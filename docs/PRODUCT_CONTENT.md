@@ -97,7 +97,7 @@ Adultos que querem planejar refeições e criar uma rotina alimentar mais organi
 **Edição:** Registro atualizado.<br>
 **Exclusão:** Registro removido do seu histórico.
 
-O primeiro MVP pode guardar descrições livres e horários. Não estime calorias ou nutrientes sem uma fonte identificada, método validado e revisão do escopo.
+O registro manual guarda descrições livres e horários e não estima nutrientes. A função experimental de foto pode apresentar faixas aproximadas de calorias, proteínas, carboidratos e gorduras, com porções estimadas visualmente. Fotos não permitem confirmar peso, ingredientes escondidos ou preparo: mostre as incertezas, permita corrigir os itens e nunca apresente a estimativa como medição, avaliação da refeição ou orientação clínica. Só liberar a análise após consentimento explícito para enviar a imagem à OpenAI e publicação de uma Política de Privacidade que explique esse envio e a retenção do provedor.
 
 ### Progresso
 
@@ -121,7 +121,7 @@ No início da semana, exibir um resumo da última semana completa (segunda a dom
 
 O assistente usa Qwen2.5-0.5B local por WebLLM/WebGPU, com histórico curto da conversa mantido só em memória nesta sessão. Após a ativação explícita e o primeiro download, a pergunta é processada no dispositivo e não é enviada ao servidor NutriFlow nem a uma API de geração. A biblioteca e os arquivos do modelo são baixados de serviços externos. O servidor recebe somente a sessão e uma chamada sem o texto da pergunta para conferir os limites de uso; explique isso na Política de Privacidade. Informar necessidade de internet no primeiro uso, espaço, memória, bateria e compatibilidade; não iniciar o download até a pessoa ativar. O assistente oferece ideias gerais de organização; não deve fornecer diagnóstico, tratamento, prescrição clínica, orientação para urgências ou garantir segurança em alergias. Se o assunto envolver doença, gravidez, transtorno alimentar, criança, medicamento ou outra decisão clínica, explique o limite e recomende procurar profissional qualificado. Não invente nutrientes, fontes ou credenciais profissionais.
 
-Pedidos comuns de ideias gerais de refeição podem usar sugestões predefinidas no app para reduzir recusas e atrasos do modelo pequeno. Perguntas abertas continuam usando o modelo local e devem ser curtas, cautelosas e transparentes sobre incertezas. A frase da revisão semanal recebe somente contagens agregadas e é validada antes de aparecer; se o modelo falhar, usar uma frase segura predefinida.
+Pedidos comuns de ideias gerais de refeição podem usar sugestões predefinidas no app para reduzir recusas e atrasos do modelo pequeno. Perguntas abertas continuam usando o modelo local e devem ser curtas, cautelosas e transparentes sobre incertezas. A análise visual é independente e usa um endpoint externo apenas após consentimento. A frase da revisão semanal recebe somente contagens agregadas e é validada antes de aparecer; se o modelo falhar, usar uma frase segura predefinida.
 
 ## Mensagens de estado
 
