@@ -13,6 +13,10 @@
 
 ## Divisão e coordenação
 
+### Dados enviados para análise visual de refeições
+
+Perguntas abertas continuam no modelo local WebLLM. A análise de foto é uma ação separada e só pode enviar uma imagem depois que a pessoa selecionar a foto, marcar o consentimento e iniciar a análise. O navegador a redimensiona e reencoda para remover metadados comuns; o endpoint exige autenticação, valida o formato/tamanho e não registra nem persiste a imagem. A foto e a nota opcional são enviadas à OpenAI, que pode reter logs de segurança conforme a política do provedor. Mantenha a função desligada até política de privacidade, chave server-side, controles de gasto, quota e domínio permitido estarem configurados. Trate toda estimativa como aproximada, não clínica, e nunca envie fotos de usuários durante desenvolvimento.
+
 - Prefira separar tarefas por diretórios ou arquivos com limites claros.
 - Antes de iniciar, compare os arquivos permitidos das tarefas ativas. Se houver sobreposição, combine a ordem ou nomeie um único responsável por esses arquivos.
 - Não use uma única pasta de trabalho compartilhada para edições concorrentes. Cada agente usa checkout/branch próprio.

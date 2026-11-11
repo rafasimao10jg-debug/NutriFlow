@@ -1,14 +1,16 @@
 # Plano de lançamento e Meta — NutriFlow
 
-Atualizado em 4 de novembro de 2026. Este plano é um rascunho operacional, não uma autorização para publicar anúncios ou investir orçamento.
+Atualizado em 11 de novembro de 2026. Este plano é um rascunho operacional, não uma autorização para publicar anúncios ou investir orçamento.
 
 ## Estado do produto
 
-O app tem página pública, acesso por conta, tema claro/escuro, sequência para liberar o Flow e PWA instalável. O Web Service `nutriflow` está publicado no Render em `https://nutriflow-0yvi.onrender.com`. O assistente foi alterado para WebLLM local por WebGPU, com ativação explícita e sem endpoint de geração no servidor. Ainda precisa validar download, geração e uso de recursos em Android compatível. O Supabase Auth está configurado para e-mail/senha; cadastro, confirmação, recuperação e sincronização ainda precisam de validação ponta a ponta com conta de teste.
+O app tem página pública, acesso por conta, tema claro/escuro, sequência para liberar o Flow e PWA instalável. O Web Service `nutriflow` está publicado no Render em `https://nutriflow-0yvi.onrender.com`. Perguntas abertas continuam usando WebLLM local por WebGPU; a análise de foto, se ativada, é uma chamada externa separada à OpenAI após consentimento e pode gerar custo. Essa análise e suas faixas nutricionais ainda não foram validadas em aparelhos e refeições reais. O Supabase Auth está configurado para e-mail/senha; cadastro, confirmação, recuperação e sincronização ainda precisam de validação ponta a ponta com conta de teste.
+
+**Hospedagem conferida em 6 de novembro:** Render está no plano Free e pode adormecer; o painel Supabase mostra o projeto Healthy no plano Free/Nano, sem backups agendados. Ver [Preparação de produção — hospedagem e backups](PRODUCTION_READINESS.md). Não anunciar disponibilidade ou recuperação de dados enquanto esses bloqueios não forem resolvidos.
 
 **Posicionamento que o produto atual sustenta:** NutriFlow ajuda adultos a organizar ideias e registros de refeições no próprio ritmo. O Flow é uma companhia visual liberada após cinco dias seguidos de registro.
 
-**Não anunciar como disponível ainda:** recomendações de IA até o modelo local ser validado em dispositivos compatíveis, planejamento semanal completo, cálculo de calorias/nutrientes, resultados de peso ou benefício clínico. O assistente oferece ideias gerais, não aconselhamento clínico.
+**Não anunciar como disponível ainda:** análise visual de refeições ou cálculo de calorias/nutrientes até a configuração externa, limites de custo, política de privacidade e precisão das estimativas serem revisados; planejamento semanal completo, resultados de peso ou benefício clínico. O assistente oferece ideias gerais, não aconselhamento clínico.
 
 ## Oferta paga — definição pendente
 
@@ -57,14 +59,16 @@ Na criação do anúncio, evitar texto que afirme ou sugira que a pessoa tem uma
 
 | Prioridade | Pendência | Estado |
 | --- | --- | --- |
+| P0 | Definir hospedagem e recuperação antes de dados reais: Render não adormecido; backup Supabase configurado e restauração ensaiada | Render Free; Supabase Free sem backups; ver [plano de produção](PRODUCTION_READINESS.md) |
 | P0 | Validar ativação, download e resposta do modelo local em Android com WebGPU; confirmar que perguntas não chegam ao servidor | Implementado no app; validação em aparelho físico ainda pendente |
 | P0 | Executar/confirmar a migration no Supabase; testar cadastro, confirmação, login, recuperação e sincronização com contas de teste | Código atualizado; validação ponta a ponta pendente |
 | P0 | Publicar Termos e Política de Privacidade com responsável, dados coletados, retenção, contato e exclusão de conta | Não existe no app |
+| P0 | Antes de liberar foto: configurar chave server-side, limite/alertas de gasto OpenAI e consentimento/privacidade; validar estimativas e desligar a função por padrão | Implementação em branch; segredo e ativação ainda pendentes |
 | P1 | Decidir se o beta inclui somente registros ou também um planejador semanal; a tela atual não separa planos de registros | Funcionalidade parcial |
 | P1 | Revisar navegação por teclado, leitores de tela, contraste, erros de rede e telas pequenas | Revisão incompleta |
 | P1 | Criar roteiro de suporte e resposta a falhas de login/sincronização | Pendente |
 | P0 | Validar compra única e assinatura mensal via Mercado Pago; fazer cumprir 5 respostas totais no acesso base e 100 respostas por mês civil na assinatura | Valores definidos: R$ 29,90 único e R$ 14,90/mês; checkout implementado no servidor, ainda desativado e sem validação sandbox |
-| P1 | Definir limites de uso da IA e estimar custo por pessoa pagante para calcular margem e CAC máximo | Pendente da integração e do preço |
+| P1 | Definir limites de uso da IA e estimar custo por pessoa pagante para calcular margem e CAC máximo | Foto consome quota da IA; limite local não substitui limite de gasto no projeto do provedor |
 | P2 | Revisar no Events Manager se a Meta permite qualquer evento não sensível para este domínio; manter dados de refeições fora da medição | Pendente |
 
 ## Critério para escalar
