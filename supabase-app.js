@@ -331,6 +331,7 @@
   const load = async user => {
     if (!user) return;
     activeUser = user;
+    window.refreshAssistantPhotoAccess?.();
     const loadId = ++currentLoad;
     setSyncStatus('Carregando');
     let result;
@@ -431,6 +432,7 @@
       if (error) return showToast('Não foi possível sair da conta.');
       currentLoad++;
       activeUser = null;
+      window.refreshAssistantPhotoAccess?.();
       renderMeals();
       setSyncStatus('Sessão encerrada');
       goTo('login');
@@ -474,6 +476,7 @@
       const hadActiveUser = Boolean(activeUser);
       currentLoad++;
       activeUser = null;
+      window.refreshAssistantPhotoAccess?.();
       if (hadActiveUser) {
         renderMeals();
         goTo('login');

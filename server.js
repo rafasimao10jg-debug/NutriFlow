@@ -2,7 +2,14 @@ import { createServer } from 'node:http';
 import { readFile, stat } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { getAuthenticatedUser, handleBillingRequest, reserveAiUsage, releaseAiUsage } from './billing.js';
+import {
+  getAiPhotoEntitlement,
+  getAuthenticatedUser,
+  handleBillingRequest,
+  releasePaidPhotoAiUsage,
+  reserveAiUsage,
+  reservePaidPhotoAiUsage,
+} from './billing.js';
 import { photoBudgetIsConfigured, photoMonthlyBudgetAvailable, reservePhotoMonthlyBudget } from './photo-budget.js';
 
 const root = path.dirname(fileURLToPath(import.meta.url));
@@ -16,7 +23,6 @@ const MAX_PHOTO_REQUESTS_PER_DAY = Number.isInteger(configuredPhotoDailyLimit) &
   : 30;
 const PHOTO_VISION_MODEL = 'gpt-6-luna';
 const requestLog = new Map();
-const photoUsageByUser = new Map();
 let requestDay = new Date().toISOString().slice(0, 10);
 let dailyRequests = 0;
 let photoRequestDay = requestDay;
@@ -131,22 +137,6 @@ function validateMealEstimate(value) {
   return { title: cleanText(value.title, 90) || 'Refeição analisada', items, totals, uncertainties };
 }
 
-function reservePhotoTrial(userId) {
-  const today = new Date().toISOString().slice(0, 10);
-  const record = photoUsageByUser.get(userId);
-  if (record?.day === today && record.count >= 3) return false;
-  photoUsageByUser.set(userId, { day: today, count: (record?.day === today ? record.count : 0) + 1 });
-  return true;
-}
-
-function releasePhotoTrial(userId) {
-  const today = new Date().toISOString().slice(0, 10);
-  const record = photoUsageByUser.get(userId);
-  if (record?.day !== today) return;
-  if (record.count <= 1) photoUsageByUser.delete(userId);
-  else photoUsageByUser.set(userId, { day: today, count: record.count - 1 });
-}
-
 function reserveGlobalPhotoRequest() {
   const today = new Date().toISOString().slice(0, 10);
   if (today !== photoRequestDay) {
@@ -186,8 +176,30 @@ function hasValidImageSignature(mimeType, bytes) {
 }
 
 async function releasePhotoReservation(userId, reservation) {
-  if (reservation === 'paid') await releaseAiUsage(userId).catch(() => {});
-  if (reservation === 'trial') releasePhotoTrial(userId);
+  if (reservation === 'paid') await releasePaidPhotoAiUsage(userId).catch(() => {});
+}
+
+async function handlePhotoAccess(request, response, sendJson) {
+  if (request.method !== 'GET') {
+    response.writeHead(405, { Allow: 'GET, OPTIONS' }).end();
+    return;
+  }
+  let user;
+  try { user = await getAuthenticatedUser(request); }
+  catch { return sendJson(response, 503, { photoAnalysisEnabled: false, reason: 'not_ready' }); }
+  if (!user) return sendJson(response, 401, { photoAnalysisEnabled: false, reason: 'login_required' });
+  try {
+    const entitlement = await getAiPhotoEntitlement(user.id);
+    if (!entitlement.baseAccess) {
+      return sendJson(response, 200, { photoAnalysisEnabled: false, reason: 'base_access_required' });
+    }
+    if (!entitlement.paidAiSubscription) {
+      return sendJson(response, 200, { photoAnalysisEnabled: false, reason: 'payment_required' });
+    }
+    return sendJson(response, 200, await getPhotoRuntimeConfig());
+  } catch {
+    return sendJson(response, 503, { photoAnalysisEnabled: false, reason: 'not_ready' });
+  }
 }
 
 async function handleMealPhoto(request, response, sendJson) {
@@ -205,6 +217,31 @@ async function handleMealPhoto(request, response, sendJson) {
   }
   if (!allowedByRateLimit(request)) {
     sendJson(response, 429, { error: 'Muitas análises agora. Aguarde um pouco antes de tentar de novo.' });
+    return;
+  }
+
+  let user;
+  try { user = await getAuthenticatedUser(request); }
+  catch {
+    sendJson(response, 503, { error: 'Não consegui validar sua conta agora. Tente novamente.' });
+    return;
+  }
+  if (!user) {
+    sendJson(response, 401, { error: 'Entre na sua conta para analisar uma foto.' });
+    return;
+  }
+  try {
+    const entitlement = await getAiPhotoEntitlement(user.id);
+    if (!entitlement.baseAccess) {
+      sendJson(response, 403, { error: 'Adquira primeiro o acesso base do NutriFlow para desbloquear a assinatura de IA.' });
+      return;
+    }
+    if (!entitlement.paidAiSubscription) {
+      sendJson(response, 403, { error: 'A análise por foto está incluída na assinatura mensal de IA após a confirmação do pagamento Pix.' });
+      return;
+    }
+  } catch {
+    sendJson(response, 503, { error: 'Não consegui confirmar o pagamento da sua assinatura. Tente novamente.' });
     return;
   }
 
@@ -239,17 +276,6 @@ async function handleMealPhoto(request, response, sendJson) {
     return;
   }
 
-  let user;
-  try {
-    user = await getAuthenticatedUser(request);
-  } catch {
-    sendJson(response, 503, { error: 'Não consegui validar sua conta agora. Tente novamente.' });
-    return;
-  }
-  if (!user) {
-    sendJson(response, 401, { error: 'Entre na sua conta para analisar uma foto.' });
-    return;
-  }
   if (!process.env.OPENAI_API_KEY) {
     sendJson(response, 503, { error: 'A análise de fotos ainda não foi configurada no servidor.' });
     return;
@@ -257,25 +283,19 @@ async function handleMealPhoto(request, response, sendJson) {
 
   let reservation = '';
   try {
-    if (process.env.BILLING_ENABLED === 'true') {
-      const quota = await reserveAiUsage(user.id);
-      if (!quota?.allowed) {
-        const message = quota?.reason === 'base_access_required'
-          ? 'Adquira primeiro o acesso base do NutriFlow.'
+    const quota = await reservePaidPhotoAiUsage(user.id);
+    if (!quota?.allowed) {
+      const message = quota?.reason === 'base_access_required'
+        ? 'Adquira primeiro o acesso base do NutriFlow para desbloquear a assinatura de IA.'
+        : quota?.reason === 'subscription_required'
+          ? 'A análise por foto está incluída na assinatura mensal de IA após a confirmação do pagamento Pix.'
           : quota?.reason === 'monthly_limit'
             ? 'Você chegou ao limite de 100 respostas deste mês.'
-            : 'Você usou as 5 respostas incluídas. Assine a IA para continuar.';
-        sendJson(response, 403, { error: message });
-        return;
-      }
-      reservation = 'paid';
-    } else {
-      if (!reservePhotoTrial(user.id)) {
-        sendJson(response, 429, { error: 'Você já usou as 3 análises de foto gratuitas de hoje. Tente amanhã.' });
-        return;
-      }
-      reservation = 'trial';
+            : 'Não consegui confirmar o acesso à análise por foto. Tente novamente.';
+      sendJson(response, quota?.reason === 'monthly_limit' ? 429 : 403, { error: message });
+      return;
     }
+    reservation = 'paid';
 
     if (!reserveGlobalPhotoRequest()) {
       await releasePhotoReservation(user.id, reservation);
@@ -411,6 +431,10 @@ const server = createServer(async (request, response) => {
       return;
     }
     sendJson(response, 200, await getPhotoRuntimeConfig());
+    return;
+  }
+  if (request.url === '/api/assistant/photo-access') {
+    await handlePhotoAccess(request, response, sendJson);
     return;
   }
   if (request.url === '/api/assistant/usage') {

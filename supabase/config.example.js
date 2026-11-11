@@ -8,7 +8,7 @@ window.NUTRIFLOW_SUPABASE = {
 // Public frontend switches for the free static deployment.
 window.NUTRIFLOW_RUNTIME = {
   billingEnabled: false,
-  // The server publishes the effective switch from /api/runtime-config after its budget guard is ready.
+  // The server checks budget, account, paid base access and confirmed AI subscription per user.
   photoAnalysisEnabled: false,
   apiBaseUrl: 'https://nutriflow-0yvi.onrender.com'
 };
