@@ -50,7 +50,7 @@ Recurso desligado por padrão, com limite persistente de até US$ 0,80 de reserv
 - Arquivos alterados: `server.js`, `photo-budget.js`, `tests/photo-budget.test.js`, `.env.example`, `render.yaml`, `index.html`, `service-worker.js`, `README.md`, `docs/SUPABASE_SETUP.md`, `supabase/config.example.js`, `supabase/migrations/202611110001_photo_analysis_monthly_budget.sql` e este relatório.
 - Testes/comandos executados e resultados: `node --test` (10 passaram); `node --check server.js` e `node --check photo-budget.js` passaram; análise de sintaxe dos scripts inline passou; smoke test HTTP local passou com recurso desligado; `git diff --check` passou; migration executada apenas no projeto Supabase de teste.
 - Limitações ou riscos: limite aplica-se somente a chamadas do NutriFlow; a chave não deve ser reutilizada em outros aplicativos. A conta OpenAI atual mostrava saldo sem créditos e sem limite de gasto disponível.
-- Branch/pull request: branch `codex/photo-analysis-budget-cap`; criação do PR pendente.
+- Branch/pull request: branch `codex/photo-analysis-budget-cap`; PR #17 aberto para revisão, ainda sem merge.
 
 ## Revisão do outro agente
 - Comentários: revisão estática local concluída; não houve revisão independente por outro agente nesta execução.
