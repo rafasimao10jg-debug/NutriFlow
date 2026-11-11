@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: nutriflow-static
+    runtime: static
+    branch: codex/free-static-front-end
+    buildCommand: node scripts/build-static.mjs
+    staticPublishPath: ./dist
