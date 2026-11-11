@@ -33,9 +33,9 @@ O cliente não fica preso ao service worker de uma publicação anterior por cau
 ## Relatório final do agente
 - Resumo: adicionei uma regra específica para impedir o cache do arquivo do service worker no CDN.
 - Arquivos alterados: `render.static.yaml` e este relatório.
-- Testes/comandos executados e resultados: pendente da revisão final; nenhuma suíte automatizada executada.
+- Testes/comandos executados e resultados: `git diff --check` passou; nenhuma suíte automatizada foi executada.
 - Limitações ou riscos: a regra só será aplicada depois de aprovada, integrada e sincronizada no Blueprint `NutriFlow Static`; a checagem no aparelho depende do usuário reabrir a PWA.
-- Branch/pull request: branch `codex/no-stale-pwa-worker-cache`; ainda sem push/PR.
+- Branch/pull request: branch `codex/no-stale-pwa-worker-cache`; publicada para revisão no GitHub.
 
 ## Revisão do outro agente
 - Comentários: não solicitada.
