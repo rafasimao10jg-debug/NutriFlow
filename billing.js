@@ -207,13 +207,7 @@ async function handleWebhook(request, response, sendJson, readBody) {
     } else if (topic === 'subscription_preapproval' || topic === 'preapproval') {
       const subscription = await mercadoPago(`/preapproval/${encodeURIComponent(dataId)}`);
       const externalId = subscription?.external_reference;
-      const recurring = subscription?.auto_recurring || {};
-      const billingMatches = Number(recurring.transaction_amount) === AI_MONTHLY_PRICE
-        && recurring.currency_id === CURRENCY
-        && Number(recurring.frequency) === 1
-        && recurring.frequency_type === 'months'
-        && subscription?.payment_method_id === 'pix'
-        && subscription?.preapproval_plan_id === env().pixAiPlanId;
+      const billingMatches = matchesAiPlan(subscription);
       const status = subscription?.status === 'authorized' && !billingMatches
         ? 'pending'
         : ['authorized', 'paused', 'cancelled'].includes(subscription?.status) ? subscription.status : 'pending';
@@ -242,6 +236,17 @@ async function handleWebhook(request, response, sendJson, readBody) {
         const subscriptions = await supabaseRequest(`nf_ai_subscriptions?select=id&provider_subscription_id=eq.${encodeURIComponent(providerSubscriptionId)}&limit=1`);
         const subscriptionId = Array.isArray(subscriptions) ? subscriptions[0]?.id : null;
         if (subscriptionId) {
+          if (active) {
+            const providerSubscription = await mercadoPago(`/preapproval/${encodeURIComponent(providerSubscriptionId)}`);
+            if (providerSubscription?.status === 'authorized' && matchesAiPlan(providerSubscription)) {
+              const updated = await supabaseRequest('rpc/nf_update_ai_subscription', {
+                method: 'POST', body: { p_subscription_id: subscriptionId, p_provider_id: providerSubscriptionId, p_status: 'authorized' },
+              });
+              if (updated !== true) throw new Error('SUBSCRIPTION_NOT_APPLIED');
+            } else {
+              active = false;
+            }
+          }
           const result = await supabaseRequest('rpc/nf_set_ai_subscription_active', {
             method: 'POST', body: { p_subscription_id: subscriptionId, p_active: active },
           });
@@ -278,6 +283,29 @@ export async function handleBillingRequest(request, response, sendJson, readBody
   return sendJson(response, 404, { error: 'Not found' });
 }
 
+function matchesAiPlan(subscription) {
+  const recurring = subscription?.auto_recurring || {};
+  return Number(recurring.transaction_amount) === AI_MONTHLY_PRICE
+    && recurring.currency_id === CURRENCY
+    && Number(recurring.frequency) === 1
+    && recurring.frequency_type === 'months'
+    && subscription?.payment_method_id === 'pix'
+    && subscription?.preapproval_plan_id === env().pixAiPlanId;
+}
+
+export async function getAiPhotoEntitlement(userId) {
+  const rows = await supabaseRequest(
+    `nf_entitlements?select=base_access,ai_subscription_active,ai_subscription_paid_at&user_id=eq.${encodeURIComponent(userId)}&limit=1`,
+  );
+  const entitlement = Array.isArray(rows) ? rows[0] : null;
+  const paidAt = typeof entitlement?.ai_subscription_paid_at === 'string'
+    && Number.isFinite(Date.parse(entitlement.ai_subscription_paid_at));
+  return {
+    baseAccess: entitlement?.base_access === true,
+    paidAiSubscription: entitlement?.ai_subscription_active === true && paidAt,
+  };
+}
+
 export async function reserveAiUsage(userId) {
   const result = await supabaseRequest('rpc/nf_consume_ai_quota', {
     method: 'POST', body: { p_user_id: userId },
@@ -287,6 +315,16 @@ export async function reserveAiUsage(userId) {
 
 export async function releaseAiUsage(userId) {
   await supabaseRequest('rpc/nf_release_ai_quota', { method: 'POST', body: { p_user_id: userId } });
+}
+
+export async function reservePaidPhotoAiUsage(userId) {
+  return supabaseRequest('rpc/nf_consume_paid_photo_ai_quota', {
+    method: 'POST', body: { p_user_id: userId },
+  });
+}
+
+export async function releasePaidPhotoAiUsage(userId) {
+  await supabaseRequest('rpc/nf_release_paid_photo_ai_quota', { method: 'POST', body: { p_user_id: userId } });
 }
 
 export async function getAuthenticatedUser(request) {
