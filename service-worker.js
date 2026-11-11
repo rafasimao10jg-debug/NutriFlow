@@ -1,4 +1,4 @@
-const CACHE_NAME = 'nutriflow-shell-v16';
+const CACHE_NAME = 'nutriflow-shell-v17';
 const APP_SHELL = [
   '/',
   '/index.html',
