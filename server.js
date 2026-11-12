@@ -116,6 +116,14 @@ function validateMealEstimate(value) {
     const fatMax = number(item?.fat_g_max, 0, 200);
     if (!name || [portionG, kcalMin, kcalMax, proteinMin, proteinMax, carbsMin, carbsMax, fatMin, fatMax].some((entry) => entry === null)) return null;
     if (kcalMin > kcalMax || proteinMin > proteinMax || carbsMin > carbsMax || fatMin > fatMax) return null;
+    // Catch gross contradictions while allowing rounding and food-specific energy factors.
+    const estimatedMacroMassMax = proteinMax + carbsMax + fatMax;
+    const macroEnergyMin = (proteinMin * 4) + (carbsMin * 4) + (fatMin * 9);
+    const macroEnergyMax = (proteinMax * 4) + (carbsMax * 4) + (fatMax * 9);
+    const energyTolerance = Math.max(35, macroEnergyMax * 0.3);
+    if (estimatedMacroMassMax > portionG * 1.15
+      || kcalMax + energyTolerance < macroEnergyMin
+      || kcalMin - energyTolerance > macroEnergyMax) return null;
     const confidence = ['low', 'medium', 'high'].includes(item?.confidence) ? item.confidence : 'low';
     items.push({ name, portionG: Math.round(portionG), kcalMin, kcalMax, proteinMin, proteinMax, carbsMin, carbsMax, fatMin, fatMax, confidence });
   }
@@ -134,6 +142,9 @@ function validateMealEstimate(value) {
   const uncertainties = Array.isArray(value.uncertainties)
     ? value.uncertainties.map((entry) => cleanText(entry, 140)).filter(Boolean).slice(0, 3)
     : [];
+  if (items.length && !uncertainties.length) {
+    uncertainties.push('A foto não confirma o peso, os ingredientes escondidos nem o modo de preparo.');
+  }
   return { title: cleanText(value.title, 90) || 'Refeição analisada', items, totals, uncertainties };
 }
 
@@ -326,8 +337,10 @@ async function handleMealPhoto(request, response, sendJson) {
     const prompt = [
       'Analise somente os alimentos que parecem visíveis na foto. Responda em português brasileiro.',
       'Isto é uma estimativa visual experimental, não medição nem orientação de saúde. Não avalie a refeição, não recomende metas e não dê conselho clínico.',
-      'Estime no máximo 6 componentes visíveis e uma porção aproximada em gramas para cada um. A foto não permite saber peso, preparo, ingredientes escondidos ou óleo/molhos com certeza: nunca invente esses detalhes; inclua a incerteza em uncertainties.',
-      'Para cada item, estime faixas plausíveis de kcal, proteína, carboidratos e gordura. Use faixas mais amplas se a porção ou o alimento estiver incerto. Se não conseguir identificar, retorne items vazio e explique brevemente em uncertainties.',
+      'Faça em duas etapas: identifique com cautela até 6 componentes visíveis e estime a porção com base na imagem e na observação da pessoa; depois estime os nutrientes para essa porção, não por 100 g.',
+      'Uma foto comum não fornece escala confiável. Use utensílios ou referências visíveis apenas como pistas aproximadas, nunca presuma o tamanho do prato. A foto também não confirma peso, ingredientes escondidos, óleo, molho ou preparo: não invente esses detalhes e explique a incerteza.',
+      'Estime faixas para proteína, carboidratos e gordura. Confira se a faixa de kcal é coerente com os macros usando como aproximação 4 kcal/g para proteína, 4 para carboidratos e 9 para gordura. Esses fatores gerais não são exatos para todo alimento, então mantenha faixas mais amplas quando a composição ou a porção não forem claras.',
+      'A soma dos macros máximos não deve exceder materialmente o peso estimado da porção. Use confiança apenas para a identificação visual do item, não como garantia de exatidão nutricional. Se a foto não permitir uma estimativa minimamente coerente, retorne items vazio e explique brevemente em uncertainties.',
       'Retorne somente JSON válido neste formato: {"title":"...", "items":[{"name":"...", "portion_g":150, "kcal_min":100, "kcal_max":180, "protein_g_min":2, "protein_g_max":5, "carbs_g_min":15, "carbs_g_max":25, "fat_g_min":1, "fat_g_max":6, "confidence":"low"}], "uncertainties":["..."]}.',
       userNote,
     ].join(' ');

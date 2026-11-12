@@ -528,31 +528,79 @@ input,select{font-family:inherit}
 .assistant-form{display:flex;gap:8px}
 .assistant-form input{min-width:0;flex:1;border:1px solid var(--border);border-radius:12px;background:var(--bg);color:var(--ink);padding:12px;font:inherit;font-size:14px}
 .assistant-form button{width:auto;padding:0 16px}
-.assistant-photo-panel{display:grid;gap:10px;margin-top:16px;padding:14px;border:1px solid var(--border);border-radius:16px;background:var(--bg-card)}
-.assistant-photo-copy,.assistant-photo-status{margin:0;color:var(--ink-mid);font-size:12px;line-height:1.5}
+.assistant-photo-panel{display:grid;gap:14px;margin-top:18px;padding:14px;border:1px solid var(--border);border-radius:22px;background:var(--bg-card);box-shadow:0 12px 32px rgba(34,42,82,.08)}
+.assistant-photo-copy,.assistant-photo-status{margin:0;color:var(--ink-mid);font-size:13px;line-height:1.55}
+.assistant-photo-hero{position:relative;display:flex;align-items:center;justify-content:space-between;gap:14px;min-height:142px;overflow:hidden;padding:20px;border:1px solid rgba(117,92,238,.18);border-radius:18px;background:linear-gradient(135deg,rgba(117,92,238,.14),rgba(31,190,163,.11) 70%,rgba(255,255,255,.28))}
+.assistant-photo-hero::after{position:absolute;right:-34px;bottom:-92px;width:190px;height:190px;border:1px solid rgba(117,92,238,.13);border-radius:50%;content:"";box-shadow:0 0 0 22px rgba(117,92,238,.04),0 0 0 46px rgba(117,92,238,.035)}
+.assistant-photo-hero-copy{position:relative;z-index:1;max-width:470px}
+.assistant-photo-eyebrow,.assistant-photo-result-label{display:inline-flex;align-items:center;gap:6px;color:var(--pri);font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase}
+.assistant-photo-hero-title{margin:8px 0 7px;font-family:'Syne',sans-serif;font-size:clamp(20px,5vw,26px);line-height:1.14;color:var(--ink)}
+.assistant-photo-hero-art{position:relative;z-index:1;display:grid;place-items:center;flex:0 0 76px;width:76px;height:76px;border:1px solid rgba(255,255,255,.64);border-radius:24px;background:linear-gradient(145deg,rgba(255,255,255,.82),rgba(255,255,255,.3));box-shadow:0 10px 24px rgba(57,62,118,.12);font-size:35px}
+.assistant-photo-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.assistant-photo-step{display:flex;align-items:flex-start;gap:8px;min-width:0;padding:10px 9px;border:1px solid var(--border);border-radius:13px;background:var(--bg)}
+.assistant-photo-step-number{display:grid;place-items:center;flex:0 0 22px;width:22px;height:22px;border-radius:8px;background:rgba(117,92,238,.12);color:var(--pri);font-size:10px;font-weight:800}
+.assistant-photo-step strong,.assistant-photo-step small{display:block}
+.assistant-photo-step strong{font-size:11px;color:var(--ink)}
+.assistant-photo-step small{margin-top:3px;color:var(--ink-mid);font-size:10px;line-height:1.35}
+.assistant-photo-tip{margin:0;padding:10px 12px;border-radius:12px;background:var(--bg-subtle);color:var(--ink-mid);font-size:11px;line-height:1.5}
+.assistant-photo-upload{display:grid;gap:8px}
 .assistant-photo-file-input{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-.assistant-photo-preview{display:grid;grid-template-columns:96px 1fr;align-items:center;gap:12px}
+.assistant-photo-choose{display:flex!important;align-items:center;justify-content:flex-start;gap:12px;width:100%!important;min-height:76px!important;padding:12px 14px!important;border:1px dashed rgba(117,92,238,.42)!important;border-radius:15px!important;background:linear-gradient(135deg,rgba(117,92,238,.06),rgba(31,190,163,.045))!important;text-align:left}
+.assistant-photo-choose:disabled{opacity:.65}
+.assistant-photo-upload-icon{display:grid;place-items:center;flex:0 0 42px;width:42px;height:42px;border-radius:13px;background:rgba(117,92,238,.13);font-size:20px}
+.assistant-photo-upload-copy{display:grid;gap:3px;flex:1}
+.assistant-photo-upload-copy strong{color:var(--ink);font-size:13px}
+.assistant-photo-upload-copy small{color:var(--ink-mid);font-size:11px}
+.assistant-photo-upload-action{margin-left:auto;color:var(--pri);font-size:11px;font-weight:800}
+.assistant-photo-preview{display:grid;grid-template-columns:88px minmax(0,1fr);align-items:center;gap:12px;padding:10px;border:1px solid var(--border);border-radius:15px;background:var(--bg)}
 .assistant-photo-preview[hidden],.assistant-photo-result[hidden]{display:none}
-.assistant-photo-preview img{width:96px;height:96px;object-fit:cover;border-radius:12px;background:var(--bg-subtle)}
+.assistant-photo-preview img{width:88px;height:88px;object-fit:cover;border-radius:12px;background:var(--bg-subtle)}
+.assistant-photo-preview-copy{display:grid;gap:5px;min-width:0}
+.assistant-photo-preview-copy strong{color:var(--ink);font-size:12px}
+.assistant-photo-preview-copy span{overflow:hidden;color:var(--ink-mid);font-size:11px;text-overflow:ellipsis;white-space:nowrap}
+.assistant-photo-preview-copy button{justify-self:start}
+.assistant-photo-notes-wrap{display:grid;gap:6px}
+.assistant-photo-notes-label{color:var(--ink);font-size:12px;font-weight:700}
 .assistant-photo-notes{width:100%;min-height:68px;resize:vertical;border:1px solid var(--border);border-radius:12px;background:var(--bg);color:var(--ink);padding:10px;font:inherit;font-size:13px}
-.assistant-photo-consent{display:flex;align-items:flex-start;gap:9px;color:var(--ink-mid);font-size:11px;line-height:1.5}
+.assistant-photo-notes:focus-visible,.assistant-photo-choose:focus-visible{outline:3px solid rgba(117,92,238,.34);outline-offset:2px}
+.assistant-photo-privacy{display:grid;gap:7px;padding:12px;border:1px solid var(--border);border-radius:14px;background:var(--bg-subtle)}
+.assistant-photo-privacy-title{color:var(--ink);font-size:12px;font-weight:800}
+.assistant-photo-consent{display:flex;align-items:flex-start;gap:9px;color:var(--ink-mid);font-size:11px;line-height:1.55}
 .assistant-photo-consent input{flex:0 0 auto;margin-top:2px;accent-color:var(--pri)}
 .assistant-photo-consent a{color:var(--pri);text-decoration:underline}
 .assistant-photo-actions{display:flex;gap:8px;flex-wrap:wrap}
 .assistant-photo-actions button{width:auto;min-height:40px;padding:0 14px}
 .assistant-photo-status[data-state="error"]{color:#b42318}
 .assistant-photo-status[data-state="ready"]{color:#16804a}
-.assistant-photo-result{margin-top:14px;padding:16px;border:1px solid var(--border);border-radius:16px;background:var(--bg-card)}
-.assistant-photo-result h3{margin:0 0 8px;font-family:'Syne',sans-serif;font-size:17px}
-.assistant-photo-kcal{margin:0 0 12px;color:var(--pri);font-family:'Syne',sans-serif;font-size:24px;font-weight:800}
+.assistant-photo-result{margin-top:14px;padding:16px;border:1px solid var(--border);border-radius:18px;background:var(--bg-card);box-shadow:0 10px 28px rgba(34,42,82,.07)}
+.assistant-photo-result-head{display:grid;gap:6px;margin-bottom:14px}
+.assistant-photo-result h3{margin:0;font-family:'Syne',sans-serif;font-size:19px;line-height:1.2;color:var(--ink)}
+.assistant-photo-result-subtitle{color:var(--ink-mid);font-size:11px;line-height:1.45}
+.assistant-photo-calorie-card{display:grid;gap:4px;margin:0 0 14px;padding:14px;border:1px solid rgba(117,92,238,.16);border-radius:15px;background:linear-gradient(120deg,rgba(117,92,238,.1),rgba(31,190,163,.07))}
+.assistant-photo-calorie-label{color:var(--ink-mid);font-size:11px;font-weight:700}
+.assistant-photo-kcal{margin:0;color:var(--pri);font-family:'Syne',sans-serif;font-size:clamp(25px,7vw,32px);font-weight:800;line-height:1.1;letter-spacing:-.03em}
+.assistant-photo-calorie-hint{color:var(--ink-mid);font-size:10px}
+.assistant-photo-section-label{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin:14px 0 8px;color:var(--ink);font-size:12px;font-weight:800}
+.assistant-photo-section-label span{color:var(--ink-mid);font-size:10px;font-weight:500}
 .assistant-photo-macros{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
-.assistant-photo-macro{padding:9px;border-radius:12px;background:var(--bg-subtle);font-size:11px;color:var(--ink-mid)}
-.assistant-photo-macro strong{display:block;margin-top:4px;color:var(--ink);font-size:13px}
-.assistant-photo-items{display:grid;gap:8px;margin:12px 0 0;padding:0;list-style:none}
-.assistant-photo-items li{display:flex;justify-content:space-between;gap:10px;font-size:12px;line-height:1.4}
-.assistant-photo-items span:last-child{text-align:right;color:var(--ink-mid)}
-.assistant-photo-disclaimer{margin:12px 0 0;padding-top:10px;border-top:1px solid var(--border);color:var(--ink-mid);font-size:11px;line-height:1.5}
-@media(max-width:420px){.assistant-photo-macros{grid-template-columns:1fr}.assistant-photo-macro{display:flex;justify-content:space-between;align-items:center}.assistant-photo-macro strong{margin:0}}
+.assistant-photo-macro{display:grid;gap:9px;min-width:0;padding:11px;border:1px solid var(--border);border-radius:13px;background:var(--bg-subtle);font-size:10px;color:var(--ink-mid)}
+.assistant-photo-macro strong{color:var(--ink);font-size:15px;line-height:1.2;letter-spacing:-.02em}
+.assistant-photo-macro::before{width:23px;height:3px;border-radius:3px;background:var(--pri);content:""}
+.assistant-photo-macro:nth-child(2)::before{background:#18a88a}
+.assistant-photo-macro:nth-child(3)::before{background:#e39a38}
+.assistant-photo-items{display:grid;gap:7px;margin:0;padding:0;list-style:none}
+.assistant-photo-items li{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:8px;padding:10px 11px;border:1px solid var(--border);border-radius:12px;background:var(--bg)}
+.assistant-photo-food-name{color:var(--ink);font-size:12px;font-weight:700}
+.assistant-photo-food-portion{display:block;margin-top:3px;color:var(--ink-mid);font-size:10px;font-weight:400}
+.assistant-photo-food-kcal{color:var(--ink-mid);font-size:11px;font-weight:700;text-align:right;white-space:nowrap}
+.assistant-photo-uncertainties{margin:12px 0 0;padding:11px 12px;border-left:3px solid #e6a63f;border-radius:0 11px 11px 0;background:rgba(230,166,63,.09);color:var(--ink-mid);font-size:11px;line-height:1.5}
+.assistant-photo-empty{display:grid;gap:7px;padding:12px;border-radius:13px;background:var(--bg-subtle);color:var(--ink-mid);font-size:12px;line-height:1.5}
+.assistant-photo-disclaimer{margin:12px 0 0;padding-top:10px;border-top:1px solid var(--border);color:var(--ink-mid);font-size:10px;line-height:1.55}
+[data-theme="dark"] .assistant-photo-hero{border-color:rgba(158,137,255,.28);background:linear-gradient(135deg,rgba(117,92,238,.22),rgba(31,190,163,.12) 70%,rgba(18,24,40,.52))}
+[data-theme="dark"] .assistant-photo-hero-art{border-color:rgba(255,255,255,.12);background:linear-gradient(145deg,rgba(39,45,68,.94),rgba(35,48,61,.8))}
+[data-theme="dark"] .assistant-photo-choose{border-color:rgba(158,137,255,.48)!important;background:linear-gradient(135deg,rgba(117,92,238,.13),rgba(31,190,163,.08))!important}
+@media(max-width:520px){.assistant-photo-hero{min-height:0;padding:16px}.assistant-photo-hero-art{flex-basis:58px;width:58px;height:58px;border-radius:18px;font-size:28px}.assistant-photo-steps{gap:6px}.assistant-photo-step{display:grid;gap:5px;padding:8px 7px}.assistant-photo-step small{font-size:9px}.assistant-photo-macros{gap:6px}.assistant-photo-macro{padding:9px 7px}.assistant-photo-macro strong{font-size:13px}}
+@media(max-width:360px){.assistant-photo-hero-art{display:none}.assistant-photo-step-number{width:20px;height:20px;flex-basis:20px}.assistant-photo-step{display:flex}.assistant-photo-step strong{font-size:10px}.assistant-photo-step small{font-size:8px}.assistant-photo-macro{font-size:9px}}
 .insight-item{display:flex;gap:10px;margin-bottom:10px}
 .insight-item:last-child{margin-bottom:0}
 .i-dot{
@@ -1144,19 +1192,44 @@ input,select{font-family:inherit}
         </div>
         <form class="assistant-form" id="assistant-form"><input id="assistant-input" type="text" maxlength="600" placeholder="Escreva sua pergunta…" aria-label="Sua pergunta" required><button class="btn-pri" type="submit" aria-label="Enviar pergunta">Enviar</button></form>
         <section class="assistant-photo-panel" aria-labelledby="assistant-photo-title">
-          <div class="pet-title" id="assistant-photo-title">📷 Estimar uma refeição pela foto</div>
-          <p class="assistant-photo-copy">Disponível para quem tem acesso base e assinatura mensal NutriFlow + IA ativa. A análise só é liberada depois da confirmação do pagamento Pix. A IA estima calorias e macros em faixas; a imagem não revela com certeza o peso, o preparo ou os ingredientes escondidos.</p>
-          <input class="assistant-photo-file-input" id="assistant-meal-photo" type="file" accept="image/*" tabindex="-1" aria-label="Escolher uma foto do prato">
-          <div class="assistant-photo-actions"><button class="btn-social" id="assistant-photo-choose" type="button" onclick="document.getElementById('assistant-meal-photo').click()" disabled>Escolher foto do prato</button><button class="btn-social" id="assistant-photo-subscribe" type="button" onclick="startPhotoCheckout()" hidden>Assinar IA</button></div>
+          <header class="assistant-photo-hero">
+            <div class="assistant-photo-hero-copy">
+              <span class="assistant-photo-eyebrow">📷 NutriFlow · leitura visual</span>
+              <h3 class="assistant-photo-hero-title" id="assistant-photo-title">Descubra uma estimativa do seu prato</h3>
+              <p class="assistant-photo-copy">Uma foto ajuda a identificar o que aparece e estimar porções, calorias e macros — tudo apresentado em faixas, para você entender melhor a refeição.</p>
+            </div>
+            <div class="assistant-photo-hero-art" aria-hidden="true">🥗</div>
+          </header>
+          <div class="assistant-photo-steps" aria-label="Como funciona a análise por foto">
+            <div class="assistant-photo-step"><span class="assistant-photo-step-number">1</span><div><strong>Fotografe</strong><small>Mostre o prato todo</small></div></div>
+            <div class="assistant-photo-step"><span class="assistant-photo-step-number">2</span><div><strong>Confira</strong><small>Conte o que a imagem não mostra</small></div></div>
+            <div class="assistant-photo-step"><span class="assistant-photo-step-number">3</span><div><strong>Entenda</strong><small>Veja os intervalos estimados</small></div></div>
+          </div>
+          <p class="assistant-photo-tip"><strong>Dica para uma leitura melhor:</strong> fotografe o prato inteiro, com boa luz e sem cobrir os alimentos. A foto não revela o peso exato, o óleo ou ingredientes escondidos.</p>
+          <div class="assistant-photo-upload">
+            <input class="assistant-photo-file-input" id="assistant-meal-photo" type="file" accept="image/*" tabindex="-1" aria-label="Escolher uma foto do prato">
+            <button class="btn-social assistant-photo-choose" id="assistant-photo-choose" type="button" onclick="document.getElementById('assistant-meal-photo').click()" disabled>
+              <span class="assistant-photo-upload-icon" aria-hidden="true">📷</span>
+              <span class="assistant-photo-upload-copy"><strong>Escolha uma foto do seu prato</strong><small>JPG, PNG ou WebP · até 12 MB</small></span>
+              <span class="assistant-photo-upload-action" aria-hidden="true">Selecionar</span>
+            </button>
+            <button class="btn-social" id="assistant-photo-subscribe" type="button" onclick="startPhotoCheckout()" hidden>Assinar IA</button>
+          </div>
           <div class="assistant-photo-preview" id="assistant-photo-preview" hidden>
             <img id="assistant-photo-preview-image" alt="Prévia temporária do prato escolhido">
-            <div><div class="assistant-photo-copy" id="assistant-photo-file-name">Foto selecionada</div><button class="btn-social" id="assistant-photo-remove" type="button" onclick="clearAssistantPhoto()">Remover foto</button></div>
+            <div class="assistant-photo-preview-copy"><strong>Foto pronta para conferir</strong><span id="assistant-photo-file-name">Foto selecionada</span><button class="btn-social" id="assistant-photo-remove" type="button" onclick="clearAssistantPhoto()">Trocar foto</button></div>
           </div>
-          <label class="assistant-photo-copy" for="assistant-photo-notes">Ingredientes ou quantidade que você sabe (opcional)</label>
-          <textarea class="assistant-photo-notes" id="assistant-photo-notes" maxlength="300" placeholder="Ex.: arroz, feijão e frango; uma concha de feijão. Não inclua dados de saúde."></textarea>
-          <label class="assistant-photo-consent"><input id="assistant-photo-consent" type="checkbox"><span>Concordo em enviar esta foto e a observação à OpenAI para analisar a refeição. O NutriFlow não guarda a foto; a OpenAI informa que dados podem aparecer em registros de segurança retidos por até 30 dias por padrão. Envie apenas imagens do prato, sem pessoas ou documentos. <a href="https://developers.openai.com/api/docs/guides/your-data" target="_blank" rel="noopener">Ver política de dados da OpenAI</a>.</span></label>
+          <div class="assistant-photo-notes-wrap">
+            <label class="assistant-photo-notes-label" for="assistant-photo-notes">Quer dar mais contexto? <span class="assistant-photo-copy">(opcional)</span></label>
+            <span class="assistant-photo-copy">Conte ingredientes ou medidas caseiras que você conhece para contextualizar a estimativa.</span>
+            <textarea class="assistant-photo-notes" id="assistant-photo-notes" maxlength="300" placeholder="Ex.: arroz, feijão e frango; uma concha de feijão."></textarea>
+          </div>
+          <div class="assistant-photo-privacy">
+            <strong class="assistant-photo-privacy-title">Sua foto só é enviada quando você autorizar e tocar em “Analisar foto”.</strong>
+            <label class="assistant-photo-consent"><input id="assistant-photo-consent" type="checkbox"><span>Autorizo o envio da foto comprimida e da observação à OpenAI para analisar a refeição. O NutriFlow não guarda a foto; a OpenAI informa que dados podem aparecer em registros de segurança retidos por até 30 dias por padrão. Envie apenas imagens do prato, sem pessoas ou documentos. <a href="https://developers.openai.com/api/docs/guides/your-data" target="_blank" rel="noopener">Ver política de dados da OpenAI</a>.</span></label>
+          </div>
           <p class="assistant-photo-status" id="assistant-photo-status" role="status" aria-live="polite">Entre na sua conta para verificar se a assinatura mensal de IA está ativa.</p>
-          <div class="assistant-photo-actions"><button class="btn-pri" id="assistant-photo-submit" type="button" onclick="analyzeMealPhoto()" disabled>Analisar foto</button></div>
+          <div class="assistant-photo-actions"><button class="btn-pri" id="assistant-photo-submit" type="button" onclick="analyzeMealPhoto()" disabled>Analisar meu prato</button></div>
         </section>
         <div class="assistant-photo-result" id="assistant-photo-result" aria-live="polite" hidden></div>
       </div>
@@ -1531,7 +1604,35 @@ let selectedAssistantPhoto=null;
 let assistantPhotoPreviewUrl='';
 let assistantPhotoBusy=false;
 function setAssistantPhotoStatus(message,state=''){const status=document.getElementById('assistant-photo-status');if(status){status.textContent=message;status.dataset.state=state}}
-function updateAssistantPhotoControls(){const runtime=window.NUTRIFLOW_RUNTIME||{};const enabled=runtime.photoAnalysisEnabled===true;const consent=document.getElementById('assistant-photo-consent');const button=document.getElementById('assistant-photo-submit');const input=document.getElementById('assistant-meal-photo');const choose=document.getElementById('assistant-photo-choose');const remove=document.getElementById('assistant-photo-remove');const notes=document.getElementById('assistant-photo-notes');const subscribe=document.getElementById('assistant-photo-subscribe');const reason=runtime.photoAnalysisReason||'not_ready';if(button)button.disabled=!enabled||assistantPhotoBusy||!selectedAssistantPhoto||!consent?.checked;if(input)input.disabled=!enabled||assistantPhotoBusy;if(choose)choose.disabled=!enabled||assistantPhotoBusy;if(remove)remove.disabled=assistantPhotoBusy;if(consent)consent.disabled=!enabled||assistantPhotoBusy;if(notes)notes.disabled=!enabled||assistantPhotoBusy;if(subscribe){subscribe.hidden=enabled||!['base_access_required','payment_required'].includes(reason);subscribe.textContent=reason==='base_access_required'?'Comprar acesso base':'Assinar IA — R$ 14,90/mês'}if(!enabled){const messages={monthly_limit:'A cota mensal de análises por foto foi atingida. Ela será liberada no próximo mês.',payment_required:'A análise por foto é liberada após a primeira cobrança Pix aprovada da assinatura mensal de IA.',base_access_required:'Compre primeiro o acesso base do NutriFlow para poder assinar o plano de IA.',login_required:'Entre na sua conta para verificar o pagamento e liberar a análise por foto.',not_ready:'A análise por foto ainda não está configurada no servidor. Nada foi enviado.'};setAssistantPhotoStatus(messages[reason]||messages.not_ready)}}
+function updateAssistantPhotoControls(){
+  const runtime=window.NUTRIFLOW_RUNTIME||{};
+  const enabled=runtime.photoAnalysisEnabled===true;
+  const consent=document.getElementById('assistant-photo-consent');
+  const button=document.getElementById('assistant-photo-submit');
+  const input=document.getElementById('assistant-meal-photo');
+  const choose=document.getElementById('assistant-photo-choose');
+  const remove=document.getElementById('assistant-photo-remove');
+  const notes=document.getElementById('assistant-photo-notes');
+  const subscribe=document.getElementById('assistant-photo-subscribe');
+  const reason=runtime.photoAnalysisReason||'not_ready';
+  if(button)button.disabled=!enabled||assistantPhotoBusy||!selectedAssistantPhoto||!consent?.checked;
+  if(input)input.disabled=!enabled||assistantPhotoBusy;
+  if(choose)choose.disabled=!enabled||assistantPhotoBusy;
+  if(remove)remove.disabled=assistantPhotoBusy;
+  if(consent)consent.disabled=!enabled||assistantPhotoBusy;
+  if(notes)notes.disabled=!enabled||assistantPhotoBusy;
+  if(subscribe){subscribe.hidden=enabled||!['base_access_required','payment_required'].includes(reason);subscribe.textContent=reason==='base_access_required'?'Comprar acesso base':'Assinar IA — R$ 14,90/mês'}
+  if(!enabled){
+    const messages={
+      monthly_limit:'Você já usou as análises de foto deste mês. A cota renova no próximo mês.',
+      payment_required:'A análise é liberada depois que o primeiro Pix da assinatura NutriFlow + IA for confirmado.',
+      base_access_required:'Compre o acesso base do NutriFlow antes de assinar o plano de IA.',
+      login_required:'Entre na sua conta para conferir se a assinatura NutriFlow + IA está ativa.',
+      not_ready:'Estamos preparando a análise de fotos. Nenhuma imagem será enviada por enquanto.',
+    };
+    setAssistantPhotoStatus(messages[reason]||messages.not_ready)
+  }
+}
 async function loadAssistantPhotoRuntimeConfig(tokenOverride){const runtime=window.NUTRIFLOW_RUNTIME||(window.NUTRIFLOW_RUNTIME={});if(runtime.billingEnabled!==true&&runtime.photoAnalysisEnabled!==true){runtime.photoAnalysisEnabled=false;runtime.photoAnalysisReason='not_ready';updateAssistantPhotoControls();return{photoAnalysisEnabled:false,reason:'not_ready'}}runtime.photoAnalysisEnabled=false;if(!window.isNutriFlowAccountActive?.()){runtime.photoAnalysisReason='login_required';updateAssistantPhotoControls();return{photoAnalysisEnabled:false,reason:runtime.photoAnalysisReason}}let token=tokenOverride;try{if(!token&&typeof window.getNutriFlowAccessToken==='function')token=await window.getNutriFlowAccessToken()}catch{}if(!token){runtime.photoAnalysisReason='login_required';updateAssistantPhotoControls();return{photoAnalysisEnabled:false,reason:runtime.photoAnalysisReason}}const apiBase=String(runtime.apiBaseUrl||location.origin).replace(/\/$/,'');try{const response=await fetch(apiBase+'/api/assistant/photo-access',{headers:{Authorization:'Bearer '+token},cache:'no-store'});if(response.status===401){runtime.photoAnalysisEnabled=false;runtime.photoAnalysisReason='login_required'}else{if(!response.ok)throw new Error('ACCESS_UNAVAILABLE');const config=await response.json();runtime.photoAnalysisEnabled=config.photoAnalysisEnabled===true;runtime.photoAnalysisReason=typeof config.reason==='string'?config.reason:''}}catch{runtime.photoAnalysisEnabled=false;runtime.photoAnalysisReason='not_ready'}updateAssistantPhotoControls();return{photoAnalysisEnabled:runtime.photoAnalysisEnabled,reason:runtime.photoAnalysisReason}}
 window.refreshAssistantPhotoAccess=loadAssistantPhotoRuntimeConfig;
 function startPhotoCheckout(){const reason=window.NUTRIFLOW_RUNTIME?.photoAnalysisReason;startNutriFlowCheckout(reason==='base_access_required'?'base':'ai')}
@@ -1541,8 +1642,108 @@ document.getElementById('assistant-photo-consent')?.addEventListener('change',up
 async function loadAssistantPhotoImage(file){if(typeof createImageBitmap==='function'){try{return await createImageBitmap(file)}catch{}}return new Promise((resolve,reject)=>{const image=new Image();const url=URL.createObjectURL(file);image.onload=()=>{URL.revokeObjectURL(url);resolve(image)};image.onerror=()=>{URL.revokeObjectURL(url);reject(new Error('Este navegador não conseguiu abrir a foto. Tente uma imagem JPG ou PNG.'))};image.src=url})}
 async function compressAssistantPhoto(file){const source=await loadAssistantPhotoImage(file);const width=source.width||source.naturalWidth;const height=source.height||source.naturalHeight;if(!width||!height)throw new Error('Não consegui ler as dimensões da foto.');let blob=null;try{for(const maxSide of [1280,1024,800]){const scale=Math.min(1,maxSide/Math.max(width,height));const canvas=document.createElement('canvas');canvas.width=Math.max(1,Math.round(width*scale));canvas.height=Math.max(1,Math.round(height*scale));const context=canvas.getContext('2d',{alpha:false});if(!context)throw new Error('Este navegador não conseguiu preparar a foto.');context.drawImage(source,0,0,canvas.width,canvas.height);for(const quality of [0.82,0.68]){blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/jpeg',quality));if(blob&&blob.size<=2*1024*1024)break}if(blob&&blob.size<=2*1024*1024)break}}finally{if(typeof source.close==='function')source.close()}if(!blob||blob.size>2*1024*1024)throw new Error('A foto não pôde ser comprimida o suficiente. Escolha uma imagem menor.');return await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(String(reader.result||''));reader.onerror=()=>reject(new Error('Não consegui preparar a foto para envio.'));reader.readAsDataURL(blob)})}
 function formatPhotoRange(min,max,suffix=''){const low=Math.round(Number(min)||0);const high=Math.round(Number(max)||0);return(low===high?String(low):low+'–'+high)+suffix}
-function renderMealPhotoEstimate(estimate){const result=document.getElementById('assistant-photo-result');if(!result)return;result.replaceChildren();const title=document.createElement('h3');title.textContent=estimate.title||'Estimativa da refeição';result.append(title);if(!estimate.items?.length){const empty=document.createElement('p');empty.className='assistant-photo-copy';empty.textContent=estimate.uncertainties?.[0]||'Não consegui identificar alimentos com segurança nesta foto. Tente outra imagem mais clara.';result.append(empty);result.hidden=false;return}const kcal=document.createElement('p');kcal.className='assistant-photo-kcal';kcal.textContent=formatPhotoRange(estimate.totals.kcalMin,estimate.totals.kcalMax,' kcal');result.append(kcal);const macroGrid=document.createElement('div');macroGrid.className='assistant-photo-macros';[['Proteínas',estimate.totals.proteinMin,estimate.totals.proteinMax],['Carboidratos',estimate.totals.carbsMin,estimate.totals.carbsMax],['Gorduras',estimate.totals.fatMin,estimate.totals.fatMax]].forEach(([label,min,max])=>{const card=document.createElement('div');card.className='assistant-photo-macro';const name=document.createElement('span');name.textContent=label;const value=document.createElement('strong');value.textContent=formatPhotoRange(min,max,' g');card.append(name,value);macroGrid.append(card)});result.append(macroGrid);const list=document.createElement('ul');list.className='assistant-photo-items';estimate.items.forEach(item=>{const row=document.createElement('li');const food=document.createElement('span');food.textContent=item.name+' · ~'+Math.round(item.portionG)+' g';const values=document.createElement('span');values.textContent=formatPhotoRange(item.kcalMin,item.kcalMax,' kcal');row.append(food,values);list.append(row)});result.append(list);if(estimate.uncertainties?.length){const notes=document.createElement('p');notes.className='assistant-photo-disclaimer';notes.textContent=estimate.uncertainties.join(' ');result.append(notes)}const disclaimer=document.createElement('p');disclaimer.className='assistant-photo-disclaimer';disclaimer.textContent='Estimativa visual experimental: a IA pode errar a identificação e a porção. O resultado não é medição nem orientação nutricional. Confira os alimentos e quantidades antes de usar.';result.append(disclaimer);result.hidden=false}
-async function analyzeMealPhoto(){if(assistantPhotoBusy)return;if(!selectedAssistantPhoto){setAssistantPhotoStatus('Escolha uma foto do prato primeiro.','error');return}const consent=document.getElementById('assistant-photo-consent');if(!consent?.checked){setAssistantPhotoStatus('Marque a autorização antes de enviar a foto.','error');return}if(!window.isNutriFlowAccountActive?.()){goTo('login');showToast('Entre na sua conta para analisar uma foto.');return}const getToken=window.getNutriFlowAccessToken;let token=null;try{token=typeof getToken==='function'?await getToken():null}catch{setAssistantPhotoStatus('Não consegui confirmar sua sessão. Entre novamente e tente outra vez.','error');return}if(!token){goTo('login');showToast('Entre na sua conta para analisar uma foto.');return}const access=await loadAssistantPhotoRuntimeConfig(token);if(!access.photoAnalysisEnabled){setAssistantPhotoStatus('A assinatura mensal ativa e o pagamento confirmado são necessários para enviar uma foto.','error');return}const button=document.getElementById('assistant-photo-submit');assistantPhotoBusy=true;updateAssistantPhotoControls();consent.checked=false;if(button)button.textContent='Analisando…';setAssistantPhotoStatus('Comprimindo e enviando a foto à OpenAI. A análise usa uma resposta de IA.');try{const imageDataUrl=await compressAssistantPhoto(selectedAssistantPhoto);const apiBase=String(window.NUTRIFLOW_RUNTIME?.apiBaseUrl||location.origin).replace(/\/$/,'');const response=await fetch(apiBase+'/api/assistant/meal-photo',{method:'POST',headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},body:JSON.stringify({imageDataUrl,notes:document.getElementById('assistant-photo-notes')?.value.trim()||'',consent:true})});const payload=await response.json().catch(()=>({}));if(!response.ok)throw new Error(payload.error||'Não consegui analisar esta foto.');renderMealPhotoEstimate(payload.estimate||{});clearAssistantPhoto(false,true);const note=document.getElementById('assistant-photo-notes');if(note)note.value='';setAssistantPhotoStatus('Análise concluída. A cópia temporária do NutriFlow foi descartada.','ready')}catch(error){const message=error?.name==='TypeError'?'Não consegui conectar ao servidor de análise. Confira a internet e tente novamente.':error.message||'Não consegui analisar esta foto agora.';setAssistantPhotoStatus(message,'error');loadAssistantPhotoRuntimeConfig(token)}finally{assistantPhotoBusy=false;if(button)button.textContent='Analisar foto';updateAssistantPhotoControls()}}
+function renderMealPhotoEstimate(estimate){
+  const result=document.getElementById('assistant-photo-result');
+  if(!result)return;
+  result.replaceChildren();
+  const head=document.createElement('div');
+  head.className='assistant-photo-result-head';
+  const label=document.createElement('span');
+  label.className='assistant-photo-result-label';
+  label.textContent='Resultado visual · faixas aproximadas';
+  const title=document.createElement('h3');
+  title.textContent=estimate.title||'Estimativa do seu prato';
+  const subtitle=document.createElement('span');
+  subtitle.className='assistant-photo-result-subtitle';
+  subtitle.textContent='A leitura usa apenas o que aparece na imagem e as informações que você forneceu.';
+  head.append(label,title,subtitle);
+  result.append(head);
+  if(!estimate.items?.length){
+    const empty=document.createElement('div');
+    empty.className='assistant-photo-empty';
+    const emptyTitle=document.createElement('strong');
+    emptyTitle.textContent='Não deu para identificar os alimentos nesta foto.';
+    const emptyCopy=document.createElement('span');
+    emptyCopy.textContent=estimate.uncertainties?.join(' ')||'Tente novamente com o prato inteiro em foco e com mais luz.';
+    empty.append(emptyTitle,emptyCopy);
+    result.append(empty);
+    result.hidden=false;
+    return;
+  }
+
+  const calorieCard=document.createElement('div');
+  calorieCard.className='assistant-photo-calorie-card';
+  const calorieLabel=document.createElement('span');
+  calorieLabel.className='assistant-photo-calorie-label';
+  calorieLabel.textContent='Calorias estimadas no prato';
+  const kcal=document.createElement('strong');
+  kcal.className='assistant-photo-kcal';
+  kcal.textContent=formatPhotoRange(estimate.totals.kcalMin,estimate.totals.kcalMax,' kcal');
+  const calorieHint=document.createElement('span');
+  calorieHint.className='assistant-photo-calorie-hint';
+  calorieHint.textContent='Uma faixa para ajudar a entender a refeição, não uma medição exata.';
+  calorieCard.append(calorieLabel,kcal,calorieHint);
+  result.append(calorieCard);
+
+  const macroHeading=document.createElement('div');
+  macroHeading.className='assistant-photo-section-label';
+  macroHeading.textContent='Macronutrientes';
+  const macroHint=document.createElement('span');
+  macroHint.textContent='estimativa por faixa';
+  macroHeading.append(macroHint);
+  result.append(macroHeading);
+  const macroGrid=document.createElement('div');
+  macroGrid.className='assistant-photo-macros';
+  [['Proteínas',estimate.totals.proteinMin,estimate.totals.proteinMax],['Carboidratos',estimate.totals.carbsMin,estimate.totals.carbsMax],['Gorduras',estimate.totals.fatMin,estimate.totals.fatMax]].forEach(([name,min,max])=>{
+    const card=document.createElement('div');
+    card.className='assistant-photo-macro';
+    const label=document.createElement('span');
+    label.textContent=name;
+    const value=document.createElement('strong');
+    value.textContent=formatPhotoRange(min,max,' g');
+    card.append(label,value);
+    macroGrid.append(card);
+  });
+  result.append(macroGrid);
+
+  const itemsHeading=document.createElement('div');
+  itemsHeading.className='assistant-photo-section-label';
+  itemsHeading.textContent='Possíveis itens no prato';
+  const count=document.createElement('span');
+  count.textContent=estimate.items.length===1?'1 item visível':estimate.items.length+' itens visíveis';
+  itemsHeading.append(count);
+  result.append(itemsHeading);
+  const list=document.createElement('ul');
+  list.className='assistant-photo-items';
+  estimate.items.forEach(item=>{
+    const row=document.createElement('li');
+    const food=document.createElement('span');
+    food.className='assistant-photo-food-name';
+    food.append(document.createTextNode(item.name));
+    const portion=document.createElement('span');
+    portion.className='assistant-photo-food-portion';
+    portion.textContent='Porção aproximada · '+Math.round(item.portionG)+' g';
+    food.append(portion);
+    const values=document.createElement('span');
+    values.className='assistant-photo-food-kcal';
+    values.textContent=formatPhotoRange(item.kcalMin,item.kcalMax,' kcal');
+    row.append(food,values);
+    list.append(row);
+  });
+  result.append(list);
+  if(estimate.uncertainties?.length){
+    const notes=document.createElement('p');
+    notes.className='assistant-photo-uncertainties';
+    notes.textContent='O que pode mudar a estimativa: '+estimate.uncertainties.join(' ');
+    result.append(notes);
+  }
+  const disclaimer=document.createElement('p');
+  disclaimer.className='assistant-photo-disclaimer';
+  disclaimer.textContent='A IA pode identificar alimentos ou porções de forma incorreta. Óleo, molhos, recheios e peso não visíveis também podem alterar os valores. Use como referência geral; não é avaliação clínica nem substitui orientação de nutricionista.';
+  result.append(disclaimer);
+  result.hidden=false;
+}
+async function analyzeMealPhoto(){if(assistantPhotoBusy)return;if(!selectedAssistantPhoto){setAssistantPhotoStatus('Escolha uma foto do prato primeiro.','error');return}const consent=document.getElementById('assistant-photo-consent');if(!consent?.checked){setAssistantPhotoStatus('Marque a autorização antes de enviar a foto.','error');return}if(!window.isNutriFlowAccountActive?.()){goTo('login');showToast('Entre na sua conta para analisar uma foto.');return}const getToken=window.getNutriFlowAccessToken;let token=null;try{token=typeof getToken==='function'?await getToken():null}catch{setAssistantPhotoStatus('Não consegui confirmar sua sessão. Entre novamente e tente outra vez.','error');return}if(!token){goTo('login');showToast('Entre na sua conta para analisar uma foto.');return}const access=await loadAssistantPhotoRuntimeConfig(token);if(!access.photoAnalysisEnabled){setAssistantPhotoStatus('A assinatura mensal ativa e o pagamento confirmado são necessários para enviar uma foto.','error');return}const button=document.getElementById('assistant-photo-submit');assistantPhotoBusy=true;updateAssistantPhotoControls();consent.checked=false;if(button)button.textContent='Analisando prato…';setAssistantPhotoStatus('Preparando uma versão reduzida da foto. Ela ainda não foi enviada.');try{const imageDataUrl=await compressAssistantPhoto(selectedAssistantPhoto);setAssistantPhotoStatus('Enviando a imagem à OpenAI para estimar alimentos, porções e nutrientes.');const apiBase=String(window.NUTRIFLOW_RUNTIME?.apiBaseUrl||location.origin).replace(/\/$/,'');const response=await fetch(apiBase+'/api/assistant/meal-photo',{method:'POST',headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},body:JSON.stringify({imageDataUrl,notes:document.getElementById('assistant-photo-notes')?.value.trim()||'',consent:true})});const payload=await response.json().catch(()=>({}));if(!response.ok)throw new Error(payload.error||'Não consegui analisar esta foto.');renderMealPhotoEstimate(payload.estimate||{});clearAssistantPhoto(false,true);const note=document.getElementById('assistant-photo-notes');if(note)note.value='';setAssistantPhotoStatus('Estimativa pronta. A foto temporária foi removida da tela.','ready')}catch(error){const message=error?.name==='TypeError'?'Não consegui conectar ao servidor de análise. Confira a internet e tente novamente.':error.message||'Não consegui analisar esta foto agora.';setAssistantPhotoStatus(message,'error');loadAssistantPhotoRuntimeConfig(token)}finally{assistantPhotoBusy=false;if(button)button.textContent='Analisar meu prato';updateAssistantPhotoControls()}}
 function deleteMeal(id){const next=readMeals().filter(m=>m.id!==id);if(saveMeals(next)){renderMeals();showToast('Registro removido deste navegador.')}}
 function toggleToggle(id){const el=document.getElementById(id);if(el)el.classList.toggle('on')}
 document.addEventListener('DOMContentLoaded',()=>{
