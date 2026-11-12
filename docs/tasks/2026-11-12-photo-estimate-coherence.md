@@ -34,8 +34,8 @@ Codex
 
 ## Testes obrigatórios
 
-- [ ] Não enviar fotos reais de usuários durante o desenvolvimento.
-- [ ] A suíte automatizada não foi executada nesta tarefa.
+- Nenhuma foto real de usuário foi enviada durante o desenvolvimento.
+- A suíte automatizada não foi executada; foram feitas checagem de sintaxe, compilação estática e revisão de diff.
 
 ## Resultado esperado
 
@@ -47,7 +47,7 @@ Menos resultados que se contradizem numericamente, mantendo uma apresentação t
 - Arquivos alterados: `server.js` e este relatório.
 - Testes/comandos executados e resultados: `node --check server.js`, `git diff --check` e `node scripts/build-static.mjs` passaram; a suíte automatizada não foi executada.
 - Limitações ou riscos: coerência matemática não prova exatidão nutricional. A validação exige comparação com refeições identificadas e pesadas antes de divulgar o recurso como confiável.
-- Branch/pull request: `codex/photo-estimate-quality`; pendente.
+- Branch/pull request: `codex/photo-estimate-quality`; PR #21 aberto contra a branch do PR #20, aguardando revisão.
 
 ## Referências técnicas
 
