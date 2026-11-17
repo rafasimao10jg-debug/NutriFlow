@@ -97,26 +97,40 @@ async function createBaseCheckout(request, response, sendJson) {
   if (!order?.id) throw new Error('BILLING_ORDER_CREATE_FAILED');
 
   try {
-    const payment = await mercadoPago('/v1/payments', {
+    const created = await mercadoPago('/v1/orders', {
       method: 'POST',
       idempotencyKey: order.id,
       body: {
-        transaction_amount: BASE_PRICE,
+        type: 'online',
+        processing_mode: 'automatic',
+        total_amount: BASE_PRICE.toFixed(2),
         description: 'NutriFlow — acesso base e 5 respostas de IA incluídas',
-        payment_method_id: 'pix',
-        payer: { email: user.email },
         external_reference: order.id,
-        notification_url: publicUrl('/api/mercadopago/webhook'),
+        transactions: {
+          payments: [{
+            amount: BASE_PRICE.toFixed(2),
+            payment_method: { id: 'pix', type: 'bank_transfer' },
+          }],
+        },
+        payer: { email: user.email },
       },
     });
-    const pix = payment?.point_of_interaction?.transaction_data;
-    if (payment?.payment_method_id !== 'pix' || typeof payment?.id !== 'number' || !pix?.qr_code || !pix?.qr_code_base64) {
+    const payment = Array.isArray(created?.transactions?.payments) ? created.transactions.payments[0] : null;
+    const pix = payment?.payment_method;
+    if (created?.external_reference !== order.id
+        || !['action_required', 'pending'].includes(created?.status)
+        || typeof created?.id !== 'string'
+        || typeof payment?.id !== 'string'
+        || pix?.id !== 'pix'
+        || pix?.type !== 'bank_transfer'
+        || typeof pix?.qr_code !== 'string'
+        || typeof pix?.qr_code_base64 !== 'string') {
       throw new Error('INVALID_PIX_PAYMENT');
     }
     await supabaseRequest(`nf_billing_orders?id=eq.${order.id}`, {
       method: 'PATCH', body: { provider_payment_id: String(payment.id) },
     }).catch(() => {});
-    return sendJson(response, 200, { paymentId: String(payment.id), qrCode: pix.qr_code, qrImageBase64: pix.qr_code_base64, expiresAt: payment.date_of_expiration || null });
+    return sendJson(response, 200, { paymentId: payment.id, qrCode: pix.qr_code, qrImageBase64: pix.qr_code_base64, expiresAt: payment.date_of_expiration || null });
   } catch (error) { throw error; }
 }
 
@@ -186,7 +200,34 @@ async function handleWebhook(request, response, sendJson, readBody) {
   if (!verifyWebhookSignature(request, dataId)) return sendJson(response, 401, { error: 'Assinatura inválida.' });
 
   try {
-    if (topic === 'payment') {
+    if (topic === 'order') {
+      const paymentOrder = await mercadoPago(`/v1/orders/${encodeURIComponent(dataId)}`);
+      const payments = Array.isArray(paymentOrder?.transactions?.payments) ? paymentOrder.transactions.payments : [];
+      const pixPayment = payments.find(item => item?.payment_method?.id === 'pix'
+        && item?.payment_method?.type === 'bank_transfer');
+      const orderId = paymentOrder?.external_reference;
+      const isApproved = paymentOrder?.status === 'processed'
+        && paymentOrder?.status_detail === 'accredited'
+        && String(paymentOrder?.id).toUpperCase() === String(dataId).toUpperCase()
+        && paymentOrder?.country_code === 'BRA'
+        && Math.abs(Number(paymentOrder?.total_amount) - BASE_PRICE) < 0.001
+        && Math.abs(Number(paymentOrder?.total_paid_amount) - BASE_PRICE) < 0.001
+        && pixPayment?.status === 'processed'
+        && pixPayment?.status_detail === 'accredited'
+        && Math.abs(Number(pixPayment?.amount) - BASE_PRICE) < 0.001
+        && typeof pixPayment?.id === 'string'
+        && typeof orderId === 'string'
+        && /^[0-9a-f-]{36}$/i.test(orderId);
+      if (isApproved) {
+        const orders = await supabaseRequest(`nf_billing_orders?select=id&status=eq.pending&id=eq.${orderId}&limit=1`);
+        if (Array.isArray(orders) && orders.length) {
+          const result = await supabaseRequest('rpc/nf_apply_base_payment', {
+            method: 'POST', body: { p_order_id: orderId, p_payment_id: pixPayment.id },
+          });
+          if (result !== true) throw new Error('PAYMENT_NOT_APPLIED');
+        }
+      }
+    } else if (topic === 'payment') {
       const payment = await mercadoPago(`/v1/payments/${encodeURIComponent(dataId)}`);
       const orderId = payment?.external_reference;
       const isApproved = payment?.status === 'approved'
