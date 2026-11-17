@@ -17,7 +17,7 @@ Preparar um caminho simples entre o anúncio, o primeiro contato com o app e a c
 ## Integração necessária
 
 - Página pública de oferta e planos.
-- Pagamento único criado no servidor com payment_method_id=pix, preço fixo, chave de idempotência e QR Code/código copia e cola; nunca aceitar valor enviado pelo navegador.
+- Pagamento único criado no servidor com a Orders API (`POST /v1/orders`), `payment_method.id=pix` e `type=bank_transfer`, preço fixo, chave de idempotência e QR Code/código copia e cola; nunca aceitar valor enviado pelo navegador.
 - Plano de assinatura mensal criado no Mercado Pago com payment_methods_allowed.payment_types=[{id: bank_transfer}] e vinculado à conta Supabase. No Brasil, bank_transfer é o tipo correspondente ao Pix.
 - Webhooks assinados para pagamentos e assinaturas, com validação de assinatura, proteção contra repetição e confirmação das renovações via Pix antes de manter a IA ativa.
 - Entitlements separados para `base_access` e `ai_subscription_status`, associados à conta Supabase com RLS. A chave `service_role` permanece apenas no servidor.
@@ -36,19 +36,19 @@ Usar UTMs e contagens agregadas próprias para visitas, cadastro, checkout inici
 - Acesso base: recursos de organização e registros descritos na página do produto; inclui 5 respostas da IA no total.
 - Assinatura de IA: até 100 respostas por mês civil, com limite reiniciado no dia 1; não anunciar como ilimitada.
 - Política de cancelamento, reembolso e suporte: a definir.
-- Conta de teste do provedor e credenciais de sandbox: não configuradas.
+- Aplicação de teste `NutriFlow Checkout` criada no Mercado Pago; token de teste, segredo do webhook e URL/tópicos de notificação ainda não foram configurados no Render/painel.
 - Termos, Política de Privacidade e exclusão de conta: pendentes.
 - A integração de servidor para criar Pix, verificar Webhooks e registrar limites já está preparada no código e na migration, mas permanece desativada e ainda não foi validada em sandbox.
 - O plano Pix mensal precisa ser criado no Mercado Pago e seu ID configurado em MERCADOPAGO_PIX_AI_PLAN_ID; sem ele, o endpoint de assinatura recusa iniciar a cobrança.
 
-O Checkout Pro padrão não garante Pix exclusivo porque o Mercado Pago informa que dinheiro em conta não pode ser excluído dessa preferência. Por isso, a compra única usa a API direta de pagamentos Pix e mostra QR Code/copia e cola. A assinatura usa um plano com meio de pagamento permitido explicitamente como Pix. Validar essa configuração em sandbox antes de habilitar cobrança real. Nunca liberar acesso com base apenas na URL de retorno.
+O Checkout Pro padrão não garante Pix exclusivo porque o Mercado Pago informa que dinheiro em conta não pode ser excluído dessa preferência. Por isso, a compra única usa a API Orders com a forma Pix e mostra QR Code/copia e cola. O webhook do tópico `order` deve ser configurado no painel da aplicação; a assinatura usa os tópicos de assinatura e um plano com meio de pagamento permitido explicitamente como Pix. Validar tudo em sandbox antes de habilitar cobrança real. Nunca liberar acesso com base apenas na URL de retorno.
 
 ## Implementação técnica pendente
 
-- Revisar e validar em sandbox a criação do pagamento Pix no servidor, incluindo QR Code, copia e cola, validade, idempotência e preço fixo.
+- Revisar e validar em sandbox a criação da order Pix no servidor, incluindo QR Code, copia e cola, validade, idempotência e preço fixo.
 - Criar o plano mensal no Mercado Pago com payment_methods_allowed.payment_types=[{id: bank_transfer}] e payment_methods=[{id: pix}]; validar em sandbox que o checkout da assinatura exibe somente Pix.
 - Revisar a validação da sessão Supabase no início de checkout e a associação da transação à conta.
-- Confirmar em sandbox a assinatura HMAC `x-signature` do webhook (`id:<data.id>;request-id:<x-request-id>;ts:<ts>;`), os tópicos de pagamento, assinatura e fatura autorizada, a consulta dos recursos no Mercado Pago e o processamento idempotente.
+- Configurar no painel do Mercado Pago o webhook HTTPS do tópico `order` e os tópicos de assinatura/fatura autorizada; confirmar em sandbox a assinatura HMAC `x-signature` (`id:<data.id>;request-id:<x-request-id>;ts:<ts>;`), a consulta dos recursos e o processamento idempotente.
 - Aplicar a migration `202611040002_billing.sql` em Supabase antes de configurar o backend; os dados de cobrança e uso ficam em tabelas privadas com RLS, e `service_role` é usada somente no servidor.
 - A rota de IA passa a contabilizar 5 respostas totais no acesso base e 100 por mês civil na assinatura somente quando `BILLING_ENABLED=true`; validar os limites e falhas do modelo antes de ativar.
 - Guardar credenciais como secrets no Render: token de acesso Mercado Pago, segredo de webhook, URL e chaves de servidor Supabase. Nunca incluir secrets no frontend, repositório ou chat.
